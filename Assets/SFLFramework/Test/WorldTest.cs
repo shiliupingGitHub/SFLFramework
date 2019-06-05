@@ -2,19 +2,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cinemachine;
 using UnityEngine;
 using GGame;
+using Vector3 = GGame.Vector3;
 
 public class WorldTest : MonoBehaviour
 {
     // Start is called before the first frame update
     private World world;
+    public CinemachineVirtualCamera camera;
+    public Transform startPos;
     void Start()
     {
         Enverourment.Instance.Init();
         world = new World();
 
-        world.CreateEntity(1,1001);
+        var entity = world.CreateEntity(1,1001);
+
+        var rc = entity.GetComponent<RenderComponent>();
+        camera.m_Follow = rc.GameObject.transform;
+        camera.m_LookAt = rc.GameObject.transform;
+
+        Vector3 pos;
+
+        pos.X = (Fix64) startPos.position.x;
+        pos.Y = (Fix64) startPos.position.y;
+        pos.Z = (Fix64) startPos.position.z;
+
+        rc.Pos = pos;
         StartTick();
     }
 
@@ -29,7 +45,49 @@ public class WorldTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(
+            (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+            &&!Input.GetKey(KeyCode.A)
+                &&!Input.GetKey(KeyCode.D)
+            )
+        {
+            MoveCmd cmd;
+            cmd.Dir = 0;
+            
+            CmdInfo info;
+            
+            info.Uuid = 1;
+            info.Cmd = cmd;
+            world.AddCatchCmd(world.FrameIndex +1, info);
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            
+            MoveCmd cmd;
+            cmd.Dir = 1;
+            
+            CmdInfo info;
+            
+            info.Uuid = 1;
+            info.Cmd = cmd;
+            world.AddCatchCmd(world.FrameIndex +1, info);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            MoveCmd cmd;
+            cmd.Dir = -1;
+            
+            CmdInfo info;
+            
+            info.Uuid = 1;
+            info.Cmd = cmd;
+            
+            world.AddCatchCmd(world.FrameIndex +1, info);
+        }
+        
         world.Update();
+        
     }
 
     private void OnDestroy()

@@ -39,5 +39,14 @@ namespace GGame
 
             return ret;
         }
+        
+        public static Vector3 Lerp(Vector3 value1, Vector3 value2, float amount)
+        {
+            Vector3 vector3;
+            vector3.X = value1.X + (value2.X - value1.X) * amount;
+            vector3.Y = value1.Y + (value2.Y - value1.Y) * amount;
+            vector3.Z = value1.Z + (value2.Z - value1.Z) * amount;
+            return vector3;
+        }
     }
 }

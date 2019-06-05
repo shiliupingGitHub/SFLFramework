@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Xml;
+using UnityEngine;
+
 namespace GGame
 {
     public class RenderComponent : Component
@@ -7,8 +9,15 @@ namespace GGame
         private int _modelId = 0;
         private Vector3 _pos = Vector3.Zero;
         private Vector3 _rotaion = Vector3.Zero;
+        
 #if !SERVER
         private UnityEngine.GameObject _gameObject;
+
+        public GameObject GameObject
+        {
+            get { return _gameObject; }
+        }
+        
 #endif
         public override void Awake( World world, XmlNode node)
         {
@@ -59,7 +68,7 @@ namespace GGame
 
             tr_pos.x = (float)_pos.X;
             tr_pos.y = (float)_pos.Y;
-            tr_pos.z = (float)_pos.Y;
+            tr_pos.z = (float)_pos.Z;
 
             _gameObject.transform.position = tr_pos;
 #endif

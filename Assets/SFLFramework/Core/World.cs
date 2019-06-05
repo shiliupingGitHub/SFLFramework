@@ -7,16 +7,33 @@ namespace GGame
 {
     public class World : IDisposable
     {
-        List<System> Systems = new List<System>();
-        
-        Dictionary<Type, List<System>> InterestSystems = new Dictionary<Type, List<System>>();
-        
+        private ulong _frameIndex = 0;
+        readonly List<System> Systems = new List<System>();
+        readonly Dictionary<Type, List<System>> InterestSystems = new Dictionary<Type, List<System>>();
         Dictionary<ulong, Entity> _entities = new Dictionary<ulong, Entity>();
-       
+        Dictionary<ulong, List<CmdInfo>> _cmdCache = new Dictionary<ulong, List<CmdInfo>>();
+
+        public ulong FrameIndex => _frameIndex;
+
         public World()
         {
             Enverourment.Instance.CreateWorldSystem(this);
         }
+
+        public void AddCatchCmd(ulong frameIndex, CmdInfo o)
+        {
+            List<CmdInfo> ret = null;
+
+            if (!_cmdCache.TryGetValue(frameIndex, out ret))
+            {
+                ret = new List<CmdInfo>();
+
+                _cmdCache[frameIndex] = ret;
+            }
+            
+            ret.Add(o);
+        }
+        
 
         public void AddSystem(System system)
         {
@@ -81,10 +98,30 @@ namespace GGame
 
         public void Tick()
         {
+            List<CmdInfo> cacheCmd = null;
+
+            _cmdCache.TryGetValue(_frameIndex, out cacheCmd);
+
+            if (null != cacheCmd)
+            {
+                foreach (var cmdInfo in cacheCmd)
+                {
+                    var type = cmdInfo.Cmd .GetType();
+                    var handler =  Enverourment.Instance.GetCmdHandler(type);
+
+                    Entity entity = null;
+
+                    _entities.TryGetValue(cmdInfo.Uuid, out entity);
+                    handler.Execute(this, entity, cmdInfo.Cmd);
+                }
+            }
+            
             foreach (var system in Systems)
             {
                 system.OnTick();
             }
+
+            _frameIndex++;
         }
     }
 }
