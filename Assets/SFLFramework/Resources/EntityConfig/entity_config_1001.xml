@@ -1,0 +1,4 @@
+<Entity>
+<RenderComponent model = "1001"/>
+<MoveComponent speed = "0.02"/>
+</Entity>
