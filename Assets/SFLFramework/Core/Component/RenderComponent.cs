@@ -13,9 +13,9 @@ namespace GGame
 #if !SERVER
         private UnityEngine.GameObject _gameObject;
         private UnityEngine.Animator _animator;
-
-        public float Speed;
+        
         public float MoveLeftTime;
+        public float Speed;
         public GameObject GameObject
         {
             get { return _gameObject; }

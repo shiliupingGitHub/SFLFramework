@@ -33,13 +33,11 @@ namespace GGame
                     if (dir.X != Fix64.Zero || dir.Y != Fix64.Zero || dir.Z != Fix64.Zero)
                     {
                         rc.MoveLeftTime = 0.04f;
-                        rc.Speed =(float) mc.Speed;
-
+                        rc.Speed = (float) mc.Speed;
                     }
                     
 #endif
-    
-                  
+                    
 
                 }
                 

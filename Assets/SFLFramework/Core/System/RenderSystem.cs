@@ -22,10 +22,11 @@ namespace GGame
                     var dir = (gFinalPos - rc.GameObject.transform.position);
                     var len = dir.sqrMagnitude;
                     dir = dir.normalized;
-                    float speed = (float) rc.Speed / 0.04f;
+                 
                     
                     if (rc.MoveLeftTime > 0f)
                     {
+                        float speed = rc.Speed / 0.04f;
                         float moveTime = UnityEngine. Mathf.Min(rc.MoveLeftTime, UnityEngine.Time.deltaTime);
                         float moveLen = speed * moveTime;
 
