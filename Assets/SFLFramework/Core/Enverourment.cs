@@ -9,7 +9,7 @@ namespace GGame
         readonly List<Type> _systemTypes = new List<Type>();
         readonly Dictionary<string, Type> _componentTypes = new Dictionary<string, Type>();
         readonly Dictionary<string, Type> _cmdTypes = new Dictionary<string, Type>();
-        Dictionary<Type, ICmdHandler> _cmdHandler = new Dictionary<Type, ICmdHandler>();
+        Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
         public void Init()
         {
             var baseSystemType = typeof(System);
@@ -44,20 +44,45 @@ namespace GGame
                                             
                         var handler = Activator.CreateInstance(type) as ICmdHandler;
 
-                        _cmdHandler[handler.Type] = handler;
+                        List<ICmdHandler> cache = null;
+
+                        if (!_cmdHandler.TryGetValue(handler.Type, out cache))
+                        {
+                            cache = new List<ICmdHandler>();
+                            _cmdHandler[handler.Type] = cache;
+                        }
+                        cache.Add(handler);
+                        
                     }
 
                 }
             }
         }
 
-        public ICmdHandler GetCmdHandler(Type t)
+        public void ExecuteCmd<T>(T a)
         {
-            ICmdHandler handler;
+            var type = a.GetType();
 
-            _cmdHandler.TryGetValue(t, out handler);
+            if (_cmdHandler.TryGetValue(type, out var cache))
+            {
+                foreach (var handler in cache)
+                {
+                    handler.Execute(a);
+                }
+            }
+        }
 
-            return handler;
+        public void ExecuteCmd<T,K,W>(T a, K b, W o)
+        {
+            var type = o.GetType();
+
+            if (_cmdHandler.TryGetValue(type, out var cache))
+            {
+                foreach (var handler in cache)
+                {
+                    handler.Execute(a, b, o);
+                }
+            }
         }
         
         public Type GetComponentType(string typeName)

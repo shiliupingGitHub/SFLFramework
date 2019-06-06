@@ -108,13 +108,11 @@ namespace GGame
             {
                 foreach (var cmdInfo in cacheCmd)
                 {
-                    var type = cmdInfo.Cmd .GetType();
-                    var handler =  Enverourment.Instance.GetCmdHandler(type);
-
+                    
                     Entity entity = null;
-
+                    
                     _entities.TryGetValue(cmdInfo.Uuid, out entity);
-                    handler.Execute(this, entity, cmdInfo.Cmd);
+                    Enverourment.Instance.ExecuteCmd(this, entity, cmdInfo.Cmd);
                 }
             }
             

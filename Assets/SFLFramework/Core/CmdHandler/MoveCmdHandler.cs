@@ -1,6 +1,4 @@
 
-using NotImplementedException = System.NotImplementedException;
-
 namespace GGame
 {
     public class MoveCmdHandler : CmdHandler<World, Entity, MoveCmd>

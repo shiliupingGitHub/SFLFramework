@@ -78,12 +78,12 @@ public class WorldTest : MonoBehaviour
             
             info.Uuid = 1;
             info.Cmd = cmd;
-            world.AddCatchCmd(world.FrameIndex +1, info);
+            world?.AddCatchCmd(world.FrameIndex +1, info);
         }
         
 
         
-        world.Update();
+        world?.Update();
         
     }
 
