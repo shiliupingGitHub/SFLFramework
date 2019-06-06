@@ -18,11 +18,19 @@ namespace GGame
             var type = GetType();
             var systems =  _world.GetInterstSystems(type);
 
-            foreach (var system in systems)
+            if (null != systems)
             {
-                system.RemoveInterest(this);
+                foreach (var system in systems)
+                {
+                    system.RemoveInterest(this);
+                }
             }
+
+            _world = null;
+            Entity = null;
             
+            ObjectPool.Instance.Recycle(this);
+
         }
 
         public virtual void Awake(World world, XmlNode node)
@@ -31,10 +39,14 @@ namespace GGame
             var type = GetType();
             var systems =  world.GetInterstSystems(type);
 
-            foreach (var system in systems)
+            if (null != systems)
             {
-                system.AddInterest(this);
+                foreach (var system in systems)
+                {
+                    system.AddInterest(this);
+                }
             }
+
 
         }
     }

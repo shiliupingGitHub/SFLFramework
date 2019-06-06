@@ -1,4 +1,5 @@
 <Entity>
 <RenderComponent model = "1001"/>
 <MoveComponent speed = "0.5"/>
+<GJumpComponent speed = "0.5"/>
 </Entity>

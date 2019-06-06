@@ -10,7 +10,8 @@ namespace GGame
         private World _world;
         private readonly Dictionary<Type, Component> _components = new Dictionary<Type, Component>();
 
-        public Entity(World world, string config)
+
+        public void Init(World world, string config)
         {
             this._world = world;
             XmlDocument document = new XmlDocument();
@@ -25,13 +26,13 @@ namespace GGame
                 AddComponent(componentNode);
                 componentNode = componentNode.NextSibling;
             }
-            
         }
+        
         
         public void AddComponent(XmlNode node)
         {
             var type = Enverourment.Instance.GetComponentType(node.Name);
-            var component = Activator.CreateInstance(type) as Component;
+            var component = ObjectPool.Instance.Fetch(type) as Component;
                 
             component.Awake(this._world, node);
             _components[type] = component;
@@ -51,6 +52,9 @@ namespace GGame
         
         public void Dispose()
         {
+            ObjectPool.Instance.Recycle(this);
+
+            _world = null;
             foreach (var component in _components)
             {
                 component.Value.Dispose();

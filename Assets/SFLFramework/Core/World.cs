@@ -44,7 +44,9 @@ namespace GGame
         {
             var configPath = $"EntityConfig/entity_config_{configId}";
             var configText = ResourceManager.Instance.LoadEntityConfig(configPath);
-            var e = new Entity(this, configText);
+            var e = ObjectPool.Instance.Fetch<Entity>();
+            
+            e.Init(this, configText);
             _entities[uuid] = e;
             
             return e;

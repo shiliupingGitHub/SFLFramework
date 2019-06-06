@@ -73,7 +73,7 @@ namespace GGame
         {
             foreach (var systemType in _systemTypes)
             {
-                var system = Activator.CreateInstance(systemType) as System;
+                var system = ObjectPool.Instance.Fetch(systemType) as System;
                 var attrs = systemType.GetCustomAttributes(typeof(InterestAttribute), false);
                 
                 world.AddSystem(system);

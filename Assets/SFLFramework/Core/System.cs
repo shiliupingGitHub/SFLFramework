@@ -26,6 +26,7 @@ namespace GGame
         public virtual void Dispose()
         {
             _interestComponents.Clear();
+            ObjectPool.Instance.Recycle(this);
         }
     } 
 
