@@ -1,9 +1,12 @@
 
+using NotImplementedException = System.NotImplementedException;
+
 namespace GGame
 {
-    public class MoveCmdHandler : CmdHandler<MoveCmd>
+    public class MoveCmdHandler : CmdHandler<World, Entity, MoveCmd>
     {
-        protected override void Run(World world,Entity entity, MoveCmd a)
+        
+        protected override void Run(World world, Entity entity, MoveCmd a)
         {
             var mc = entity.GetComponent<MoveComponent>();
 

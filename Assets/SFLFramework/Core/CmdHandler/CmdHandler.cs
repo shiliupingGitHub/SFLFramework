@@ -5,19 +5,19 @@ namespace GGame
 {
     public interface ICmdHandler
     {
-        void Execute(World world, Entity entity, Object o);
+        void Execute(Object a, Object b, Object o);
         Type Type { get; }
     }
-    public abstract class CmdHandler<T> : ICmdHandler
+    public abstract class CmdHandler<T, K, W> : ICmdHandler
     {
-        protected abstract void Run(World world, Entity entity, T a);
-        public void Execute(World world,Entity entity, object o)
+        protected abstract void Run(T world, K entity, W a);
+        public void Execute(Object a,Object b, Object c)
         {
-            Run(world, entity, (T)o);
+            Run((T)a, (K)b, (W)c);
         }
 
         public Type Type {
-            get { return typeof(T); }
+            get { return typeof(W); }
             
         }
     }
