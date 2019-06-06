@@ -54,13 +54,8 @@ namespace GGame
         public void UpdatePostion()
         {
 #if !SERVER
-            var tr_pos = _gameObject.transform.position;
-
-            tr_pos.x = (float)_pos.X;
-            tr_pos.y = (float)_pos.Y;
-            tr_pos.z = (float)_pos.Z;
-
-            _gameObject.transform.position = tr_pos;
+            
+            _gameObject.transform.position =new UnityEngine.Vector3((float)_pos.X, (float)_pos.Y, (float)_pos.Z);;
 #endif
         }
         

@@ -22,9 +22,9 @@ namespace GGame
                     var dir = (gFinalPos - rc.GameObject.transform.position);
                     var len = dir.sqrMagnitude;
                     dir = dir.normalized;
-                    float speed = (float) mc.Speed / 0.033f;
+                    float speed = (float) mc.Speed / 0.04f;
                     
-                    if (mc.MoveLeftTime > 0.000001f)
+                    if (mc.MoveLeftTime > 0f)
                     {
                         float moveTime = Mathf.Min(mc.MoveLeftTime, UnityEngine.Time.deltaTime);
                         float moveLen = speed * moveTime;
@@ -35,20 +35,16 @@ namespace GGame
 
                         mc.MoveLeftTime = Mathf.Max(0, mc.MoveLeftTime - moveTime);
                         rc.Animator.SetFloat("SpeedX", 1.0f);
+                        dir.y = 0;
+                        rc.Animator.transform.forward = dir;
                     }
                     else
                     {
 
                         rc.Animator.SetFloat("SpeedX", 0.0f);
+                        rc.UpdatePostion();
                     }
                     
-                   
-
-                    if (dir != UnityEngine.Vector3.zero)
-                    {
-                        rc.Animator.transform.forward = dir.normalized;
-                        
-                    }
                     
                     rc.GameObject.transform.position = gFinalPos;
                     
@@ -75,9 +71,16 @@ namespace GGame
                     pos += dir * speed;
 
                     rc.Pos = pos;
+#if !SERVER
+                    if (dir.X != Fix64.Zero || dir.Y != Fix64.Zero || dir.Z != Fix64.Zero)
+                    {
+                        mc.MoveLeftTime = 0.04f;
+
+                    }
                     
-                    if(dir.X != Fix64.Zero || dir.Y != Fix64.Zero || dir.Z != Fix64.Zero)
-                        mc.MoveLeftTime = 0.033f;
+#endif
+    
+                  
 
                 }
                 

@@ -45,39 +45,36 @@ public class WorldTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(
-            (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W)  || Input.GetKeyUp(KeyCode.S))
-            &&!Input.GetKey(KeyCode.A)
-                &&!Input.GetKey(KeyCode.D)
-            &&!Input.GetKey(KeyCode.W)
-            &&!Input.GetKey(KeyCode.S)
-            )
-        {
-            MoveCmd cmd = MoveCmd.Zero();
-            
-            CmdInfo info;
-            
-            info.Uuid = 1;
-            info.Cmd = cmd;
-            world.AddCatchCmd(world.FrameIndex +1, info);
-        }
+        int moveX = 0;
+        bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
+                          Input.GetKeyUp(KeyCode.D) || 
+                          Input.GetKeyUp(KeyCode.W)  ||
+                          Input.GetKeyUp(KeyCode.S)
+                         )
+                         &&!Input.GetKey(KeyCode.A)
+                         &&!Input.GetKey(KeyCode.D)
+                         &&!Input.GetKey(KeyCode.W)
+                         &&!Input.GetKey(KeyCode.S);
+
         if (Input.GetKeyDown(KeyCode.A))
         {
-            
-            MoveCmd cmd = MoveCmd.Zero();
-            cmd.MoveX = -1;
-            CmdInfo info;
-            
-            info.Uuid = 1;
-            info.Cmd = cmd;
-            world.AddCatchCmd(world.FrameIndex +1, info);
+            changeCmd = true;
+            moveX = -1;
+
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
+            changeCmd = true;
+            moveX = 1;
+        }
+
+        if (changeCmd)
+        {
             MoveCmd cmd = MoveCmd.Zero();
-            cmd.MoveX = 1;
+            
             CmdInfo info;
+            cmd.MoveX = moveX;
             
             info.Uuid = 1;
             info.Cmd = cmd;
