@@ -9,12 +9,16 @@ namespace GGame
         readonly List<Type> _systemTypes = new List<Type>();
         readonly Dictionary<string, Type> _componentTypes = new Dictionary<string, Type>();
         readonly Dictionary<string, Type> _cmdTypes = new Dictionary<string, Type>();
+        readonly Dictionary<string, Type> _jobTypes = new Dictionary<string, Type>();
+        readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
         Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
         public void Init()
         {
             var baseSystemType = typeof(System);
             var baseComponentType = typeof(Component);
             var baseCmdHandleType = typeof(ICmdHandler);
+            var baseJobType = typeof(IJob);
+            var baseActionType = typeof(IAction);
             var types = baseSystemType.Assembly.GetTypes();
 
             foreach (var type in types)
@@ -56,6 +60,28 @@ namespace GGame
                     }
 
                 }
+                
+                if (baseJobType.IsAssignableFrom(type))
+                {
+                    if (!type.IsAbstract)
+                    {
+
+                        _jobTypes[type.Name] = type;
+
+                    }
+
+                }
+                
+                if (baseActionType.IsAssignableFrom(type))
+                {
+                    if (!type.IsAbstract)
+                    {
+
+                        _actionTypes[type.Name] = type;
+
+                    }
+
+                }
             }
         }
 
@@ -92,7 +118,24 @@ namespace GGame
             _componentTypes.TryGetValue(typeName, out ret);
             return ret;
         }
+
+        public Type GetJobType(string typeName)
+        {
+            Type ret = null;
+
+            _jobTypes.TryGetValue(typeName, out ret);
+            
+            return ret;
+        }
         
+        public Type GetActionType(string typeName)
+        {
+            Type ret = null;
+
+            _actionTypes.TryGetValue(typeName, out ret);
+            
+            return ret;
+        }
 
         public void CreateWorldSystem(World world)
         {

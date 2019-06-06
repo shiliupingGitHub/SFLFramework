@@ -2,4 +2,13 @@
 <RenderComponent model = "1001"/>
 <MoveComponent speed = "0.5"/>
 <GJumpComponent speed = "0.5"/>
+<GSkillComponent>
+<Job id = "1">
+<AnimationJob>
+<HurtAction frame = "15"/>
+</AnimationJob>
+
+</Job>
+
+</GSkillComponent>
 </Entity>

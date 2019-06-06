@@ -12,7 +12,9 @@ namespace GGame
         readonly Dictionary<Type, List<System>> InterestSystems = new Dictionary<Type, List<System>>();
         Dictionary<ulong, Entity> _entities = new Dictionary<ulong, Entity>();
         Dictionary<ulong, List<CmdInfo>> _cmdCache = new Dictionary<ulong, List<CmdInfo>>();
-
+        List<IJob> _tickJobs = new List<IJob>();
+        List<IJob> _CacheAddJob = new List<IJob>();
+        List<IJob> _CacheRmoveJob = new List<IJob>();
         public ulong FrameIndex => _frameIndex;
 
         public World()
@@ -20,7 +22,7 @@ namespace GGame
             Enverourment.Instance.CreateWorldSystem(this);
         }
 
-        public void AddCatchCmd(ulong frameIndex, CmdInfo o)
+        public void AddCachCmde(ulong frameIndex, CmdInfo o)
         {
             List<CmdInfo> ret = null;
 
@@ -86,8 +88,14 @@ namespace GGame
             {
                 system.Dispose();
             }
-            
+            _tickJobs.Clear();
+            InterestSystems.Clear();
+            _cmdCache.Clear();
             Systems.Clear();
+            _frameIndex = 0;
+            _CacheAddJob.Clear();
+            _CacheRmoveJob.Clear();
+
         }
 
         public void Update()
@@ -97,6 +105,19 @@ namespace GGame
                 system.OnUpdate();
             }
         }
+
+        public void AddTickJob(IJob job)
+        {
+            if(!_CacheAddJob.Contains(job))
+            _CacheAddJob.Add(job);
+        }
+
+        public void RemvoeTickJob(Job job)
+        {
+            if(!_CacheRmoveJob.Contains(job))
+            _CacheRmoveJob.Remove(job);
+        }
+        
 
         public void Tick()
         {
@@ -119,6 +140,22 @@ namespace GGame
             foreach (var system in Systems)
             {
                 system.OnTick();
+            }
+
+            foreach (var job in _CacheRmoveJob)
+            {
+                _tickJobs.Remove(job);
+            }
+            _CacheRmoveJob.Clear();
+            foreach (var job in _CacheAddJob)
+            {
+                if(!_tickJobs.Contains(job))
+                    _tickJobs.Add(job);
+            }
+            _CacheAddJob.Clear();
+            foreach (var job in _tickJobs)
+            {
+                job.Tick();
             }
 
             _frameIndex++;

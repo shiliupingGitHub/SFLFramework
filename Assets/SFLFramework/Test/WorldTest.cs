@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cinemachine;
 using UnityEngine;
 using GGame;
+using UnityEngine.UI;
 using Vector3 = GGame.Vector3;
 
 public class WorldTest : MonoBehaviour
@@ -13,6 +14,7 @@ public class WorldTest : MonoBehaviour
     private World world;
     public CinemachineVirtualCamera camera;
     public Transform startPos;
+    public Button btn_use_skill;
     void Start()
     {
         Enverourment.Instance.Init();
@@ -32,6 +34,17 @@ public class WorldTest : MonoBehaviour
         rc.Pos = pos;
         rc.UpdatePostion();
         StartTick();
+        btn_use_skill.onClick.AddListener(() =>
+        {
+            CmdInfo cmdInfo;
+            UseSkillCmd cmd;
+
+            cmd.id = 1;
+            cmdInfo.Uuid = 1;
+            cmdInfo.Cmd = cmd;
+            
+            world?.AddCachCmde(world.FrameIndex +1, cmdInfo);
+        });
     }
 
     async void StartTick()
@@ -78,7 +91,7 @@ public class WorldTest : MonoBehaviour
             
             info.Uuid = 1;
             info.Cmd = cmd;
-            world?.AddCatchCmd(world.FrameIndex +1, info);
+            world?.AddCachCmde(world.FrameIndex +1, info);
         }
         
 
