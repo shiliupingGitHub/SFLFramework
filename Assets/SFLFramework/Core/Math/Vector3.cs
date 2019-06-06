@@ -30,6 +30,11 @@ namespace GGame
             return new Vector3(x.X * y, x.Y * y, x.Z * y);
         }
         
+        public static Vector3 operator *(Vector3 x, Vector3 y)
+        {
+            return new Vector3(x.X * y.X, x.Y * y.Y, x.Z * y.Z);
+        }
+        
         public static Vector3 operator +(Vector3 v1, Vector3 v2)
         {
             Vector3 ret;

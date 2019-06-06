@@ -8,7 +8,9 @@ namespace GGame
             var mc = entity.GetComponent<MoveComponent>();
 
             Vector3 dir = Vector3.Zero;
-            dir.X =(Fix64) a.Dir;
+            dir.X =(Fix64) a.MoveX;
+            dir.Y = (Fix64) a.MoveY;
+            dir.Z = (Fix64) a.MoveZ;
             mc.Dir = dir;
         }
     }

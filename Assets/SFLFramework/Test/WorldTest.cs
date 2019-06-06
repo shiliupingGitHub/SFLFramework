@@ -29,8 +29,8 @@ public class WorldTest : MonoBehaviour
         pos.X = (Fix64) startPos.position.x;
         pos.Y = (Fix64) startPos.position.y;
         pos.Z = (Fix64) startPos.position.z;
-
         rc.Pos = pos;
+        rc.UpdatePostion();
         StartTick();
     }
 
@@ -46,13 +46,14 @@ public class WorldTest : MonoBehaviour
     void Update()
     {
         if(
-            (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+            (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W)  || Input.GetKeyUp(KeyCode.S))
             &&!Input.GetKey(KeyCode.A)
                 &&!Input.GetKey(KeyCode.D)
+            &&!Input.GetKey(KeyCode.W)
+            &&!Input.GetKey(KeyCode.S)
             )
         {
-            MoveCmd cmd;
-            cmd.Dir = 0;
+            MoveCmd cmd = MoveCmd.Zero();
             
             CmdInfo info;
             
@@ -63,9 +64,8 @@ public class WorldTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             
-            MoveCmd cmd;
-            cmd.Dir = 1;
-            
+            MoveCmd cmd = MoveCmd.Zero();
+            cmd.MoveX = -1;
             CmdInfo info;
             
             info.Uuid = 1;
@@ -75,16 +75,16 @@ public class WorldTest : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            MoveCmd cmd;
-            cmd.Dir = -1;
-            
+            MoveCmd cmd = MoveCmd.Zero();
+            cmd.MoveX = 1;
             CmdInfo info;
             
             info.Uuid = 1;
             info.Cmd = cmd;
-            
             world.AddCatchCmd(world.FrameIndex +1, info);
         }
+        
+
         
         world.Update();
         

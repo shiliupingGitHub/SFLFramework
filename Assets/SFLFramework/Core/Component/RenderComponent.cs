@@ -8,16 +8,20 @@ namespace GGame
     {
         private int _modelId = 0;
         private Vector3 _pos = Vector3.Zero;
-        private Vector3 _rotaion = Vector3.Zero;
+        private Vector3 _forward = new Vector3(Fix64.One, Fix64.Zero, Fix64.Zero);
         
 #if !SERVER
         private UnityEngine.GameObject _gameObject;
+        private UnityEngine.Animator _animator;
 
         public GameObject GameObject
         {
             get { return _gameObject; }
         }
-        
+
+        public Animator Animator    {
+            get { return _animator; }
+        }
 #endif
         public override void Awake( World world, XmlNode node)
         {
@@ -28,6 +32,7 @@ namespace GGame
             var asset = ResourceManager.Instance.LoadEntityPrefab(modelPath);
 
             _gameObject = UnityEngine.GameObject.Instantiate(asset);
+            _animator = _gameObject.GetComponentInChildren<Animator>();
 
             UpdatePostion();
 #endif
@@ -40,28 +45,13 @@ namespace GGame
             set
             {
                 _pos = value;
-                UpdatePostion();
             }
             get { return _pos; }
             
         }
 
-        public Vector3 Rotaion
-        {
-            get => _rotaion;
-            set { _rotaion = value;
-                UpdateRotaion();
-            }
-        }
 
-        private void UpdateRotaion()
-        {
-#if !SERVER
-            _gameObject.transform.rotation =UnityEngine.Quaternion.Euler((float)_rotaion.X, (float)_rotaion.Y, (float)_rotaion.Z );
-#endif
-        }
-
-        private void UpdatePostion()
+        public void UpdatePostion()
         {
 #if !SERVER
             var tr_pos = _gameObject.transform.position;
