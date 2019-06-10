@@ -8,9 +8,7 @@ namespace GGame
     {
         public override void OnUpdate()
         {
-#if !SERVER
-            
-#endif
+
         }
 
         public override void OnTick()

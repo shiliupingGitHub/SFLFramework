@@ -33,10 +33,11 @@ namespace GGame
         {
             var type = Enverourment.Instance.GetComponentType(node.Name);
             var component = ObjectPool.Instance.Fetch(type) as Component;
-                
+            
+            component.Entity = this;
             component.Awake(this._world, node);
             _components[type] = component;
-            component.Entity = this;
+            
 
         }
 

@@ -10,7 +10,9 @@
 using System;
 using System.IO;
 
-public partial struct Fix64 : IEquatable<Fix64>, IComparable<Fix64> {
+namespace GGame
+{
+    public partial struct Fix64 : IEquatable<Fix64>, IComparable<Fix64> {
     readonly long m_rawValue;
 
     public static readonly decimal Precision = (decimal)(new Fix64(1L));
@@ -1108,4 +1110,6 @@ public struct IntVector2
         return new UnityEngine.Vector2((int)x, (int)y);
     }
 	#endif
+}
+
 }
