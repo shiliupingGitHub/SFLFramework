@@ -7,15 +7,19 @@ namespace GGame
     public class RenderComponent : Component
     {
         private int _modelId = 0;
-        private Vector3 _pos = Vector3.Zero;
-        private Vector3 _forward = new Vector3(Fix64.One, Fix64.Zero, Fix64.Zero);
-        
+        private FixVector3 _pos = FixVector3.Zero;
+
+        public FixVector3 Dir
+        {
+            get;
+            set;
+        } = FixVector3.Zero;
+        public Fix64 Speed { get; set; } = Fix64.Zero;
 #if !SERVER
         private UnityEngine.GameObject _gameObject;
         private UnityEngine.Animator _animator;
         
-        public float MoveLeftTime;
-        public float Speed;
+      
         public GameObject GameObject
         {
             get { return _gameObject; }
@@ -42,7 +46,7 @@ namespace GGame
         }
 
 
-        public Vector3 Pos
+        public FixVector3 Pos
         {
             set
             {
@@ -57,7 +61,7 @@ namespace GGame
         {
 #if !SERVER
             
-            _gameObject.transform.position =new UnityEngine.Vector3((float)_pos.X, (float)_pos.Y, (float)_pos.Z);;
+            _gameObject.transform.position =new UnityEngine.Vector3((float)_pos.x, (float)_pos.y, (float)_pos.z);;
 #endif
         }
         

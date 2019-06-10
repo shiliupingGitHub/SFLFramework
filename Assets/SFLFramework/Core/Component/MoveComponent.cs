@@ -7,7 +7,7 @@ namespace GGame
     {
         public Fix64 Speed { get; set; }
 
-        public Vector3 Dir { get; set; } = Vector3.Zero;
+        public FixVector3 Dir { get; set; } = FixVector3.Zero;
         public override void Awake(World world, XmlNode node)
         {
             base.Awake(world, node);

@@ -29,16 +29,10 @@ namespace GGame
                     pos += dir * speed;
 
                     rc.Pos = pos;
-#if !SERVER
-                    if (dir.X != Fix64.Zero || dir.Y != Fix64.Zero || dir.Z != Fix64.Zero)
-                    {
-                        rc.MoveLeftTime = 0.04f;
-                        rc.Speed = (float) mc.Speed;
-                    }
-                    
-#endif
-                    
 
+                    rc.Speed = mc.Speed;
+                    rc.Dir = dir;
+                    
                 }
                 
             }

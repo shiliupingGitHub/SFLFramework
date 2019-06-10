@@ -15,39 +15,27 @@ namespace GGame
                 
                 if (null != rc)
                 {
-                    var pos = rc.Pos;
-                    
-                    UnityEngine.Vector3 gFinalPos = new UnityEngine.Vector3((float)pos.X, (float)pos.Y, (float)pos.Z);
-                    var gPos = rc.GameObject.transform.position;
-                    var dir = (gFinalPos - rc.GameObject.transform.position);
-                    var len = dir.sqrMagnitude;
-                    dir = dir.normalized;
-                 
-                    
-                    if (rc.MoveLeftTime > 0f)
+
+                    if (rc.Dir != FixVector3.Zero)
                     {
-                        float speed = rc.Speed / 0.04f;
-                        float moveTime = UnityEngine. Mathf.Min(rc.MoveLeftTime, UnityEngine.Time.deltaTime);
-                        float moveLen = speed * moveTime;
-
-                        moveLen = UnityEngine. Mathf.Min(moveLen, len);
-
-                        gFinalPos = gPos + dir * moveLen;
-
-                        rc.MoveLeftTime = UnityEngine.Mathf.Max(0, rc.MoveLeftTime - moveTime);
                         rc.Animator.SetFloat("SpeedX", 1.0f);
-                        dir.y = 0;
-                        rc.Animator.transform.forward = dir;
+                        var dir = rc.Dir.GetNormalized();
+                        var clientDir = new UnityEngine.Vector3((float)dir.x, (float)dir.y, (float)dir.z);
+                        var speed = (float)rc.Speed / 0.04f;
+                        var pos = rc.GameObject.transform.position + clientDir * speed * UnityEngine.Time.deltaTime;
+                        rc.GameObject.transform.position = pos;
+                        dir.y = Fix64.One;
+                        var client_dir = new UnityEngine.Vector3((float)dir.x, (float)dir.y, (float)dir.z);
+
+                        client_dir.y = 0;
+                        rc.Animator.transform.forward = client_dir;
                     }
                     else
                     {
-
+                        var clinetPos = new UnityEngine.Vector3((float)rc.Pos.x, (float)rc.Pos.y, (float)rc.Pos.z);
+                        rc.GameObject.transform.position = clinetPos;
                         rc.Animator.SetFloat("SpeedX", 0.0f);
-                        rc.UpdatePostion();
                     }
-                    
-                    
-                    rc.GameObject.transform.position = gFinalPos;
                     
 
                 }

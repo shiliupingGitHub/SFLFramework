@@ -6,12 +6,12 @@ using Cinemachine;
 using UnityEngine;
 using GGame;
 using UnityEngine.UI;
-using Vector3 = GGame.Vector3;
 
 public class WorldTest : MonoBehaviour
 {
     // Start is called before the first frame update
     private World world;
+    private Entity entity;
     public CinemachineVirtualCamera camera;
     public Transform startPos;
     public Button btn_use_skill;
@@ -20,17 +20,17 @@ public class WorldTest : MonoBehaviour
         Enverourment.Instance.Init();
         world = new World();
 
-        var entity = world.CreateEntity(1,1001);
-
+        entity = world.CreateEntity(1,1001);
+        
         var rc = entity.GetComponent<RenderComponent>();
         camera.m_Follow = rc.GameObject.transform;
         camera.m_LookAt = rc.GameObject.transform;
 
-        Vector3 pos;
+        FixVector3 pos;
 
-        pos.X = (Fix64) startPos.position.x;
-        pos.Y = (Fix64) startPos.position.y;
-        pos.Z = (Fix64) startPos.position.z;
+        pos.x = (Fix64) startPos.position.x;
+        pos.y = (Fix64) startPos.position.y;
+        pos.z = (Fix64) startPos.position.z;
         rc.Pos = pos;
         rc.UpdatePostion();
         StartTick();
@@ -58,7 +58,8 @@ public class WorldTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int moveX = 0;
+        FixVector3 dir = FixVector3.Zero;
+        Animator ani = entity.GetComponent<RenderComponent>().Animator;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
                           Input.GetKeyUp(KeyCode.D) || 
                           Input.GetKeyUp(KeyCode.W)  ||
@@ -72,22 +73,24 @@ public class WorldTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             changeCmd = true;
-            moveX = -1;
+
+            dir.x = -Fix64.One;
 
         }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
             changeCmd = true;
-            moveX = 1;
+
+            dir.x = Fix64.One;
         }
 
         if (changeCmd)
         {
-            MoveCmd cmd = MoveCmd.Zero();
+            MoveCmd cmd;
             
             CmdInfo info;
-            cmd.MoveX = moveX;
+            cmd.Dir = dir;
             
             info.Uuid = 1;
             info.Cmd = cmd;
