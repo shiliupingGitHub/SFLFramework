@@ -6,8 +6,11 @@ namespace GGame
     {
         protected override void Run(World world, Entity entity, HurtAction a)
         {
-            int k = 0;
-            int j = k;
+            Hurt h;
+            h._Entity = entity;
+            h._HurtAction = a;
+            
+            world.GetSystem<HurtedSystem>().AddHurt(h);
         }
     }
 }

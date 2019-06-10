@@ -21,10 +21,13 @@ public class WorldTest : MonoBehaviour
         world = new World();
 
         entity = world.CreateEntity(1,1001);
+        entity.Camp = 0;
         
         var rc = entity.GetComponent<RenderComponent>();
         camera.m_Follow = rc.GameObject.transform;
         camera.m_LookAt = rc.GameObject.transform;
+        
+      
 
         FixVector3 pos;
 
@@ -33,6 +36,14 @@ public class WorldTest : MonoBehaviour
         pos.z = (Fix64) startPos.position.z;
         rc.Pos = pos;
         rc.UpdatePostion();
+        rc.UpdateFace();
+        
+        var e = world.CreateEntity(2,1001);
+        e.Camp = 1;
+
+        var eRc = e.GetComponent<RenderComponent>();
+        rc.UpdatePostion();
+        rc.UpdateFace();
         StartTick();
         btn_use_skill.onClick.AddListener(() =>
         {

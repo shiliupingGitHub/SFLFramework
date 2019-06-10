@@ -8,8 +8,8 @@ namespace GGame
     public class World : IDisposable
     {
         private ulong _frameIndex = 0;
-        readonly List<System> Systems = new List<System>();
-        readonly Dictionary<Type, List<System>> InterestSystems = new Dictionary<Type, List<System>>();
+        readonly Dictionary<Type,System> _systems = new Dictionary<Type, System>();
+        readonly Dictionary<Type, List<System>> _interestSystems = new Dictionary<Type, List<System>>();
         Dictionary<ulong, Entity> _entities = new Dictionary<ulong, Entity>();
         Dictionary<ulong, List<CmdInfo>> _cmdCache = new Dictionary<ulong, List<CmdInfo>>();
         List<IJob> _tickJobs = new List<IJob>();
@@ -22,6 +22,16 @@ namespace GGame
             Enverourment.Instance.CreateWorldSystem(this);
         }
 
+        public T GetSystem<T>() where T: System
+        {
+            System ret = null;
+            var type = typeof(T);
+
+            _systems.TryGetValue(type, out ret);
+
+            return (T)ret;
+
+        }
         public void AddCachCmde(ulong frameIndex, CmdInfo o)
         {
             List<CmdInfo> ret = null;
@@ -39,7 +49,7 @@ namespace GGame
 
         public void AddSystem(System system)
         {
-            Systems.Add(system);
+            _systems[system.GetType()] = system;
         }
 
         public Entity CreateEntity(ulong uuid, int configId)
@@ -58,10 +68,10 @@ namespace GGame
         {
             List<System> ret = null;
 
-            if (!InterestSystems.TryGetValue(t, out ret))
+            if (!_interestSystems.TryGetValue(t, out ret))
             {
                 ret = new List<System>();
-                InterestSystems[t] = ret;
+                _interestSystems[t] = ret;
             }
             
             ret.Add(system);
@@ -72,7 +82,7 @@ namespace GGame
         {
             List<System> ret = null;
 
-            InterestSystems.TryGetValue(t, out ret);
+            _interestSystems.TryGetValue(t, out ret);
 
             return ret;
         }
@@ -84,14 +94,14 @@ namespace GGame
             {
                 entity.Value.Dispose();
             }
-            foreach (var system in Systems)
+            foreach (var system in _systems)
             {
-                system.Dispose();
+                system.Value.Dispose();
             }
             _tickJobs.Clear();
-            InterestSystems.Clear();
+            _interestSystems.Clear();
             _cmdCache.Clear();
-            Systems.Clear();
+            _systems.Clear();
             _frameIndex = 0;
             _CacheAddJob.Clear();
             _CacheRmoveJob.Clear();
@@ -100,9 +110,9 @@ namespace GGame
 
         public void Update()
         {
-            foreach (var system in Systems)
+            foreach (var system in _systems)
             {
-                system.OnUpdate();
+                system.Value.OnUpdate();
             }
         }
 
@@ -137,9 +147,9 @@ namespace GGame
                 }
             }
             
-            foreach (var system in Systems)
+            foreach (var system in _systems)
             {
-                system.OnTick();
+                system.Value.OnTick();
             }
 
             foreach (var job in _CacheRmoveJob)

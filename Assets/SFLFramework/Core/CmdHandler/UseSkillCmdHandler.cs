@@ -6,9 +6,9 @@ namespace GGame
     {
         protected override void Run(World world, Entity entity, UseSkillCmd a)
         {
-            var skillComponent = entity.GetComponent<GSkillComponent>();
+            var skillComponent = entity.GetComponent<SkillComponent>();
 
-            if (!skillComponent.IsLock)
+            if (skillComponent.CurJobId == 0)
             {
                 var mc = entity.GetComponent<MoveComponent>();
                 skillComponent.DoJob(a.id);

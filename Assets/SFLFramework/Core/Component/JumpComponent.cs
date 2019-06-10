@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace GGame
 {
-    public class GJumpComponent : Component
+    public class JumpComponent : Component
     {
         public Fix64 Speed { get; set; }
         public override void Awake(World world, XmlNode node)

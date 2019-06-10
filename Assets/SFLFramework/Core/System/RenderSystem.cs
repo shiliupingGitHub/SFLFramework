@@ -16,10 +16,10 @@ namespace GGame
                 if (null != rc)
                 {
 
-                    if (rc.Dir != FixVector3.Zero)
+                    if (rc.MoveDir != FixVector3.Zero)
                     {
                         rc.Animator.SetFloat("SpeedX", 1.0f);
-                        var dir = rc.Dir.GetNormalized();
+                        var dir = rc.MoveDir.GetNormalized();
                         var clientDir = new UnityEngine.Vector3((float)dir.x, (float)dir.y, (float)dir.z);
                         var speed = (float)rc.Speed / 0.04f;
                         var pos = rc.GameObject.transform.position + clientDir * speed * UnityEngine.Time.deltaTime;

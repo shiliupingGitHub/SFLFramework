@@ -4,10 +4,11 @@ using System.Xml;
 
 namespace GGame
 {
-    public class GSkillComponent: Component
+    public class SkillComponent: Component
     {
         Dictionary<int, IJob> _jobs = new Dictionary<int, IJob>();
-        public bool IsLock { get; set; } = false;
+
+        public int CurJobId { get; set; } = 0;
         public override void Awake(World world, XmlNode node)
         {
             base.Awake(world, node);
@@ -28,10 +29,11 @@ namespace GGame
 
         public void DoJob(int id)
         {
-            IsLock = true;
-            Entity.GetComponent<MoveComponent>().IsLock = true;
+            
             if (_jobs.TryGetValue(id, out var job))
             {
+                CurJobId = id;
+                Entity.GetComponent<MoveComponent>().IsLock = true;
                 job.Schedule(OnFinishJob);
             }
             
@@ -39,12 +41,20 @@ namespace GGame
 
         void OnFinishJob()
         {
-            IsLock = false;
+            CurJobId = 0;
             Entity.GetComponent<MoveComponent>().IsLock = false;
             
         }
-        
 
+        public void Cancel()
+        {
+            if (_jobs.TryGetValue(CurJobId, out var job))
+            {
+                job.Cancel();
+            }
+            CurJobId = 0;
+            Entity.GetComponent<MoveComponent>().IsLock = false;
+        }
         void AddJobs(XmlNode xmlNode)
         {
             IJob job = null;

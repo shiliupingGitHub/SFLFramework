@@ -31,12 +31,17 @@ namespace GGame
                         rc.Pos = pos;
 
                         rc.Speed = mc.Speed;
-                        rc.Dir = dir;
+                        rc.MoveDir = dir;
+
+                        dir.y = Fix64.Zero;
+                        
+                        if(dir != FixVector3.Zero)
+                            rc.Face = dir.GetNormalized();
                     }
 
                     else
                     {
-                        rc.Dir = FixVector3.Zero;
+                        rc.MoveDir = FixVector3.Zero;
                     }
 
                     

@@ -10,6 +10,7 @@ namespace GGame
         void Schedule(Action onFinish);
         void Init(World world, Entity entity, XmlNode data);
         void AddChild(IJob job);
+        void Cancel();
 
         void Finish();
 
@@ -28,6 +29,19 @@ namespace GGame
             _finish = onFinish;
             _world?.AddTickJob(this);
            this.OnSchedule();
+        }
+
+        public void Cancel()
+        {
+            
+            if (_childs.Count > 0)
+            {
+                foreach (var child in _childs)
+                {
+                    child.Cancel();
+                }
+            }
+            _world?.RemvoeTickJob(this);
         }
 
         public void Finish()

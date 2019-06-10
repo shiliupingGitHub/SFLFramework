@@ -8,6 +8,7 @@ namespace GGame
     public class Entity : IDisposable
     {
         private World _world;
+        public int Camp { get; set; }
         private readonly Dictionary<Type, Component> _components = new Dictionary<Type, Component>();
         public void Init(World world, string config)
         {

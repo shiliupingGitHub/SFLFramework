@@ -12,7 +12,7 @@ namespace GGame
             set;
             get;
         }
-
+        
         public virtual void Dispose()
         {
             var type = GetType();
