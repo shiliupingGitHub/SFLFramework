@@ -12,6 +12,7 @@ namespace GGame
         readonly Dictionary<string, Type> _jobTypes = new Dictionary<string, Type>();
         readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
         Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
+        Dictionary<Type, IProcedure> _procedures = new Dictionary<Type, IProcedure>();
         public void Init()
         {
             var baseSystemType = typeof(System);
@@ -19,6 +20,7 @@ namespace GGame
             var baseCmdHandleType = typeof(ICmdHandler);
             var baseJobType = typeof(IJob);
             var baseActionType = typeof(IAction);
+            var bseProcedureType = typeof(IProcedure);
             var types = baseSystemType.Assembly.GetTypes();
 
             foreach (var type in types)
@@ -82,10 +84,22 @@ namespace GGame
                     }
 
                 }
+                
+                if (bseProcedureType.IsAssignableFrom(type))
+                {
+                    if (!type.IsAbstract)
+                    {
+
+                        _procedures[type] = Activator.CreateInstance(type) as IProcedure;
+                        
+
+                    }
+
+                }
             }
         }
 
-        public void ExecuteCmd<T>(T a)
+        public void ExecuteCmd<T>(T a) 
         {
             var type = a.GetType();
 
@@ -98,6 +112,12 @@ namespace GGame
             }
         }
 
+        public void EnterProcedure<T, W>(W o) where T:IProcedure
+        {
+            var proType = typeof(T);
+            
+            _procedures[proType].Enter(o);
+        }
         public void ExecuteCmd<T,K,W>(T a, K b, W o)
         {
             var type = o.GetType();
