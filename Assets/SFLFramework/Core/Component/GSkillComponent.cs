@@ -7,6 +7,7 @@ namespace GGame
     public class GSkillComponent: Component
     {
         Dictionary<int, IJob> _jobs = new Dictionary<int, IJob>();
+        public bool IsLock { get; set; } = false;
         public override void Awake(World world, XmlNode node)
         {
             base.Awake(world, node);
@@ -27,6 +28,8 @@ namespace GGame
 
         public void DoJob(int id)
         {
+            IsLock = true;
+            Entity.GetComponent<MoveComponent>().IsLock = true;
             if (_jobs.TryGetValue(id, out var job))
             {
                 job.Schedule(OnFinishJob);
@@ -36,8 +39,9 @@ namespace GGame
 
         void OnFinishJob()
         {
-            int a = 0;
-            int b = a;
+            IsLock = false;
+            Entity.GetComponent<MoveComponent>().IsLock = false;
+            
         }
         
 

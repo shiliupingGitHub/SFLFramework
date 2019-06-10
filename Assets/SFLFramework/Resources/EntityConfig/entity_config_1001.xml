@@ -4,8 +4,8 @@
 <GJumpComponent speed = "0.5"/>
 <GSkillComponent>
 <Job id = "1">
-<AnimationJob>
-<HurtAction frame = "15"/>
+<AnimationJob frameNum = "14">
+<HurtAction frame = "10"/>
 </AnimationJob>
 
 </Job>

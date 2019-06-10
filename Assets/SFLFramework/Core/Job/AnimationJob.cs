@@ -39,7 +39,7 @@ namespace GGame
                 childNode = childNode.NextSibling;
             }
 
-            _frameNum = Convert.ToInt32(data["frameNum"]?.Value);
+            _frameNum = Convert.ToInt32(data.Attributes["frameNum"]?.Value);
         }
 
         protected override void OnSchedule()
@@ -59,6 +59,7 @@ namespace GGame
             if (_curFrame > _frameNum)
             {
                 Finish();
+                return;
             }
 
             if (_actions.TryGetValue(_curFrame, out var actions))

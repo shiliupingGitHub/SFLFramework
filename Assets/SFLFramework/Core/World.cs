@@ -115,7 +115,7 @@ namespace GGame
         public void RemvoeTickJob(Job job)
         {
             if(!_CacheRmoveJob.Contains(job))
-            _CacheRmoveJob.Remove(job);
+            _CacheRmoveJob.Add(job);
         }
         
 

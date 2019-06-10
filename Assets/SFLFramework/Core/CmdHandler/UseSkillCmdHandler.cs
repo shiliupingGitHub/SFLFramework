@@ -7,10 +7,13 @@ namespace GGame
         protected override void Run(World world, Entity entity, UseSkillCmd a)
         {
             var skillComponent = entity.GetComponent<GSkillComponent>();
-            var mc = entity.GetComponent<MoveComponent>();
-            
-            skillComponent.DoJob(a.id);
-            mc.Dir = FixVector3.Zero;
+
+            if (!skillComponent.IsLock)
+            {
+                var mc = entity.GetComponent<MoveComponent>();
+                skillComponent.DoJob(a.id);
+            }
+           
         }
     }
 }

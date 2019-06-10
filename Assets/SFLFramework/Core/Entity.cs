@@ -9,8 +9,6 @@ namespace GGame
     {
         private World _world;
         private readonly Dictionary<Type, Component> _components = new Dictionary<Type, Component>();
-
-
         public void Init(World world, string config)
         {
             this._world = world;

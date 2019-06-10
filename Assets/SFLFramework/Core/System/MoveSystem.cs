@@ -19,17 +19,26 @@ namespace GGame
 
                 if (null != rc)
                 {
-                    var pos = rc.Pos;
+                    if (!mc.IsLock)
+                    {
+                        var pos = rc.Pos;
 
-                    var dir = mc.Dir;
-                    var speed = mc.Speed;
+                        var dir = mc.Dir;
+                        var speed = mc.Speed;
                     
-                    pos += dir * speed;
+                        pos += dir * speed;
 
-                    rc.Pos = pos;
+                        rc.Pos = pos;
 
-                    rc.Speed = mc.Speed;
-                    rc.Dir = dir;
+                        rc.Speed = mc.Speed;
+                        rc.Dir = dir;
+                    }
+
+                    else
+                    {
+                        rc.Dir = FixVector3.Zero;
+                    }
+
                     
                 }
                 

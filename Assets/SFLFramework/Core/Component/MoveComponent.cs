@@ -5,6 +5,7 @@ namespace GGame
 {
     public class MoveComponent : Component
     {
+        public bool IsLock = false;
         public Fix64 Speed { get; set; }
 
         public FixVector3 Dir { get; set; } = FixVector3.Zero;

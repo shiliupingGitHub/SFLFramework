@@ -22,9 +22,10 @@ namespace GGame
         protected Entity _entity;
         
         List<IJob> _childs = new List<IJob>();
-        protected Action mOnFinish;
+        protected Action _finish;
         public void Schedule(Action onFinish)
         {
+            _finish = onFinish;
             _world?.AddTickJob(this);
            this.OnSchedule();
         }
@@ -36,13 +37,13 @@ namespace GGame
             {
                 foreach (var child in _childs)
                 {
-                    child.Schedule(mOnFinish);
+                    child.Schedule(_finish);
                 }
             }
             else
             {
-                if (null != mOnFinish)
-                    mOnFinish();
+                if (null != _finish)
+                    _finish();
             }
             
 
@@ -79,7 +80,7 @@ namespace GGame
             }
             
             _childs.Clear();
-            mOnFinish = null;
+            _finish = null;
             ObjectPool.Instance.Recycle(this);
         }
     }
