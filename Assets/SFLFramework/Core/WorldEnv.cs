@@ -14,12 +14,22 @@ namespace GGame
         Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
         public override void OnInit()
         {
-            var baseSystemType = typeof(System);
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (var assembly in assemblies)
+            {
+                AddAssembly(assembly);
+            }
+        }
+
+        void AddAssembly(Assembly assembly)
+        {
+              var baseSystemType = typeof(System);
             var baseComponentType = typeof(Component);
             var baseCmdHandleType = typeof(ICmdHandler);
             var baseJobType = typeof(IJob);
             var baseActionType = typeof(IAction);
-            var types = baseSystemType.Assembly.GetTypes();
+            var types = assembly.GetTypes();
 
             foreach (var type in types)
             {
