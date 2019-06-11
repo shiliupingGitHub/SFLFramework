@@ -1,4 +1,5 @@
 using Cinemachine;
+using DefaultNamespace;
 using UnityEngine;
 using NotImplementedException = System.NotImplementedException;
 
@@ -37,6 +38,10 @@ namespace GGame.Support
             rc.UpdateFace();
             
             UIManager.Instance.Show(0);
+
+            TestCmd tc;
+            
+            WorldEnv.Instance.ExecuteCmd(tc);
         }           
 
     }
