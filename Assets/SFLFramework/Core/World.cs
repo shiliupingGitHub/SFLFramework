@@ -19,7 +19,7 @@ namespace GGame
 
         public World()
         {
-            Enverourment.Instance.CreateWorldSystem(this);
+            WorldEnv.Instance.CreateWorldSystem(this);
         }
 
         public T GetSystem<T>() where T: System
@@ -55,7 +55,7 @@ namespace GGame
         public Entity CreateEntity(ulong uuid, int configId)
         {
             var configPath = $"EntityConfig/entity_config_{configId}";
-            var configText = ResourceManager.Instance.LoadEntityConfig(configPath);
+            var configText = ResourceManager.Instance.LoadText(configPath);
             var e = ObjectPool.Instance.Fetch<Entity>();
             
             e.Init(this, configText);
@@ -143,7 +143,7 @@ namespace GGame
                     Entity entity = null;
                     
                     _entities.TryGetValue(cmdInfo.Uuid, out entity);
-                    Enverourment.Instance.ExecuteCmd(this, entity, cmdInfo.Cmd);
+                    WorldEnv.Instance.ExecuteCmd(this, entity, cmdInfo.Cmd);
                 }
             }
             

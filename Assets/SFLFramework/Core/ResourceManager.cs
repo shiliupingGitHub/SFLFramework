@@ -6,17 +6,37 @@ using UnityEngine;
 public class ResourceManager : SingleTon<ResourceManager>
 {
 
-    public string LoadEntityConfig(string path)
+    public string LoadText(string path)
     {
-       return Resources.Load<TextAsset>(path).text;
-    }
 #if !SERVER
-    public GameObject LoadEntityPrefab(string path)
+        return Resources.Load<TextAsset>(path).text;
+#else
+        return null;
+#endif
+
+    }
+    
+    public byte[] LoadBytes(string path)
+    {
+#if !SERVER
+        return Resources.Load<TextAsset>(path).bytes;
+#else
+        return null;
+#endif
+
+    }
+    
+#if !SERVER
+    public GameObject LoadPrefab(string path)
     {
         return Resources.Load<GameObject>(path);
     }
     
 #endif
 
-    
+
+    public override void OnInit()
+    {
+        throw new System.NotImplementedException();
+    }
 }

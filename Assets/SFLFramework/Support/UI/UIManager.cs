@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using NotImplementedException = System.NotImplementedException;
 
-namespace GGame
+namespace GGame.Support
 {
+    [Support]
     public class UIManager : SingleTon<UIManager>
     {
         Dictionary<int, Frame> _frames = new Dictionary<int, Frame>();
@@ -24,6 +26,11 @@ namespace GGame
                 frame.OnHide();
             }
         }
-        
+
+        public override void OnInit()
+        {
+            int a = 0;
+            int b = a;
+        }
     }
 }

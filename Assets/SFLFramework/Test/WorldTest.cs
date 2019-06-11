@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cinemachine;
 using UnityEngine;
 using GGame;
+using GGame.Support;
 using UnityEngine.UI;
 
 public class WorldTest : MonoBehaviour
@@ -17,7 +18,7 @@ public class WorldTest : MonoBehaviour
     public Button btn_use_skill;
     void Start()
     {
-        Enverourment.Instance.Init();
+        HotfixManager.Instance.Init();
         world = new World();
 
         entity = world.CreateEntity(1,1001);
@@ -44,6 +45,7 @@ public class WorldTest : MonoBehaviour
         var eRc = e.GetComponent<RenderComponent>();
         rc.UpdatePostion();
         rc.UpdateFace();
+        
         StartTick();
         btn_use_skill.onClick.AddListener(() =>
         {
@@ -69,6 +71,8 @@ public class WorldTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(null == entity)
+            return;
         FixVector3 dir = FixVector3.Zero;
         Animator ani = entity.GetComponent<RenderComponent>().Animator;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
@@ -118,5 +122,6 @@ public class WorldTest : MonoBehaviour
     {
         world?.Dispose();
         world = null;
+        HotfixManager.Instance.Dispose();
     }
 }

@@ -46,7 +46,11 @@ namespace GGame
             
             cache.Add(o);
         }
-        
-        
+
+
+        public override void OnInit()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

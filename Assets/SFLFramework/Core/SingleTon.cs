@@ -1,6 +1,13 @@
-﻿namespace GGame
+﻿using JetBrains.Rider.Unity.Editor;
+using NotImplementedException = System.NotImplementedException;
+
+namespace GGame
 {
-    public class SingleTon<T> where T:new()
+    public interface ISingleTon
+    {
+        void Init();
+    }
+    public abstract class SingleTon<T> :ISingleTon where T:new()
     {
         private static T _instance;
 
@@ -13,6 +20,13 @@
                 return _instance;
             }
         }
+
+        public  void Init()
+        {
+            OnInit();
+        }
+
+        public abstract void OnInit();
     }
 }
 

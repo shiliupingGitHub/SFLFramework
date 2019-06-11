@@ -30,7 +30,7 @@ namespace GGame
         
         public void AddComponent(XmlNode node)
         {
-            var type = Enverourment.Instance.GetComponentType(node.Name);
+            var type = WorldEnv.Instance.GetComponentType(node.Name);
             var component = ObjectPool.Instance.Fetch(type) as Component;
             
             component.Entity = this;

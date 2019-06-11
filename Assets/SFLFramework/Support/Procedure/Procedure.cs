@@ -1,6 +1,6 @@
 using System;
 
-namespace GGame
+namespace GGame.Support
 {
     public interface IProcedure
     {
