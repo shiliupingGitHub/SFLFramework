@@ -11,47 +11,24 @@ using UnityEngine.UI;
 public class WorldTest : MonoBehaviour
 {
     // Start is called before the first frame update
-    private World world;
-    private Entity entity;
-    public CinemachineVirtualCamera camera;
+     World world;
+     public CinemachineVirtualCamera camera;
     public Transform startPos;
     void Start()
     {
-        HotfixManager.Instance.Init();
-        world = new World();
-
-        entity = world.CreateEntity(1,1001);
-        entity.Camp = 0;
-        
-        var rc = entity.GetComponent<RenderComponent>();
-        camera.m_Follow = rc.GameObject.transform;
-        camera.m_LookAt = rc.GameObject.transform;
-        
-      
-
-        FixVector3 pos;
-
-        pos.x = (Fix64) startPos.position.x;
-        pos.y = (Fix64) startPos.position.y;
-        pos.z = (Fix64) startPos.position.z;
-        rc.Pos = pos;
-        rc.UpdatePostion();
-        rc.UpdateFace();
-        
-        var e = world.CreateEntity(2,1001);
-        e.Camp = 1;
-
-        var eRc = e.GetComponent<RenderComponent>();
-        rc.UpdatePostion();
-        rc.UpdateFace();
-        
+       
+       
+        var procedure = ProcedureManager.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
+        world = procedure.world;
         StartTick();
         
-        UIManager.Instance.Show(1);
+        
     }
 
     async void StartTick()
     {
+        if(null == world)
+            return;
         while (null != world)
         {
             world.Tick();
@@ -61,10 +38,10 @@ public class WorldTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(null == entity)
+        if(null == world)
             return;
+        ;
         FixVector3 dir = FixVector3.Zero;
-        Animator ani = entity.GetComponent<RenderComponent>().Animator;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
                           Input.GetKeyUp(KeyCode.D) || 
                           Input.GetKeyUp(KeyCode.W)  ||

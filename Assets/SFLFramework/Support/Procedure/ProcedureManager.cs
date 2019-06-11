@@ -24,11 +24,37 @@ namespace GGame.Support
             }
         }
 
-        public void Enter<T, W>(W w) where T:IProcedure
+        public T Enter<T, W>(W w) where T:IProcedure
         {
             var type = typeof(T);
+            var ret = _procedures[type];
+            ret.Enter(w);
+            return (T)ret;
+        }
+        
+        public T Enter<T, W1, W2>(W1 w, W2 w2) where T:IProcedure
+        {
+            var type = typeof(T);
+            var ret = _procedures[type];
             
-            _procedures[type].Enter(w);
+            ret.Enter(w, w2);
+            return (T)ret;
+        }
+        public T Enter<T>() where T : IProcedure
+        { 
+            var type = typeof(T);
+            var ret = _procedures[type];
+            
+            ret.Enter();
+            return (T)ret;
+        }
+
+        public T Get<T>()
+        {
+            var type = typeof(T);
+            var ret = _procedures[type];
+
+            return (T)ret;
         }
         
     }

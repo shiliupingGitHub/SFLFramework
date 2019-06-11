@@ -66,6 +66,16 @@ namespace GGame.Support
             _domain?.DelegateManager.RegisterFunctionDelegate<int, GGame.Support.Frame>();
 
             _domain?.RegisterCrossBindingAdaptor(new FrameAdapter());
+            
+            _domain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
+            {
+                return new UnityEngine.Events.UnityAction(() =>
+                {
+                    ((Action)act)();
+                });
+            });
+
+
         }
 #endif
     }
