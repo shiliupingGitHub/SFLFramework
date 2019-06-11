@@ -14,6 +14,11 @@ namespace GGame.Hybird
         {
             
         }
+
+        public void Load(string sceneName, System.Action onLoaded)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        }
         
         
     }
