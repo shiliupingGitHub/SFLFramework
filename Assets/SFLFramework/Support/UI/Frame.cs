@@ -1,14 +1,14 @@
-namespace GGame
+namespace GGame.Support
 {
     public class Frame
     {
         
-        public void OnShow()
+        public virtual void OnShow()
         {
             
         }
 
-        public void OnHide()
+        public virtual void OnHide()
         {
             
         }

@@ -6,6 +6,7 @@
         public static void Main()
         {
             GGame.Log.Debug("Hotfixed start");
+            FrameFactory.Instance.Init();
         }
     }
 }

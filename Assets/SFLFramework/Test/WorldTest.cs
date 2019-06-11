@@ -58,6 +58,8 @@ public class WorldTest : MonoBehaviour
             
             world?.AddCachCmde(world.FrameIndex +1, cmdInfo);
         });
+        
+        UIManager.Instance.Show(1);
     }
 
     async void StartTick()

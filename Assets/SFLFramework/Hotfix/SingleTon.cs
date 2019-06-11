@@ -1,11 +1,10 @@
-﻿
-namespace GGame
+﻿namespace GGame.Hotfix
 {
     public interface ISingleTon
     {
         void Init();
     }
-    public abstract class SingleTon<T> :ISingleTon where T:new()
+    public abstract class SingleTon<T>  where T:new()
     {
         private static T _instance;
 

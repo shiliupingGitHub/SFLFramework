@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NotImplementedException = System.NotImplementedException;
 
@@ -8,15 +9,22 @@ namespace GGame.Support
     {
         Dictionary<int, Frame> _frames = new Dictionary<int, Frame>();
 
+        public Func<int, Frame> OnNewFrame;
         public void Show(int id)
         {
             Frame f = null;
             if (!_frames.TryGetValue(id, out  f))
             {
-                f = new Frame();
+                if (null != OnNewFrame)
+                {
+                    f = OnNewFrame(id);
+
+                    if (null != f)
+                        _frames[id] = f;
+                }
             }
             
-            f.OnShow();
+            f?.OnShow();
         }
 
         public void Hide(int id)

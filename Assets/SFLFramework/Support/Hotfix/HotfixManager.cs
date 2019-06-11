@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using ILRuntime.Mono.Cecil.Mdb;
@@ -13,6 +14,7 @@ namespace GGame.Support
     {
         private const string dllPath = "Hotfix/SFLHotfix.dll";
         private const string pdbPath = "Hotfix/SFLHotfix.pdb";
+        public Type[] HotfixType { get; set; }
 #if ILRuntime
         private AppDomain _domain;
         private MemoryStream _dllStream;
@@ -34,7 +36,16 @@ namespace GGame.Support
            _dllStream = new MemoryStream(dllBytes);
            _pdbStream = new MemoryStream(pdbBytes);
            _domain.LoadAssembly(_dllStream, _pdbStream, new PdbReaderProvider());
+           OnILInitialize();
+           
+           List<Type> ts = new List<Type>();
 
+           foreach (var iType in _domain.LoadedTypes)
+           {
+               ts.Add(iType.Value.ReflectionType);
+           }
+
+           HotfixType = ts.ToArray();
            _domain.Invoke("GGame.Hotfix.Program", "Main", null);
 #endif
         }
@@ -46,5 +57,13 @@ namespace GGame.Support
             _dllStream.Dispose();
             _pdbStream.Dispose();
         }
+#if ILRuntime
+        void OnILInitialize()
+        {
+            _domain?.DelegateManager.RegisterFunctionDelegate<int, GGame.Support.Frame>();
+
+            _domain?.RegisterCrossBindingAdaptor(new FrameAdapter());
+        }
+#endif
     }
 }
