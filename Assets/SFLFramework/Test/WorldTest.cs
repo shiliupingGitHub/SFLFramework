@@ -11,36 +11,21 @@ using UnityEngine.UI;
 public class WorldTest : MonoBehaviour
 {
     // Start is called before the first frame update
-     World world;
-     public CinemachineVirtualCamera camera;
+    public CinemachineVirtualCamera camera;
     public Transform startPos;
     void Start()
     {
-       
-       
-        var procedure = ProcedureManager.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
-        world = procedure.world;
-        StartTick();
         
-        
+        ProcedureManager.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
+
     }
 
-    async void StartTick()
-    {
-        if(null == world)
-            return;
-        while (null != world)
-        {
-            world.Tick();
-            await Task.Delay(33);
-        }
-    }
+ 
     // Update is called once per frame
     void Update()
     {
-        if(null == world)
-            return;
-        ;
+
+        var world = ProcedureManager.Instance.Get<BattleTestProcedure>().world;
         FixVector3 dir = FixVector3.Zero;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
                           Input.GetKeyUp(KeyCode.D) || 
@@ -79,16 +64,10 @@ public class WorldTest : MonoBehaviour
             world?.AddCachCmde(world.FrameIndex +1, info);
         }
         
-
-        
-        world?.Update();
-        
     }
 
     private void OnDestroy()
     {
-        world?.Dispose();
-        world = null;
-        HotfixManager.Instance.Dispose();
+      
     }
 }

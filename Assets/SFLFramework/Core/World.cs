@@ -1,12 +1,14 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace GGame
 {
     public class World : IDisposable
     {
+        private bool isDisposed = false;
         private ulong _frameIndex = 0;
         readonly Dictionary<Type,System> _systems = new Dictionary<Type, System>();
         readonly Dictionary<Type, List<System>> _interestSystems = new Dictionary<Type, List<System>>();
@@ -16,10 +18,30 @@ namespace GGame
         List<IJob> _CacheAddJob = new List<IJob>();
         List<IJob> _CacheRmoveJob = new List<IJob>();
         public ulong FrameIndex => _frameIndex;
-
-        public World()
+#if !SERVER
+        private UnityEngine.GameObject _worldLooper;
+#endif
+        public World(bool autoTick)
         {
             WorldEnv.Instance.CreateWorldSystem(this);
+#if !SERVER
+            _worldLooper = new UnityEngine.GameObject("_worldLooper");
+            _worldLooper.hideFlags = HideFlags.HideInHierarchy;
+            UnityEngine.GameObject.DontDestroyOnLoad(_worldLooper);
+            _worldLooper.AddComponent<Looper>().LoopAction += Update;
+#endif
+            if(autoTick)
+                StartTick();
+        }
+        
+        async void StartTick()
+        {
+           
+            while (!isDisposed)
+            {
+                Tick();
+                await Task.Delay(33);
+            }
         }
 
         public T GetSystem<T>() where T: System
@@ -105,6 +127,10 @@ namespace GGame
             _frameIndex = 0;
             _CacheAddJob.Clear();
             _CacheRmoveJob.Clear();
+#if !SERVER
+            UnityEngine.GameObject.Destroy(_worldLooper);
+#endif            
+           
 
         }
 

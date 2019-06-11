@@ -12,7 +12,7 @@ namespace GGame.Support
         {
             HotfixManager.Instance.Init();
             
-            world = new World();
+            world = new World(true);
 
             var entity = world.CreateEntity(1,1001);
             entity.Camp = 0;

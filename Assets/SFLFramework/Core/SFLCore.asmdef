@@ -1,3 +1,15 @@
-﻿{
-	"name": "SFLCore"
+{
+    "name": "SFLCore",
+    "references": [
+        "GUID:23c7ae7d5cf30d94cbf875a353a6475a"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
 }
