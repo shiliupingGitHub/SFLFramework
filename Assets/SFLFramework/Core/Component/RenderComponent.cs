@@ -36,7 +36,7 @@ namespace GGame
             base.Awake(world, node);
             _modelId = Convert.ToInt32(node.Attributes?["model"].Value);
 #if !SERVER
-            var modelPath = $"EntityPrefab/entity_prefab_{_modelId}";
+            var modelPath = $"entity_prefab_{_modelId}";
             var asset = ResourceManager.Instance.LoadPrefab(modelPath);
 
             _gameObject = UnityEngine.GameObject.Instantiate(asset);

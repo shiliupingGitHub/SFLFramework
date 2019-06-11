@@ -54,7 +54,7 @@ namespace GGame
 
         public Entity CreateEntity(ulong uuid, int configId)
         {
-            var configPath = $"EntityConfig/entity_config_{configId}";
+            var configPath = $"entity_config_{configId}";
             var configText = ResourceManager.Instance.LoadText(configPath);
             var e = ObjectPool.Instance.Fetch<Entity>();
             

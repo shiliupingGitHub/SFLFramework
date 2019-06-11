@@ -5,7 +5,7 @@ using UnityEditor;
 public class HotfixEditor
 {
     private const string ScriptAssembliesDir = "Library/ScriptAssemblies/";
-    private const string CodeDir = "Assets/SFLFramework/Resources/Hotfix/";
+    private const string CodeDir = "Assets/SFLFramework/Res/Hotfix/";
     private const string HotfixDll = "SFLHotfix.dll";
     private const string HotfixPdb = "SFLHotfix.pdb";
 
