@@ -1,0 +1,18 @@
+{
+    "name": "GGame.Hotfix",
+    "references": [
+        "GUID:32bb66b68e2978741acefb011915dbaf",
+        "GUID:d41f9e9f2c4962f419d0205f378b8c14",
+        "GUID:ea20ba63602c45440946616c8f85a33f",
+        "GUID:23c7ae7d5cf30d94cbf875a353a6475a"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

@@ -1,0 +1,20 @@
+{
+    "name": "GGame.Test",
+    "references": [
+        "GUID:32bb66b68e2978741acefb011915dbaf",
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "",
+        "GUID:d41f9e9f2c4962f419d0205f378b8c14"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
