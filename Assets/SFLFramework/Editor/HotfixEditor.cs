@@ -12,8 +12,9 @@ public class HotfixEditor
     
     static HotfixEditor()
     {
-        File.Copy($"{ScriptAssembliesDir}{HotfixDll}", $"{CodeDir}{HotfixDll}.bytes", true);
-        File.Copy($"{ScriptAssembliesDir}{HotfixPdb}", $"{CodeDir}{HotfixPdb}.bytes", true);
+        File.Copy($"{ScriptAssembliesDir}{HotfixDll}", $"{CodeDir}{HotfixDll.ToLower()}.bytes", true);
+        File.Copy($"{ScriptAssembliesDir}{HotfixPdb}", $"{CodeDir}{HotfixPdb.ToLower()}.bytes", true);
+        
         AssetDatabase.Refresh();
     }
 }

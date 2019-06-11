@@ -31,6 +31,8 @@ namespace GGame.Support
             AppDomain _appdomain;
             private IMethod _onShowMethod;
             private IMethod _onHideMethod;
+            private IMethod _onInitMethod;
+            private IMethod _onDestroyMethod;
             public ILTypeInstance ILInstance { get { return _instance; } }
             
             public Adaptor(AppDomain appdomain, ILTypeInstance instance)
@@ -39,7 +41,7 @@ namespace GGame.Support
                 this._instance = instance;
             }
 
-            public override void OnShow()
+            public  void OnShow()
             {
                 if(null == _onShowMethod)
                     _onShowMethod = _instance.Type.GetMethod("OnShow", 0);
@@ -47,12 +49,28 @@ namespace GGame.Support
                 _appdomain.Invoke(_onShowMethod, _instance, null);
             }
 
-            public override void OnHide()
+            public  void OnHide()
             {
                 if(null == _onHideMethod)
                     _onHideMethod = _instance.Type.GetMethod("OnHide", 0);
 
                 _appdomain.Invoke(_onHideMethod, _instance, null);
+            }
+
+            public void OnInit()
+            {
+                if(null == _onInitMethod)
+                    _onInitMethod = _instance.Type.GetMethod("OnInit", 0);
+
+                _appdomain.Invoke(_onInitMethod, _instance, null);
+            }
+
+            public void OnDestroy()
+            {
+                if(null == _onDestroyMethod)
+                    _onDestroyMethod = _instance.Type.GetMethod("OnDestroy", 0);
+
+                _appdomain.Invoke(_onDestroyMethod, _instance, null);
             }
 
             public override string ToString()

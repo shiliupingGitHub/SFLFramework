@@ -20,7 +20,10 @@ namespace GGame.Support
                     f = OnNewFrame(id);
 
                     if (null != f)
+                    {
                         _frames[id] = f;
+                        f.OnInit();
+                    }
                 }
             }
             

@@ -12,8 +12,8 @@ namespace GGame.Support
 {
     public class HotfixManager : SingleTon<HotfixManager> , IDisposable
     {
-        private const string dllPath = "Hotfix/SFLHotfix.dll";
-        private const string pdbPath = "Hotfix/SFLHotfix.pdb";
+        private const string dllPath = "Hotfix/sflhotfix.dll";
+        private const string pdbPath = "Hotfix/sflhotfix.pdb";
         public Type[] HotfixType { get; set; }
 #if ILRuntime
         private AppDomain _domain;
@@ -29,6 +29,7 @@ namespace GGame.Support
             var hotfixProgramType = hotfixAssembly.GetType("GGame.Hotfix.Program");
             var mainMethod = hotfixProgramType.GetMethod("Main");
 
+            HotfixType = hotfixAssembly.GetTypes();
             mainMethod.Invoke(null, null);
 #else
             
@@ -53,9 +54,11 @@ namespace GGame.Support
 
         public void Dispose()
         {
+#if ILRuntime
             _domain = null;
             _dllStream.Dispose();
             _pdbStream.Dispose();
+#endif
         }
 #if ILRuntime
         void OnILInitialize()

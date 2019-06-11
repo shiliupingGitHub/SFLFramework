@@ -15,7 +15,6 @@ public class WorldTest : MonoBehaviour
     private Entity entity;
     public CinemachineVirtualCamera camera;
     public Transform startPos;
-    public Button btn_use_skill;
     void Start()
     {
         HotfixManager.Instance.Init();
@@ -47,17 +46,6 @@ public class WorldTest : MonoBehaviour
         rc.UpdateFace();
         
         StartTick();
-        btn_use_skill.onClick.AddListener(() =>
-        {
-            CmdInfo cmdInfo;
-            UseSkillCmd cmd;
-
-            cmd.id = 1;
-            cmdInfo.Uuid = 1;
-            cmdInfo.Cmd = cmd;
-            
-            world?.AddCachCmde(world.FrameIndex +1, cmdInfo);
-        });
         
         UIManager.Instance.Show(1);
     }
