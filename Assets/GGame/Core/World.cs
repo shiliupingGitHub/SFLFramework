@@ -17,6 +17,12 @@ namespace GGame.Core
         List<IJob> _CacheAddJob = new List<IJob>();
         List<IJob> _CacheRmoveJob = new List<IJob>();
         public ulong FrameIndex => _frameIndex;
+        Controller _controller = new Controller();
+
+        public Controller Controller
+        {
+            get => _controller;
+        }
 #if !SERVER
         private UnityEngine.GameObject _worldLooper;
 #endif
