@@ -5,10 +5,18 @@ namespace GGame.Editor
 {
     public class ResAssetPostprocessor : AssetPostprocessor
     {
-
+        
+        private const string ScriptAssembliesDir = "Library/ScriptAssemblies/";
+        private const string CodeDir = "Assets/GGame/Res/Hotfix/";
+        private const string HotfixDll = "GGame.Hotfix.dll";
+        private const string HotfixPdb = "GGame.Hotfix.pdb";
+        private const string dllPath = "hotfix_dll";
+        private const string pdbPath = "hotfix_pdb";
+        
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets,
             string[] movedFromAssetPaths)
         {
+            bool hotfixcode_changed = false;
             foreach (var asset in importedAssets)
             {
                 string assetName = Path.GetFileNameWithoutExtension(asset);
@@ -26,7 +34,24 @@ namespace GGame.Editor
                     }
                 }
 
+                if (asset.Contains(".cs") && asset.StartsWith("Assets/GGame/Hotfix"))
+                {
+                    hotfixcode_changed = true;
+                }
+
             }
+
+            if (hotfixcode_changed)
+            {
+                
+                string targetDllPath = $"{CodeDir}{dllPath}.bytes";
+                string targetPDBPath = $"{CodeDir}{pdbPath}.bytes";
+                File.Copy($"{ScriptAssembliesDir}{HotfixDll}", targetDllPath, true);
+                File.Copy($"{ScriptAssembliesDir}{HotfixPdb}", targetPDBPath, true);
+            }
+            
+
+            
         }
     }
 }
