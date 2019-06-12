@@ -20,6 +20,8 @@ namespace GGame.Core
             {
                 AddAssembly(assembly);
             }
+            
+            AIManager.Instance.Init();
         }
 
         void AddAssembly(Assembly assembly)
