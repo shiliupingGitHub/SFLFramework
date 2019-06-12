@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--EXPORTED BY TOOL, DON'T MODIFY IT!-->
+<!--Source File: free_move_1001.xml-->
+<behavior name="free_move_1001" agenttype="GGame::Core::FreeMoveAIAgent" version="5">
+  <node class="True" id="0" />
+</behavior>

@@ -12,16 +12,20 @@ namespace GGame.Editor
             foreach (var asset in importedAssets)
             {
                 string assetName = Path.GetFileNameWithoutExtension(asset);
-
+                
+                
                 if (asset.StartsWith("Assets/GGame/Res/"))
                 {
-                    
-                    AssetImporter importer = AssetImporter.GetAtPath(asset);
+                    if (!asset.Contains(".meta") && File.Exists(asset))
+                    {
+                        AssetImporter importer = AssetImporter.GetAtPath(asset);
 
-                    importer.assetBundleName = $"{assetName}.unity3d";
+                        importer.assetBundleName = $"{assetName}.unity3d";
+                       
+
+                    }
                 }
-                
-               
+
             }
         }
     }
