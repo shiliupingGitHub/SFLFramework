@@ -52,8 +52,15 @@ namespace GGame.Core
                                 skillMe?.Cancel();
 #if !SERVER
                                 rc_me.Animator.SetTrigger("Hurted");
-#endif     
-                               
+#endif
+                                var ctr = World.Controller;
+
+                                if (null != ctr.OnHurt)
+                                {
+                                    HurtData hd;
+                                    hd.Hp = 20;
+                                    ctr.OnHurt(hurt._Entity, hc.Entity, hd);
+                                }
                             }
                             
 
