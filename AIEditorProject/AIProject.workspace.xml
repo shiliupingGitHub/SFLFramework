@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<workspace name="AIProject" folder="behaviors" export="..\Assets\GGame\Res\AI" language="cs" version="3">
+  <export>
+    <cpp>
+      <isexported>False</isexported>
+      <exportfilecount>1</exportfilecount>
+      <folder>../../Assets/GGame/Core/AI</folder>
+    </cpp>
+    <cs>
+      <isexported>False</isexported>
+      <exportfilecount>1</exportfilecount>
+      <folder>../../Assets/GGame/Core/AI</folder>
+    </cs>
+  </export>
+</workspace>
