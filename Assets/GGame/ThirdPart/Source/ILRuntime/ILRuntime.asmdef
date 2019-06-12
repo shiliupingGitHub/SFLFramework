@@ -1,7 +1,6 @@
 {
-    "name": "GGame.ThirtPart",
+    "name": "ILRuntime",
     "references": [],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,

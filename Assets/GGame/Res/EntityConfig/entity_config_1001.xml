@@ -10,4 +10,5 @@
 </Job>
 </SkillComponent>
 <HurtedComponent/>
+<FreeAIComponent/>
 </Entity>
