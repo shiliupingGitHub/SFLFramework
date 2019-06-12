@@ -1,6 +1,4 @@
 
-using UnityEngine;
-
 namespace GGame.Core
 {
     [Interest(typeof(MoveComponent))]

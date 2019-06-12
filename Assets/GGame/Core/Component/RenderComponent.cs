@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Xml;
-using GGame.Core;
-using UnityEngine;
-using Component = GGame.Core.Component;
+
+
 
 namespace GGame.Core
 {
@@ -24,12 +23,12 @@ namespace GGame.Core
         private UnityEngine.Animator _animator;
         
       
-        public GameObject GameObject
+        public UnityEngine. GameObject GameObject
         {
             get { return _gameObject; }
         }
 
-        public Animator Animator    {
+        public UnityEngine. Animator Animator    {
             get { return _animator; }
         }
 #endif
@@ -42,7 +41,7 @@ namespace GGame.Core
             var asset = ResourceManager.Instance.LoadPrefab(modelPath);
 
             _gameObject = UnityEngine.GameObject.Instantiate(asset);
-            _animator = _gameObject.GetComponentInChildren<Animator>();
+            _animator = _gameObject.GetComponentInChildren<UnityEngine. Animator>();
             
 #endif
 

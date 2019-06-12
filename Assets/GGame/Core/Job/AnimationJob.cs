@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using GGame.Core;
-using NotImplementedException = System.NotImplementedException;
-
 namespace GGame.Core
 {
     public class AnimationJob : Job

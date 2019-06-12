@@ -1,6 +1,6 @@
 using System;
 using System.Xml;
-using GGame.Core;
+
 
 namespace GGame.Core
 {

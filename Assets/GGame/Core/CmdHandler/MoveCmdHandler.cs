@@ -1,6 +1,4 @@
 
-using GGame.Core;
-
 namespace GGame.Core
 {
     public class MoveCmdHandler : CmdHandler<World, Entity, MoveCmd>
