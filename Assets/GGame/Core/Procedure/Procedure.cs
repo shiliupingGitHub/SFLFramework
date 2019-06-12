@@ -1,6 +1,6 @@
 using System;
 
-namespace GGame.Hybird.Procedure
+namespace GGame.Core
 {
     public interface IProcedure
     {

@@ -12,6 +12,7 @@ namespace GGame.Core
         readonly Dictionary<string, Type> _jobTypes = new Dictionary<string, Type>();
         readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
         Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
+        Dictionary<Type, IProcedure> _procedures = new Dictionary<Type, IProcedure>();
         public override void OnInit()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -31,6 +32,7 @@ namespace GGame.Core
             var baseCmdHandleType = typeof(ICmdHandler);
             var baseJobType = typeof(IJob);
             var baseActionType = typeof(IAction);
+            var baseProcedureType = typeof(IProcedure);
             var types = assembly.GetTypes();
 
             foreach (var type in types)
@@ -93,6 +95,12 @@ namespace GGame.Core
 
                     }
 
+                }
+                
+                if (baseProcedureType.IsAssignableFrom(type) && !type.IsAbstract)
+                {
+                    var procedure = Activator.CreateInstance(type) as IProcedure;
+                    _procedures[type] = procedure;
                 }
                 
             }
@@ -165,6 +173,39 @@ namespace GGame.Core
                     world.AddIntrest(a.Interest, system);
                 }
             }
+        }
+        
+        public T Enter<T, W>(W w) where T:IProcedure
+        {
+            var type = typeof(T);
+            var ret = _procedures[type];
+            ret.Enter(w);
+            return (T)ret;
+        }
+        
+        public T Enter<T, W1, W2>(W1 w, W2 w2) where T:IProcedure
+        {
+            var type = typeof(T);
+            var ret = _procedures[type];
+            
+            ret.Enter(w, w2);
+            return (T)ret;
+        }
+        public T Enter<T>() where T : IProcedure
+        { 
+            var type = typeof(T);
+            var ret = _procedures[type];
+            
+            ret.Enter();
+            return (T)ret;
+        }
+
+        public T Get<T>()
+        {
+            var type = typeof(T);
+            var ret = _procedures[type];
+
+            return (T)ret;
         }
         
         
