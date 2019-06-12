@@ -10,5 +10,5 @@
 </Job>
 </SkillComponent>
 <HurtedComponent/>
-<FreeAIComponent/>
+<FreeAIComponent name = "free_move_1001"/>
 </Entity>
