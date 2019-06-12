@@ -1,4 +1,4 @@
-namespace GGame.Support
+namespace GGame.Hybird
 {
     public  interface Frame
     {

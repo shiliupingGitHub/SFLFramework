@@ -4,7 +4,7 @@ using ILRuntime.Runtime.Enviorment;
 using ILRuntime.Runtime.Intepreter;
 using AppDomain = ILRuntime.Runtime.Enviorment.AppDomain;
 
-namespace GGame.Support
+namespace GGame.Hybird
 {
     public class FrameAdapter : CrossBindingAdaptor
     {

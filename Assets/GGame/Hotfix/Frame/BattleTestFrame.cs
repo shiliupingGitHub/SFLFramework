@@ -1,6 +1,6 @@
 ﻿using GGame.Core;
+using GGame.Hybird;
 using GGame.Hybird.Procedure;
-using GGame.Support;
 using UnityEngine;
 using UnityEngine.UI;
 
