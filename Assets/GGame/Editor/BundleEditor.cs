@@ -28,20 +28,38 @@ namespace GGame.Editor
         [MenuItem("Tools/Bundle/buildPC")]
         static void BuildBundlePc()
         {
+            
+            Build("PC", BuildTarget.StandaloneWindows64);
+        }
+        
+        [MenuItem("Tools/Bundle/buildAndroid")]
+        static void BuildBundleAndroid()
+        {
+            
+            Build("Android", BuildTarget.Android);
+        }
+        
+        [MenuItem("Tools/Bundle/buildIOS")]
+        static void BuildBundleIOS()
+        {
+            
+            Build("ios", BuildTarget.iOS);
+        }
+        
+
+        static void Build(string folder, BuildTarget target)
+        {
             var bundles = ContentBuildInterface.GenerateAssetBundleBuilds();
             for (var i = 0; i < bundles.Length; i++)
                 bundles[i].addressableNames = bundles[i].assetNames.Select(Path.GetFileNameWithoutExtension).ToArray();
         
-            var result = CompatibilityBuildPipeline.BuildAssetBundles($"{Application.streamingAssetsPath}/PC", BuildAssetBundleOptions.None,
-                BuildTarget.StandaloneWindows64);
-            var infoPath = Path.Combine(Application.streamingAssetsPath, "PC/Vertion.info");
+            var result = CompatibilityBuildPipeline.BuildAssetBundles($"{Application.streamingAssetsPath}/{folder}", BuildAssetBundleOptions.None,
+                target);
+            var infoPath = Path.Combine(Application.streamingAssetsPath, $"{folder}/Vertion.info");
             var json = JsonUtility.ToJson(result);
         
             File.WriteAllText(infoPath, json);
             AssetDatabase.Refresh();
-        
-        
-        
         }
     
     }
