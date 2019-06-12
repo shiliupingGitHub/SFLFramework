@@ -18,7 +18,7 @@ public class WorldTest : MonoBehaviour
     {
         ResourceManager.Instance.Init();
         WorldEnv.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
-
+        var d = skill_config.Dic[1];
     }
 
  
