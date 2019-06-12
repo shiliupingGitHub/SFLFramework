@@ -15,7 +15,6 @@ namespace GGame.Core
 #if !SERVER   
      Dictionary<string, string[]> _dependenciesCache = new Dictionary<string, string[]>();
      Dictionary<string, UnityEngine.Object> _objects = new Dictionary<string, Object>();
-     private UnityEngine.Build.Pipeline.CompatibilityAssetBundleManifest _manifest;
 #endif
     public string LoadText(string path)
     {
@@ -61,7 +60,7 @@ namespace GGame.Core
         foreach (var depend in depends)
         {
 #if UNITY_EDITOR
-            var assetPaths =  UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundle(path);
+            var assetPaths =  UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundle(depend);
 
             foreach (var assetPath in assetPaths)
             {

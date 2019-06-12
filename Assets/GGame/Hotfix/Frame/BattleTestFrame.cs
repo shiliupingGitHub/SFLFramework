@@ -4,7 +4,6 @@ using GGame.Support;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 namespace GGame.Hotfix
 {
     [FrameID(0)]

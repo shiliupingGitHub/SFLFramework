@@ -8,7 +8,6 @@ using GGame;
 using GGame.Core;
 using GGame.Hybird.Procedure;
 using GGame.Support;
-using UnityEngine.UI;
 
 public class WorldTest : MonoBehaviour
 {

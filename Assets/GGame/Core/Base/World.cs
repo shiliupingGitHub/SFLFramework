@@ -76,7 +76,10 @@ namespace GGame.Core
 
         public void AddSystem(System system)
         {
+            
+            system.World = this;
             _systems[system.GetType()] = system;
+            
         }
 
         public Entity CreateEntity(ulong uuid, int configId)

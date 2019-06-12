@@ -6,8 +6,8 @@ namespace GGame.Hybird.Hotfix
 {
     public class HotfixManager : SingleTon<HotfixManager> , IDisposable
     {
-        private const string dllPath = "ggame.hotfix.dll";
-        private const string pdbPath = "ggame.hotfix.pdb";
+        private const string dllPath = "hotfix_dll";
+        private const string pdbPath = "hotfix_pdb";
         public Type[] HotfixType { get; set; }
 #if ILRuntime
         private AppDomain _domain;
@@ -16,6 +16,7 @@ namespace GGame.Hybird.Hotfix
 #endif
         public override void OnInit()
         {
+           
             var dllBytes = ResourceManager.Instance.LoadBytes(dllPath);
             var pdbBytes = ResourceManager.Instance.LoadBytes(pdbPath);
             var hotfixAssembly = Assembly.Load(dllBytes, pdbBytes);
