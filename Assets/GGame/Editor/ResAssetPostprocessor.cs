@@ -13,8 +13,9 @@ namespace GGame.Editor
             {
                 string assetName = Path.GetFileNameWithoutExtension(asset);
 
-                if (asset.Contains("Assets/GGame/Res"))
+                if (asset.StartsWith("Assets/GGame/Res/"))
                 {
+                    
                     AssetImporter importer = AssetImporter.GetAtPath(asset);
 
                     importer.assetBundleName = $"{assetName}.unity3d";
