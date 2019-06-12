@@ -5,8 +5,7 @@ using System.IO;
 using System.Linq;
 using GGame;
 using GGame.Core;
-using UnityEditor;
-using UnityEngine;
+
 using Object = UnityEngine.Object;
 
 namespace GGame.Core
@@ -16,12 +15,13 @@ namespace GGame.Core
 #if !SERVER   
      Dictionary<string, string[]> _dependenciesCache = new Dictionary<string, string[]>();
      Dictionary<string, UnityEngine.Object> _objects = new Dictionary<string, Object>();
+     private UnityEngine.Build.Pipeline.CompatibilityAssetBundleManifest _manifest;
 #endif
     public string LoadText(string path)
     {
 #if !SERVER
         LoadBundle(path);
-        var o = _objects[path] as TextAsset;
+        var o = _objects[path] as UnityEngine.TextAsset;
         return o.text;
 #else
         return null;
@@ -33,7 +33,7 @@ namespace GGame.Core
     {
 #if !SERVER
         LoadBundle(path);
-        var o = _objects[path] as TextAsset;
+        var o = _objects[path] as UnityEngine.TextAsset;
         return o.bytes;
 #else
         return null;
@@ -42,10 +42,10 @@ namespace GGame.Core
     }
     
 #if !SERVER
-    public GameObject LoadPrefab(string path)
+    public UnityEngine.GameObject LoadPrefab(string path)
     {
         LoadBundle(path);
-        var o = _objects[path] as GameObject;
+        var o = _objects[path] as UnityEngine.GameObject;
         return o;
     }
     
@@ -61,14 +61,14 @@ namespace GGame.Core
         foreach (var depend in depends)
         {
 #if UNITY_EDITOR
-            var assetPaths = AssetDatabase.GetAssetPathsFromAssetBundle(path);
+            var assetPaths =  UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundle(path);
 
             foreach (var assetPath in assetPaths)
             {
                 string assetName = Path.GetFileNameWithoutExtension(assetPath);
                 
                 
-                var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
+                var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
                 _objects[assetName] = asset;
                 
             }
@@ -120,7 +120,7 @@ namespace GGame.Core
         }
 
 #if UNITY_EDITOR
-        dependencies = AssetDatabase.GetAssetBundleDependencies(assetBundleName, true);
+        dependencies = UnityEditor.AssetDatabase.GetAssetBundleDependencies(assetBundleName, true);
 #else
 
 #endif
@@ -132,7 +132,7 @@ namespace GGame.Core
 
     public override void OnInit()
     {
-        
+       
     }
 }
 

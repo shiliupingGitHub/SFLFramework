@@ -17,7 +17,7 @@ public class WorldTest : MonoBehaviour
     public Transform startPos;
     void Start()
     {
-        
+        ResourceManager.Instance.Init();
         ProcedureManager.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
 
     }
