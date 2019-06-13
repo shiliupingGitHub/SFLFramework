@@ -43,7 +43,7 @@ namespace GGame.Core
         protected override void OnSchedule()
         {
             _curFrame = 0;
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
             var rc = _entity.GetComponent<RenderComponent>();
             
             rc.Animator.SetTrigger("Skill");

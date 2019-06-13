@@ -18,7 +18,7 @@ namespace GGame.Core
         
         public FixVector3 Face { get; set; } = new FixVector3((Fix64)1, (Fix64)0,(Fix64)0);
         public Fix64 Speed { get; set; } = Fix64.Zero;
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
         private UnityEngine.GameObject _gameObject;
         private UnityEngine.Animator _animator;
         
@@ -36,7 +36,7 @@ namespace GGame.Core
         {
             base.Awake(world, node);
             _modelId = Convert.ToInt32(node.Attributes?["model"].Value);
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
             var modelPath = $"entity_prefab_{_modelId}";
             var asset = ResourceManager.Instance.LoadPrefab(modelPath);
 
@@ -61,7 +61,7 @@ namespace GGame.Core
 
         public void UpdatePostion()
         {
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
             
             _gameObject.transform.position =new UnityEngine.Vector3((float)_pos.x, (float)_pos.y, (float)_pos.z);;
 #endif
@@ -69,7 +69,7 @@ namespace GGame.Core
 
         public void UpdateFace()
         {
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
             _animator.transform.forward =new UnityEngine.Vector3((float)Face.x, (float)Face.y, (float)Face.z);;
 #endif
         }

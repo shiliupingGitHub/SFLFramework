@@ -23,7 +23,7 @@ namespace GGame.Core
         {
             get => _controller;
         }
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
         private UnityEngine.GameObject _worldLooper;
 #endif
         public World(bool autoTick)

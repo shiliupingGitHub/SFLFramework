@@ -8,7 +8,7 @@ namespace GGame.Core
         public override void OnUpdate()
         {
 
-           #if !SERVER
+           #if UNITY_2017_1_OR_NEWER
             foreach (RenderComponent rc in _interestComponents)
             {
                 

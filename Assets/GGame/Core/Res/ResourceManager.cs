@@ -10,13 +10,13 @@ namespace GGame.Core
 {
     public class ResourceManager : SingleTon<ResourceManager>
 {
-#if !SERVER   
+#if UNITY_2017_1_OR_NEWER   
      Dictionary<string, string[]> _dependenciesCache = new Dictionary<string, string[]>();
      Dictionary<string, UnityEngine.Object> _objects = new Dictionary<string, Object>();
 #endif
     public string LoadText(string path)
     {
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
         LoadBundle(path);
         var o = _objects[path] as UnityEngine.TextAsset;
         return o.text;
@@ -28,7 +28,7 @@ namespace GGame.Core
     
     public byte[] LoadBytes(string path)
     {
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
         LoadBundle(path);
         var o = _objects[path] as UnityEngine.TextAsset;
         return o.bytes;
@@ -38,7 +38,7 @@ namespace GGame.Core
 
     }
     
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
     public UnityEngine.GameObject LoadPrefab(string path)
     {
         LoadBundle(path);
@@ -48,7 +48,7 @@ namespace GGame.Core
     
 #endif
 
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
 
     void LoadBundle(string path)
     {

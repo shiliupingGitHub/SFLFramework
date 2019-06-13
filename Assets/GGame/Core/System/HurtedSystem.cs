@@ -49,7 +49,7 @@ namespace GGame.Core
                                 var skillMe = hc.Entity.GetComponent<SkillComponent>();
 
                                 skillMe?.Cancel();
-#if !SERVER
+#if UNITY_2017_1_OR_NEWER
                                 rc_me.Animator.SetTrigger("Hurted");
 #endif
                                 var ctr = World.Controller;
