@@ -7,7 +7,7 @@ using GGame.Hybird;
 namespace GGame.Support
 {
     [AutoInit]
-    public class UIManager : SingleTon<UIManager>
+    public class UIManager : SingleTon<UIManager>, IAutoInit
     {
         Dictionary<int, Frame> _frames = new Dictionary<int, Frame>();
 
@@ -40,10 +40,10 @@ namespace GGame.Support
             }
         }
 
+
         public override void OnInit()
         {
-            int a = 0;
-            int b = a;
+            
         }
     }
 }

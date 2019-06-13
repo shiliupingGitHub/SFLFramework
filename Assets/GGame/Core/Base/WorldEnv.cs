@@ -34,7 +34,7 @@ namespace GGame.Core
             var baseActionType = typeof(IAction);
             var baseProcedureType = typeof(IProcedure);
             var types = assembly.GetTypes();
-            var baseSingltonType = typeof(ISingleTon);
+            var baseAutoInitType = typeof(IAutoInit);
 
             foreach (var type in types)
             {
@@ -104,7 +104,7 @@ namespace GGame.Core
                     _procedures[type] = procedure;
                 }
                 
-                if (baseSingltonType.IsAssignableFrom(type) )
+                if (baseAutoInitType.IsAssignableFrom(type) )
                 {
                     var supportAttrs = type.GetCustomAttributes(typeof(AutoInitAttribute), false);
 
@@ -112,7 +112,7 @@ namespace GGame.Core
                     {
                         var property =  type.BaseType.GetProperty("Instance");
                         var method =  property.GetGetMethod();
-                        var o = method.Invoke(null, null) as ISingleTon;
+                        var o = method.Invoke(null, null) as IAutoInit;
                    
                         o.Init();
                     }

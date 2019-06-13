@@ -1,11 +1,11 @@
 ﻿
 namespace GGame.Core
 {
-    public interface ISingleTon
+    public interface IAutoInit
     {
         void Init();
     }
-    public abstract class SingleTon<T> :ISingleTon where T:new()
+    public abstract class SingleTon<T>  where T:new()
     {
         private static T _instance;
 
