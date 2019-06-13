@@ -42,7 +42,8 @@ namespace GGame.Editor
 
             if (hotfixcode_changed)
             {
-                
+                if (!Directory.Exists(CodeDir))
+                    Directory.CreateDirectory(CodeDir);
                 string targetDllPath = $"{CodeDir}{dllPath}.bytes";
                 string targetPDBPath = $"{CodeDir}{pdbPath}.bytes";
                 File.Copy($"{ScriptAssembliesDir}{HotfixDll}", targetDllPath, true);

@@ -29,12 +29,7 @@ namespace GGame.Core
         public World(bool autoTick)
         {
             GGameEnv.Instance.CreateWorldSystem(this);
-#if !SERVER
-            _worldLooper = new UnityEngine.GameObject("_worldLooper");
-            _worldLooper.hideFlags = HideFlags.HideInHierarchy;
-            UnityEngine.GameObject.DontDestroyOnLoad(_worldLooper);
-            _worldLooper.AddComponent<GGame.UnityCore.Looper>().LoopAction += Update;
-#endif
+            PlayerLoopManager.Instance.OnUpdate += Update;
             if(autoTick)
                 StartTick();
         }
@@ -135,10 +130,8 @@ namespace GGame.Core
             _frameIndex = 0;
             _CacheAddJob.Clear();
             _CacheRmoveJob.Clear();
-#if !SERVER
-            UnityEngine.GameObject.Destroy(_worldLooper);
-#endif            
-           
+            PlayerLoopManager.Instance.OnUpdate -= Update;
+
 
         }
 
