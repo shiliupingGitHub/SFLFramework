@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GGame.Hybird
 {
-    [AutoInit]
+ 
     public class HybirdPlayerLoopManager : PlayerLoopManager, IAutoInit
     {
         public void Init()

@@ -106,16 +106,14 @@ namespace GGame.Core
                 
                 if (baseAutoInitType.IsAssignableFrom(type) )
                 {
-                    var supportAttrs = type.GetCustomAttributes(typeof(AutoInitAttribute), false);
 
-                    if (supportAttrs.Length > 0)
+                    if (!type.IsAbstract)
                     {
                         var o = Activator.CreateInstance(type) as IAutoInit;
-                       
-                        
+                    
                         o.Init();
                     }
-                
+                    
                 }
                 
             }

@@ -6,7 +6,6 @@ using GGame.Hybird;
 
 namespace GGame.Hybird
 {
-    [AutoInit]
     public class UIManager : SingleTon<UIManager>, IAutoInit
     {
         public UIManager()

@@ -2,7 +2,6 @@ using GGame.Core;
 
 namespace GGame.Hybird
 {
-    [GGame.Core.AutoInit]
     public class HybirdNetworkManager : GGame.Core.NetworkManager
     {
         
