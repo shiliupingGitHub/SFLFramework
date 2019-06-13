@@ -11,8 +11,8 @@ namespace GGame.Hybird
         {
             if (!_isStartedUp)
             {
-                WorldEnv.Instance.Init();
-                SupportEnv.Instance.Init();
+                CoreEnv.Instance.Init();
+                HybirdEnv.Instance.Init();
                 Log.Debug("Start up");
             }
           

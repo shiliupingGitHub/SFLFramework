@@ -2,7 +2,7 @@ using System;
 
 namespace GGame.Hybird
 {
-    public class SupportAttribute : Attribute
+    public class AutoInitAttribute : Attribute
     {
         
     }

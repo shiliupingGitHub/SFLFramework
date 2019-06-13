@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using GGame.Core;
 using GGame.Hybird;
-using NotImplementedException = System.NotImplementedException;
+
 
 namespace GGame.Support
 {
-    [Support]
+    [AutoInit]
     public class UIManager : SingleTon<UIManager>
     {
         Dictionary<int, Frame> _frames = new Dictionary<int, Frame>();

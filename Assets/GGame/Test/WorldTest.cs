@@ -17,7 +17,7 @@ public class WorldTest : MonoBehaviour
     void Start()
     {
         ResourceManager.Instance.Init();
-        WorldEnv.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
+        CoreEnv.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
         var d = skill_config.Dic[1];
     }
 
@@ -26,7 +26,7 @@ public class WorldTest : MonoBehaviour
     void Update()
     {
 
-        var world = WorldEnv.Instance.Get<BattleTestProcedure>().world;
+        var world = CoreEnv.Instance.Get<BattleTestProcedure>().world;
         FixVector3 dir = FixVector3.Zero;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
                           Input.GetKeyUp(KeyCode.D) || 

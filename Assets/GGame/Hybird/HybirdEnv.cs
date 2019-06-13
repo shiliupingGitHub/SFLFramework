@@ -9,13 +9,13 @@ using UnityEngine;
 
 namespace GGame.Hybird
 {
-    public class SupportEnv : SingleTon<SupportEnv>
+    public class HybirdEnv : SingleTon<HybirdEnv>
     {
 
 
         public override void OnInit()
         {
-            var assembly = typeof(SupportEnv).Assembly;
+            var assembly = typeof(HybirdEnv).Assembly;
             var types = assembly.GetTypes();
             var baseSingltonType = typeof(ISingleTon);
         
@@ -23,7 +23,7 @@ namespace GGame.Hybird
             {
                 if (baseSingltonType.IsAssignableFrom(type) )
                 {
-                    var supportAttrs = type.GetCustomAttributes(typeof(SupportAttribute), false);
+                    var supportAttrs = type.GetCustomAttributes(typeof(AutoInitAttribute), false);
 
                     if (supportAttrs.Length > 0)
                     {

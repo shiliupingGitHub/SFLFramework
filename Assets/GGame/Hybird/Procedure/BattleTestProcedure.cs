@@ -42,7 +42,7 @@ namespace GGame.Hybird.Procedure
 
             TestCmd tc;
             
-            WorldEnv.Instance.ExecuteCmd(tc);
+            CoreEnv.Instance.ExecuteCmd(tc);
         }           
 
     }

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace GGame.Core
 {
-    public class WorldEnv : SingleTon<WorldEnv>
+    public class CoreEnv : SingleTon<CoreEnv>
     {
         readonly List<Type> _systemTypes = new List<Type>();
         readonly Dictionary<string, Type> _componentTypes = new Dictionary<string, Type>();
