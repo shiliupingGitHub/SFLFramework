@@ -16,7 +16,7 @@ namespace GGame.Hybird.Hotfix
 #endif
         public override void OnInit()
         {
-           
+
             var dllBytes = ResourceManager.Instance.LoadBytes(dllPath);
             var pdbBytes = ResourceManager.Instance.LoadBytes(pdbPath);
             var hotfixAssembly = Assembly.Load(dllBytes, pdbBytes);

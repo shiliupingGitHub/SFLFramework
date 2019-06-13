@@ -110,10 +110,9 @@ namespace GGame.Core
 
                     if (supportAttrs.Length > 0)
                     {
-                        var property =  type.BaseType.GetProperty("Instance");
-                        var method =  property.GetGetMethod();
-                        var o = method.Invoke(null, null) as IAutoInit;
-                   
+                        var o = Activator.CreateInstance(type) as IAutoInit;
+                       
+                        
                         o.Init();
                     }
                 
@@ -216,11 +215,12 @@ namespace GGame.Core
             return (T)ret;
         }
 
-        public T Get<T>()
+        public T Get<T>() where T: IProcedure
         {
             var type = typeof(T);
-            var ret = _procedures[type];
-
+            IProcedure ret = null;
+            _procedures.TryGetValue(type, out ret);
+            
             return (T)ret;
         }
         

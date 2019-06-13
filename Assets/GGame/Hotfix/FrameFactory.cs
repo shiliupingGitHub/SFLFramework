@@ -1,4 +1,4 @@
-using GGame.Support;
+
 using System.Collections.Generic;
 using System;
 using GGame.Hybird;
@@ -25,6 +25,7 @@ namespace GGame.Hotfix
                     _types[_attr.Id] = type;
                 }
             }
+            
             
         }
 

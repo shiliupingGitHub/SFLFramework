@@ -4,11 +4,15 @@ using GGame.Core;
 using GGame.Hybird;
 
 
-namespace GGame.Support
+namespace GGame.Hybird
 {
     [AutoInit]
     public class UIManager : SingleTon<UIManager>, IAutoInit
     {
+        public UIManager()
+        {
+            _instance = this;
+        }
         Dictionary<int, Frame> _frames = new Dictionary<int, Frame>();
 
         public Func<int, Frame> OnNewFrame;

@@ -7,7 +7,7 @@ namespace GGame.Core
     }
     public abstract class SingleTon<T>  where T:new()
     {
-        private static T _instance;
+        protected static T _instance;
 
         public static T Instance
         {

@@ -10,6 +10,7 @@ namespace GGame.Core
             h._HurtAction = a;
             
             world.GetSystem<HurtedSystem>().AddHurt(h);
+           
         }
     }
 }

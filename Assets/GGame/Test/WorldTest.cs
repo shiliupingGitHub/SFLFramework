@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿
+using System;
 using Cinemachine;
 using UnityEngine;
-using GGame;
 using GGame.Core;
 using GGame.Hybird.Procedure;
-using GGame.Support;
+
 
 public class WorldTest : MonoBehaviour
 {
@@ -19,14 +16,20 @@ public class WorldTest : MonoBehaviour
         ResourceManager.Instance.Init();
         GGameEnv.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
         var d = skill_config.Dic[1];
+     
+        SoundManager.Instance.DoEvent("event:/attack_01");
     }
 
  
     // Update is called once per frame
     void Update()
     {
-
-        var world = GGameEnv.Instance.Get<BattleTestProcedure>().world;
+      
+        var procedure = GGameEnv.Instance.Get<BattleTestProcedure>();
+        if(null == procedure)
+            return;
+        
+        var world =procedure.world;
         FixVector3 dir = FixVector3.Zero;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
                           Input.GetKeyUp(KeyCode.D) || 

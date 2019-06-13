@@ -2,9 +2,7 @@
     "name": "GGame.Hybird",
     "references": [
         "GUID:32bb66b68e2978741acefb011915dbaf",
-        "GUID:ea20ba63602c45440946616c8f85a33f",
-        "GUID:4307f53044263cf4b835bd812fc161a4",
-        "GUID:a45b92be90291fe4f991409ed44de12b"
+        "GUID:4307f53044263cf4b835bd812fc161a4"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
