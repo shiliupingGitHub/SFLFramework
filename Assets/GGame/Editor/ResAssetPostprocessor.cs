@@ -29,8 +29,7 @@ namespace GGame.Editor
                         AssetImporter importer = AssetImporter.GetAtPath(asset);
 
                         importer.assetBundleName = $"{assetName}.unity3d";
-                       
-
+                        
                     }
                 }
 

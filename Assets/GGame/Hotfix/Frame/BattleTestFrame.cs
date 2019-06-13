@@ -39,7 +39,7 @@ namespace GGame.Hotfix
                 info.Uuid = 1;
                 info.Cmd = cmd;
 
-                var procedure = CoreEnv.Instance.Get<BattleTestProcedure>();
+                var procedure = GGameEnv.Instance.Get<BattleTestProcedure>();
                 
                 procedure.world.AddCachCmde(procedure.world.FrameIndex+1, info);
             });

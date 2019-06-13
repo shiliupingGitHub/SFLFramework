@@ -25,6 +25,7 @@ namespace GGame.Hotfix
                     _types[_attr.Id] = type;
                 }
             }
+            
         }
 
         Frame OnCreateFrame(int id)

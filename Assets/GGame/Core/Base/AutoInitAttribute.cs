@@ -1,6 +1,6 @@
 using System;
 
-namespace GGame.Hybird
+namespace GGame.Core
 {
     public class AutoInitAttribute : Attribute
     {

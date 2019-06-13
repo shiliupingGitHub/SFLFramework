@@ -28,7 +28,7 @@ namespace GGame.Core
 #endif
         public World(bool autoTick)
         {
-            CoreEnv.Instance.CreateWorldSystem(this);
+            GGameEnv.Instance.CreateWorldSystem(this);
 #if !SERVER
             _worldLooper = new UnityEngine.GameObject("_worldLooper");
             _worldLooper.hideFlags = HideFlags.HideInHierarchy;
@@ -177,7 +177,7 @@ namespace GGame.Core
                     Entity entity = null;
                     
                     _entities.TryGetValue(cmdInfo.Uuid, out entity);
-                    CoreEnv.Instance.ExecuteCmd(this, entity, cmdInfo.Cmd);
+                    GGameEnv.Instance.ExecuteCmd(this, entity, cmdInfo.Cmd);
                 }
             }
             

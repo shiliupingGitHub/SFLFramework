@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace GGame.Core
 {
-    public class CoreEnv : SingleTon<CoreEnv>
+    public class GGameEnv : SingleTon<GGameEnv>
     {
         readonly List<Type> _systemTypes = new List<Type>();
         readonly Dictionary<string, Type> _componentTypes = new Dictionary<string, Type>();
@@ -34,6 +34,7 @@ namespace GGame.Core
             var baseActionType = typeof(IAction);
             var baseProcedureType = typeof(IProcedure);
             var types = assembly.GetTypes();
+            var baseSingltonType = typeof(ISingleTon);
 
             foreach (var type in types)
             {
@@ -101,6 +102,21 @@ namespace GGame.Core
                 {
                     var procedure = Activator.CreateInstance(type) as IProcedure;
                     _procedures[type] = procedure;
+                }
+                
+                if (baseSingltonType.IsAssignableFrom(type) )
+                {
+                    var supportAttrs = type.GetCustomAttributes(typeof(AutoInitAttribute), false);
+
+                    if (supportAttrs.Length > 0)
+                    {
+                        var property =  type.BaseType.GetProperty("Instance");
+                        var method =  property.GetGetMethod();
+                        var o = method.Invoke(null, null) as ISingleTon;
+                   
+                        o.Init();
+                    }
+                
                 }
                 
             }
