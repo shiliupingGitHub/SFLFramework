@@ -36,8 +36,7 @@ namespace GGame.Core
             var baseProcedureType = typeof(IProcedure);
             var types = assembly.GetTypes();
             var baseAutoInitType = typeof(IAutoInit);
-            var baseMapNodeType = typeof(MapNode);
-
+            
             foreach (var type in types)
             {
                 if (type.IsSubclassOf(baseSystemType) && type != baseSystemType)
@@ -100,16 +99,6 @@ namespace GGame.Core
 
                 }
                 
-                if (baseMapNodeType.IsAssignableFrom(type))
-                {
-                    if (!type.IsAbstract)
-                    {
-
-                        _mapNodeTypes[type.Name] = type;
-
-                    }
-
-                }
                 
                 if (baseProcedureType.IsAssignableFrom(type) && !type.IsAbstract)
                 {
