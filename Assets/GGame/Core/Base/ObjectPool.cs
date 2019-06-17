@@ -7,7 +7,7 @@ namespace GGame.Core
     {
         
         Dictionary<Type, List<Object>> _cache = new Dictionary<Type, List<object>>();
-        public T Fetch<T>() where T:new()
+        public T Fetch<T>() where T: IDisposable , new()
         {
 
             return (T)Fetch(typeof(T));

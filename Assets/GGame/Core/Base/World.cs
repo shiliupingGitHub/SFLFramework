@@ -18,7 +18,7 @@ namespace GGame.Core
         List<IJob> _CacheRmoveJob = new List<IJob>();
         public ulong FrameIndex => _frameIndex;
         Controller _controller = new Controller();
-
+        private Map _map;
         public Controller Controller
         {
             get => _controller;
@@ -88,6 +88,15 @@ namespace GGame.Core
             
             return e;
         }
+
+        public void LoadMap(int configId)
+        {
+            var configPath = $"map_config_{configId}";
+            var configText = ResourceManager.Instance.LoadText(configPath);
+            
+            _map = ObjectPool.Instance.Fetch<Map>();
+            _map.Load(configText);
+        }
         
         public void AddIntrest(Type t, System system)
         {
@@ -132,7 +141,7 @@ namespace GGame.Core
             _CacheRmoveJob.Clear();
             PlayerLoopManager.Instance.OnUpdate -= Update;
 
-
+            _map?.Dispose();
         }
 
         public void Update()

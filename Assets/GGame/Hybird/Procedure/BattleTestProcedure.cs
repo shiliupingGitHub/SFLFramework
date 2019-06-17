@@ -13,7 +13,8 @@ namespace GGame.Hybird.Procedure
             HotfixManager.Instance.Init();
             
             world = new World(true);
-
+            
+            world.LoadMap(1001);
             var entity = world.CreateEntity(1,1001);
             entity.Camp = 0;
         

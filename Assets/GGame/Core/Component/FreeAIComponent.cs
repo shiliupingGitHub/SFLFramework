@@ -10,7 +10,7 @@ namespace GGame.Core
             base.Awake(world, node);
 
             string btName = node.Attributes["name"].Value;
-            Agent = ObjectPool.Instance.Fetch<FreeMoveAIAgent>();
+            Agent = new FreeMoveAIAgent();
             Agent.btload(btName);
             Agent.btsetcurrent(btName);
 

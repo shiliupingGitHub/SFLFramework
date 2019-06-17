@@ -13,6 +13,7 @@ namespace GGame.Core
         readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
         Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
         Dictionary<Type, IProcedure> _procedures = new Dictionary<Type, IProcedure>();
+        Dictionary<string, Type> _mapNodeTypes = new Dictionary<string, Type>();
         public override void OnInit()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -35,6 +36,7 @@ namespace GGame.Core
             var baseProcedureType = typeof(IProcedure);
             var types = assembly.GetTypes();
             var baseAutoInitType = typeof(IAutoInit);
+            var baseMapNodeType = typeof(MapNode);
 
             foreach (var type in types)
             {
@@ -93,6 +95,17 @@ namespace GGame.Core
                     {
 
                         _actionTypes[type.Name] = type;
+
+                    }
+
+                }
+                
+                if (baseMapNodeType.IsAssignableFrom(type))
+                {
+                    if (!type.IsAbstract)
+                    {
+
+                        _mapNodeTypes[type.Name] = type;
 
                     }
 
@@ -159,6 +172,15 @@ namespace GGame.Core
 
             _jobTypes.TryGetValue(typeName, out ret);
             
+            return ret;
+        }
+
+        public Type GetMapNodeType(string typeName)
+        {
+            Type ret = null;
+
+            _mapNodeTypes.TryGetValue(typeName, out ret);
+
             return ret;
         }
         
