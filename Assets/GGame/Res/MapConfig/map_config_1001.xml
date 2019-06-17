@@ -1,4 +1,0 @@
-<Map ID="1001">
-  <Collider name="Cube" PosX="-30" PosY="-1" PosZ="5" CenterX="20" CenterY="-0.5" CenterZ="0" SizeX="100" SizeY="1" SizeZ="10" />
-  <Collider name="Cube (1)" PosX="3.27978515625" PosY="1.77978515625" PosZ="0" CenterX="3.27978515625" CenterY="1.77978515625" CenterZ="0" SizeX="1" SizeY="3" SizeZ="10" />
-</Map>

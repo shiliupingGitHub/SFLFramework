@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace GGame.Core
 {
     [Interest(typeof(RenderComponent))]
@@ -17,17 +19,26 @@ namespace GGame.Core
 
                     if (rc.MoveDir != FixVector3.Zero)
                     {
-                        rc.Animator.SetFloat("SpeedX", 1.0f);
+                        var moveScale = UnityEngine.Mathf.Lerp((float)rc.MoveScale, (float)rc.MoveScale + (float)rc.Acceleration,
+                            UnityEngine.Time.deltaTime);
+                        rc.Animator.SetFloat("SpeedX", moveScale);
                         var dir = rc.MoveDir.GetNormalized();
                         var clientDir = new UnityEngine.Vector3((float)dir.x, (float)dir.y, (float)dir.z);
-                        var speed = (float)rc.Speed / 0.04f;
-                        var pos = rc.GameObject.transform.position + clientDir * speed * UnityEngine.Time.deltaTime;
-                        rc.GameObject.transform.position = pos;
-                        dir.y = Fix64.One;
-                        var client_dir = new UnityEngine.Vector3((float)dir.x, (float)dir.y, (float)dir.z);
+                        var speed = (float)rc.Speed / 0.04f * moveScale;
+                        clientDir.Normalize();
 
-                        client_dir.y = 0;
-                        rc.Animator.transform.forward = client_dir;
+                        if (!UnityEngine.Physics.Raycast(rc.GameObject.transform.position, clientDir,
+                            speed * UnityEngine.Time.deltaTime + rc.Collider.radius, 1 << 0))
+                        {
+                            var pos = rc.GameObject.transform.position + clientDir * speed * UnityEngine.Time.deltaTime ;
+                            rc.GameObject.transform.position = pos;
+                            dir.y = Fix64.One;
+                            var client_dir = new UnityEngine.Vector3((float)dir.x, (float)dir.y, (float)dir.z);
+
+                            client_dir.y = 0;
+                            rc.Animator.transform.forward = client_dir;
+                        }
+                    
                     }
                     else
                     {

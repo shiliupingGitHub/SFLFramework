@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml;
-
+using UnityEngine;
 
 
 namespace GGame.Core
@@ -18,15 +18,19 @@ namespace GGame.Core
         
         public FixVector3 Face { get; set; } = new FixVector3((Fix64)1, (Fix64)0,(Fix64)0);
         public Fix64 Speed { get; set; } = Fix64.Zero;
+        public Fix64 MoveScale = (Fix64)1.0f;
+        public Fix64 Acceleration = Fix64.Zero;
 #if UNITY_2017_1_OR_NEWER
         private UnityEngine.GameObject _gameObject;
         private UnityEngine.Animator _animator;
-        
+        private UnityEngine.CharacterController _collider;
       
         public UnityEngine. GameObject GameObject
         {
             get { return _gameObject; }
         }
+
+        public CharacterController Collider => _collider;
 
         public UnityEngine. Animator Animator    {
             get { return _animator; }
@@ -42,7 +46,7 @@ namespace GGame.Core
 
             _gameObject = UnityEngine.GameObject.Instantiate(asset);
             _animator = _gameObject.GetComponentInChildren<UnityEngine. Animator>();
-            
+            _collider = _gameObject.GetComponent<CharacterController>();
 #endif
 
         }
