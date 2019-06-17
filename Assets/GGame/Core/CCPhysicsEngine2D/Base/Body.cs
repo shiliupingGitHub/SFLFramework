@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CCPhysicsEngine2D.Common;
-using Point = CCPhysicsEngine2D.Common.Point;
 
-namespace CCPhysicsEngine2D.Base
+namespace GGame.Core.Physics
 {
     /// <summary>
     ///     物体

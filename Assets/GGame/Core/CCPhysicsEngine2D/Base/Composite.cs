@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CCPhysicsEngine2D.Common;
+using GGame.Core.Physics;
 
-namespace CCPhysicsEngine2D.Base
+namespace GGame.Core.Physics
 {
     /// <summary>
     /// 组合

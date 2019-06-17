@@ -1,4 +1,4 @@
-﻿namespace CCPhysicsEngine2D.Core
+﻿namespace GGame.Core.Physics
 {
     public class Runner
     {

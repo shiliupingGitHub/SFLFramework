@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿
 
-namespace CCPhysicsEngine2D.Common
+namespace GGame.Core.Physics
 {
     public class Contact
     {

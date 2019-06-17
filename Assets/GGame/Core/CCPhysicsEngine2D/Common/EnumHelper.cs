@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace CCPhysicsEngine2D.Common
+namespace GGame.Core.Physics
 {
     internal static class EnumHelper
     {

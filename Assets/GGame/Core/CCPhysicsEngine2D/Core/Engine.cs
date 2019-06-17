@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using CCPhysicsEngine2D.Base;
-using CCPhysicsEngine2D.Common;
 
-namespace CCPhysicsEngine2D.Core
+namespace GGame.Core.Physics
 {
     /// <summary>
     /// 引擎

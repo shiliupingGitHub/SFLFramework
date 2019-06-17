@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace CCPhysicsEngine2D.Common
+namespace GGame.Core.Physics
 {
     /// <summary>
     /// 对象类型

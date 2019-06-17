@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using CCPhysicsEngine2D.Base;
-using CCPhysicsEngine2D.Core;
 
-namespace CCPhysicsEngine2D.Common
+namespace GGame.Core.Physics
 {
     public class Pair
     {

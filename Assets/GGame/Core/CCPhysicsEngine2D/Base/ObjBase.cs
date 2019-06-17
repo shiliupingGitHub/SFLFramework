@@ -1,6 +1,5 @@
-﻿using CCPhysicsEngine2D.Common;
-
-namespace CCPhysicsEngine2D.Base
+﻿
+namespace GGame.Core.Physics
 {
     /// <summary>
     /// 对象基类

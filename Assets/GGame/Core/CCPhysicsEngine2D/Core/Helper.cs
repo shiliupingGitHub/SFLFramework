@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using CCPhysicsEngine2D.Base;
-using CCPhysicsEngine2D.Common;
-using Point = CCPhysicsEngine2D.Common.Point;
+using Point = GGame.Core.Physics.Point;
 
-namespace CCPhysicsEngine2D.Core
+namespace GGame.Core.Physics
 {
     static class Helper
     {

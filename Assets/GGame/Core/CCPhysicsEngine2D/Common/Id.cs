@@ -1,4 +1,4 @@
-﻿namespace CCPhysicsEngine2D.Common
+﻿namespace GGame.Core.Physics
 {
     /// <summary>
     /// ID

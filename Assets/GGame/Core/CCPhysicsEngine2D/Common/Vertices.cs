@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using CCPhysicsEngine2D.Base;
 
-namespace CCPhysicsEngine2D.Common
+
+namespace GGame.Core.Physics
 {
     public class Vertices
     {

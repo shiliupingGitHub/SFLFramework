@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CCPhysicsEngine2D.Common;
+using GGame.Core.Physics;
 
-namespace CCPhysicsEngine2D.Base
+namespace GGame.Core.Physics
 {
     public static class Factory
     {
