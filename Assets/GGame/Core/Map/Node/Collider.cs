@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace GGame.Core
 {
-    public class Body : IDisposable, MapNode
+    public class Collider : MapNode
     {
         public FixVector3 Position
         {
@@ -35,8 +35,7 @@ namespace GGame.Core
         public void Load(XmlNode node)
         {
 
-            int a = 0;
-            int b = a;
+           
         }
     }
 }

@@ -1,8 +1,9 @@
+using System;
 using System.Xml;
 
 namespace GGame.Core
 {
-    public interface MapNode
+    public interface MapNode : IDisposable
     {
         void Load(XmlNode node);
     }

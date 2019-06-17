@@ -6,7 +6,7 @@ namespace GGame.Core
 {
     public class Map : IDisposable
     {
-        List<Body> _bodies = new List<Body>();
+        List<MapNode> _bodies = new List<MapNode>();
         public void Dispose()
         {
             foreach (var body in _bodies)
@@ -18,14 +18,7 @@ namespace GGame.Core
             ObjectPool.Instance.Recycle(this);
         }
 
-        public Body CreateBody()
-        {
-           var ret = ObjectPool.Instance.Fetch<Body>();
-            
-           _bodies.Add(ret);
-           return ret;
-        }
-
+        
         public void Load(string config)
         {
             XmlDocument document = new XmlDocument();
