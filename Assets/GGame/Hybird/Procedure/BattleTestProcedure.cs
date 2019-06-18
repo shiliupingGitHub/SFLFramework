@@ -26,10 +26,10 @@ namespace GGame.Hybird.Procedure
             
             JVector pos;
 
-            pos.X = (Fix64) startPos.position.x;
-            pos.Y = (Fix64) startPos.position.y;
-            pos.Z = (Fix64) startPos.position.z;
-            rc.Entity.Pos = pos;
+//            pos.X = (Fix64) startPos.position.x;
+//            pos.Y = (Fix64) startPos.position.y;
+//            pos.Z = (Fix64) startPos.position.z;
+//            rc.Entity.Pos = pos;
             rc.Entity.Euler = new JVector(0, -Fix64.PI * 0.5f , 0);
             rc.UpdatePostion();
             rc.UpdateFace();

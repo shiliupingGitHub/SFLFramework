@@ -15,6 +15,7 @@ namespace GGame.Core
         {
             get
             {
+                
                var xMatrix = JMatrix.CreateRotationX(Euler.X);
                var yMatrix = JMatrix.CreateRotationY(Euler.Y);
                var zMatrix = JMatrix.CreateRotationZ(Euler.Z);
@@ -22,7 +23,11 @@ namespace GGame.Core
                var v0 = JVector.Transform(JVector.Forward, xMatrix);
                var v1 = JVector.Transform(v0, yMatrix);
                var v2 = JVector.Transform(v1, zMatrix);
-               v2.Normalize();
+               v2.Z = 0;
+               v2.Y = 0;
+               
+               if(v2 != JVector.Zero)
+                    v2.Normalize();
                return v2;
             }
         }

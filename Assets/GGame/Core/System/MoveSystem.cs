@@ -1,7 +1,6 @@
 
 using GGame.Math;
 using Jitter.LinearMath;
-using UnityEngine;
 
 namespace GGame.Core
 {
@@ -10,59 +9,7 @@ namespace GGame.Core
     {
         public override void OnUpdate()
         {
-#if UNITY_2017_1_OR_NEWER  
-            foreach (MoveComponent mc in _interestComponents)
-            {
-                var rc = mc.Entity.GetComponent<RenderComponent>();
-                if (!mc.IsLock)
-                {
-                    var targetDis = mc.Speed * mc.MoveScale * 0.33;
-                    var targetPos = mc.Entity.Pos + mc.Entity.Forward * targetDis;
-                    
-                    
-                    var pos = mc.Entity.Pos;
-                    var dir = mc.Entity.Forward;
-                    Vector3 goPos = rc.GameObject.transform.position;
 
-                    if (targetDis != Fix64.Zero)
-                    {
-                        var physix = World.GetSystem<PhysixSystem>().PhysixWorld;
-
-                        if (physix.CollisionSystem.Raycast(pos, dir , null, out var body, out JVector n, out Fix64 f))
-                        {
-                            if (f > targetDis + mc.SizeX)
-                            {
-                                Fix64 dis = mc.Speed * mc.MoveScale * UnityEngine.Time.deltaTime;
-                                
-                                goPos += new UnityEngine.Vector3((float)dir.X, (float)dir.Y, (float)dir.Z) * (float)dis;
-                            }
-                            
-                        }
-                        else
-                        {
-                            Fix64 dis = mc.Speed * mc.MoveScale * UnityEngine.Time.deltaTime;
-                                
-                            goPos += new UnityEngine.Vector3((float)dir.X, (float)dir.Y, (float)dir.Z) * (float)dis;
-                        }
-                        
-
-                        rc.GameObject.transform.position = goPos;
-
-                    }
-                }
-                else
-                {
-
-                    if (null != rc)
-                    {
-                        if(null != rc.Animator)
-                            rc.Animator.SetFloat("SpeedX", (float) 0);
-                        rc.UpdatePostion();
-                        rc.UpdateFace();
-                    }
-                }
-            }
-#endif
         }
 
         public override void OnTick()
@@ -71,23 +18,24 @@ namespace GGame.Core
             foreach (MoveComponent mc in _interestComponents)
             {
                 var rc = mc.Entity.GetComponent<RenderComponent>();
-                
+                mc.MoveScale += mc.Acceleration;
+                if (mc.MoveScale <= Fix64.Zero)
+                {
+                    mc.MoveScale = Fix64.Zero;
+                    mc.Acceleration = Fix64.Zero;
+                }
+
+                if (mc.MoveScale >= Fix64.One)
+                {
+                    mc.MoveScale = Fix64.One;
+                    mc.Acceleration = Fix64.Zero;
+                }
             
                 if (!mc.IsLock)
                 {
-                    mc.MoveScale += mc.Acceleration;
-                    if (mc.MoveScale <= Fix64.Zero)
-                    {
-                        mc.MoveScale = Fix64.Zero;
-                        mc.Acceleration = Fix64.Zero;
-                    }
-
-                    if (mc.MoveScale >= Fix64.One)
-                    {
-                        mc.MoveScale = Fix64.One;
-                        mc.Acceleration = Fix64.Zero;
-                    }
-                    var dis = mc.Speed * mc.MoveScale * 0.033 ;
+                   
+                   
+                    var dis = mc.Speed * mc.MoveScale  ;
                     
                     var pos = mc.Entity.Pos;
                     var dir = mc.Entity.Forward;
@@ -108,36 +56,42 @@ namespace GGame.Core
                         {
                             pos += dir * dis;
                         }
+                        
+                        mc.Entity.Pos = pos;
+                        
                     }
- 
-                    
-                   
-                    mc.Entity.Pos = pos;
-#if UNITY_2017_1_OR_NEWER
-                    if (null != rc)
-                    {
-                        if(null != rc.Animator)
-                            rc.Animator.SetFloat("SpeedX", (float) mc.MoveScale);
-                        rc.UpdatePostion();
-                        rc.UpdateFace();
-                    }
-#endif
+
                 }
-                else
-                {
-#if UNITY_2017_1_OR_NEWER
-                    if (null != rc)
-                    {
-                        if(null != rc.Animator)
-                            rc.Animator.SetFloat("SpeedX", (float) 0);
-                        rc.UpdatePostion();
-                        rc.UpdateFace();
-                    }
-#endif
-                }
+                UpdateGameObjectPos(rc, mc);
+               
                 
                 
             }
+        }
+
+        void UpdateGameObjectPos(RenderComponent rc, MoveComponent mc)
+        {
+            
+#if UNITY_2017_1_OR_NEWER
+            if (null != rc)
+            {
+                if(null != rc.Animator)
+                    rc.Animator.SetFloat("SpeedX", (float) mc.MoveScale);
+
+                if (null != rc.GameObject)
+                {
+                    UnityEngine.Vector3 unityPos = new UnityEngine.Vector3((float)mc.Entity.Pos.X, (float)mc.Entity.Pos.Y, (float)mc.Entity.Pos.Z);
+                    UnityEngine.Vector3 goPos = rc.GameObject.transform.position;
+
+                    float d = UnityEngine.Vector3.Distance(unityPos, goPos);
+
+                    rc.UpdatePostion();
+                    rc.UpdateFace();
+                            
+                }
+                        
+            }
+#endif
         }
     }
 }

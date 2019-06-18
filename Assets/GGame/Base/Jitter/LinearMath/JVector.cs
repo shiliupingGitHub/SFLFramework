@@ -531,7 +531,7 @@ namespace Jitter.LinearMath
         public void Normalize()
         {
             Fix64 num2 = ((this.X * this.X) + (this.Y * this.Y)) + (this.Z * this.Z);
-            Fix64 num = 1f / ((Fix64)Math.Sqrt((double)num2));
+            Fix64 num = 1f / ((Fix64)Fix64.Sqrt(num2));
             this.X *= num;
             this.Y *= num;
             this.Z *= num;
@@ -545,7 +545,7 @@ namespace Jitter.LinearMath
         public static void Normalize(ref JVector value, out JVector result)
         {
             Fix64 num2 = ((value.X * value.X) + (value.Y * value.Y)) + (value.Z * value.Z);
-            Fix64 num = 1f / ((Fix64)Math.Sqrt((double)num2));
+            Fix64 num = 1f / ((Fix64)Fix64.Sqrt(num2));
             result.X = value.X * num;
             result.Y = value.Y * num;
             result.Z = value.Z * num;
@@ -571,7 +571,7 @@ namespace Jitter.LinearMath
         public Fix64 Length()
         {
             Fix64 num = ((this.X * this.X) + (this.Y * this.Y)) + (this.Z * this.Z);
-            return (Fix64)Math.Sqrt((double)num);
+            return (Fix64)Fix64.Sqrt(num);
         }
         #endregion
 

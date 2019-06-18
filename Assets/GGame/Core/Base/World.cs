@@ -53,7 +53,7 @@ namespace GGame.Core
             while (!isDisposed)
             {
                 Tick();
-                await Task.Delay(33);
+                await Task.Delay(30);
             }
         }
 

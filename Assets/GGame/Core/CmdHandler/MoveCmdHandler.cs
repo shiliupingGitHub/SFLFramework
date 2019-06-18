@@ -17,7 +17,7 @@ namespace GGame.Core
             }
             else
             {
-                //mc.MoveScale = (Fix64)1.0f;
+                mc.MoveScale = 1.0f;
                 entity.Euler = a.Dir;
                 mc.Acceleration = mc.ConfigAcceleration;
             }

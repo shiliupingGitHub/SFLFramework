@@ -1,7 +1,7 @@
 <Entity>
 <RenderComponent model = "1001"/>
-<MoveComponent speed = "8" acceleration = "0.5" sizeX = "1.0"/>
-<JumpComponent speed = "0.5"/>
+<MoveComponent speed = "0.2" acceleration = "0.5" sizeX = "1.0"/>
+<JumpComponent speed = "1"/>
 <SkillComponent>
 <Job id = "1">
 <AnimationJob frameNum = "35">
