@@ -14,10 +14,11 @@ namespace GGame.Core
 
         public override void OnTick()
         {
-#if UNITY_2017_1_OR_NEWER  
+
             foreach (MoveComponent mc in _interestComponents)
             {
                 var rc = mc.Entity.GetComponent<RenderComponent>();
+                
                 mc.MoveScale += mc.Acceleration;
                 if (mc.MoveScale <= Fix64.Zero)
                 {
@@ -31,52 +32,22 @@ namespace GGame.Core
                     mc.Acceleration = Fix64.Zero;
                 }
                 
-                
-                if (null != rc && rc.Collider != null)
+                if (!mc.IsLock)
                 {
-                    if (!mc.IsLock)
-                    {
-                        
-                        
-                        
-                        var pos = rc.Pos;
-
-                        var dir = mc.Dir;
-                        var speed = mc.Speed * mc.MoveScale;
-
-                        if (!UnityEngine.Physics.Raycast(new Vector3((float) pos.x, (float) pos.y, (float) pos.z),
-                            new Vector3((float) dir.x, (float) dir.y, (float) pos.z)
-                            , (float) speed + rc.Collider.radius, 1 << 0))
-                        {
-                            pos += dir * speed;
-                        }
-                        
-
-                       
-                        
-                        
-                        rc.Pos = pos;
-
-                        rc.Speed = mc.Speed;
-                        rc.MoveDir = dir;
-                        rc.MoveScale = mc.MoveScale;
-                        rc.Acceleration = mc.Acceleration;
-                        dir.y = Fix64.Zero;
-                        
-                        if(dir != FixVector3.Zero)
-                            rc.Face = dir.GetNormalized();
-                    }
-
-                    else
-                    {
-                        rc.MoveDir = FixVector3.Zero;
-                    }
-
                     
+                    var pos = mc.Entity.Pos;
+                    var dir = mc.Entity.Forward;
+                    var speed = mc.Speed * mc.MoveScale;
+
+
+                    pos += dir * speed;
+                    mc.Entity.Pos = pos;
+                    
+                    if(null != rc && null != rc.Animator)
+                        rc.Animator.SetFloat("SpeedX", (float)mc.MoveScale);
                 }
                 
             }
-#endif
         }
     }
 }

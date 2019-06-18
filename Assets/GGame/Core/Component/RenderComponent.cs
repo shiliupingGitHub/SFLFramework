@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using GGame.Math;
+using Jitter.LinearMath;
 using UnityEngine;
 
 
@@ -9,15 +10,6 @@ namespace GGame.Core
     public class RenderComponent : Component
     {
         private int _modelId = 0;
-        private FixVector3 _pos = FixVector3.Zero;
-
-        public FixVector3 MoveDir
-        {
-            get;
-            set;
-        } = FixVector3.Zero;
-        
-        public FixVector3 Face { get; set; } = new FixVector3((Fix64)1, (Fix64)0,(Fix64)0);
         public Fix64 Speed { get; set; } = Fix64.Zero;
         public Fix64 MoveScale = (Fix64)1.0f;
         public Fix64 Acceleration = Fix64.Zero;
@@ -53,29 +45,21 @@ namespace GGame.Core
         }
 
 
-        public FixVector3 Pos
-        {
-            set
-            {
-                _pos = value;
-            }
-            get { return _pos; }
-            
-        }
-
-
+ 
+        
         public void UpdatePostion()
         {
 #if UNITY_2017_1_OR_NEWER
             
-            _gameObject.transform.position =new UnityEngine.Vector3((float)_pos.x, (float)_pos.y, (float)_pos.z);;
+            _gameObject.transform.position =new UnityEngine.Vector3((float)Entity.Pos.X, (float)Entity.Pos.Y, (float)Entity.Pos.Z);;
 #endif
         }
 
         public void UpdateFace()
         {
 #if UNITY_2017_1_OR_NEWER
-            _animator.transform.forward =new UnityEngine.Vector3((float)Face.x, (float)Face.y, (float)Face.z);;
+            var dir = Entity.Forward;
+            _animator.transform.forward =new UnityEngine.Vector3((float)dir.X, (float)dir.Y, (float)dir.Z);;
 #endif
         }
         

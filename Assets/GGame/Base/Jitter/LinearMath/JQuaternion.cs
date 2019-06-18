@@ -82,14 +82,14 @@ namespace Jitter.LinearMath
         public static void CreateFromYawPitchRoll(Fix64 yaw, Fix64 pitch, Fix64 roll, out JQuaternion result)
         {
             Fix64 num9 = roll * 0.5f;
-            Fix64 num6 = (Fix64)Math.Sin((double)num9);
-            Fix64 num5 = (Fix64)Math.Cos((double)num9);
+            Fix64 num6 = (Fix64)Fix64.Sin(num9);
+            Fix64 num5 = (Fix64)Fix64.Cos(num9);
             Fix64 num8 = pitch * 0.5f;
-            Fix64 num4 = (Fix64)Math.Sin((double)num8);
-            Fix64 num3 = (Fix64)Math.Cos((double)num8);
+            Fix64 num4 = (Fix64)Fix64.Sin(num8);
+            Fix64 num3 = (Fix64)Fix64.Cos(num8);
             Fix64 num7 = yaw * 0.5f;
-            Fix64 num2 = (Fix64)Math.Sin((double)num7);
-            Fix64 num = (Fix64)Math.Cos((double)num7);
+            Fix64 num2 = (Fix64)Fix64.Sin(num7);
+            Fix64 num = (Fix64)Fix64.Cos(num7);
             result.X = ((num * num4) * num5) + ((num2 * num3) * num6);
             result.Y = ((num2 * num3) * num5) - ((num * num4) * num6);
             result.Z = ((num * num3) * num6) - ((num2 * num4) * num5);
@@ -230,7 +230,7 @@ namespace Jitter.LinearMath
         public void Normalize()
         {
             Fix64 num2 = (((this.X * this.X) + (this.Y * this.Y)) + (this.Z * this.Z)) + (this.W * this.W);
-            Fix64 num = 1f / ((Fix64)Math.Sqrt((double)num2));
+            Fix64 num = 1f / ((Fix64)Fix64.Sqrt(num2));
             this.X *= num;
             this.Y *= num;
             this.Z *= num;
@@ -261,7 +261,7 @@ namespace Jitter.LinearMath
             Fix64 num8 = (matrix.M11 + matrix.M22) + matrix.M33;
             if (num8 > 0f)
             {
-                Fix64 num = (Fix64)Math.Sqrt((double)(num8 + 1f));
+                Fix64 num = (Fix64)Fix64.Sqrt((num8 + 1f));
                 result.W = num * 0.5f;
                 num = 0.5f / num;
                 result.X = (matrix.M23 - matrix.M32) * num;
@@ -270,7 +270,7 @@ namespace Jitter.LinearMath
             }
             else if ((matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33))
             {
-                Fix64 num7 = (Fix64)Math.Sqrt((double)(((1f + matrix.M11) - matrix.M22) - matrix.M33));
+                Fix64 num7 = (Fix64)Fix64.Sqrt((((1f + matrix.M11) - matrix.M22) - matrix.M33));
                 Fix64 num4 = 0.5f / num7;
                 result.X = 0.5f * num7;
                 result.Y = (matrix.M12 + matrix.M21) * num4;
@@ -279,7 +279,7 @@ namespace Jitter.LinearMath
             }
             else if (matrix.M22 > matrix.M33)
             {
-                Fix64 num6 = (Fix64)Math.Sqrt((double)(((1f + matrix.M22) - matrix.M11) - matrix.M33));
+                Fix64 num6 = (Fix64)Fix64.Sqrt((((1f + matrix.M22) - matrix.M11) - matrix.M33));
                 Fix64 num3 = 0.5f / num6;
                 result.X = (matrix.M21 + matrix.M12) * num3;
                 result.Y = 0.5f * num6;
@@ -288,7 +288,7 @@ namespace Jitter.LinearMath
             }
             else
             {
-                Fix64 num5 = (Fix64)Math.Sqrt((double)(((1f + matrix.M33) - matrix.M11) - matrix.M22));
+                Fix64 num5 = (Fix64)Fix64.Sqrt((((1f + matrix.M33) - matrix.M11) - matrix.M22));
                 Fix64 num2 = 0.5f / num5;
                 result.X = (matrix.M31 + matrix.M13) * num2;
                 result.Y = (matrix.M32 + matrix.M23) * num2;

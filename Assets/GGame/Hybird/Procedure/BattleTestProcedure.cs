@@ -2,6 +2,7 @@ using Cinemachine;
 using GGame.Core;
 using GGame.Hybird.Hotfix;
 using GGame.Math;
+using Jitter.LinearMath;
 using UnityEngine;
 
 namespace GGame.Hybird.Procedure
@@ -22,12 +23,13 @@ namespace GGame.Hybird.Procedure
             camera.m_Follow = rc.GameObject.transform;
             camera.m_LookAt = rc.GameObject.transform;
             
-            FixVector3 pos;
+            JVector pos;
 
-            pos.x = (Fix64) startPos.position.x;
-            pos.y = (Fix64) startPos.position.y;
-            pos.z = (Fix64) startPos.position.z;
-            rc.Pos = pos;
+            pos.X = (Fix64) startPos.position.x;
+            pos.Y = (Fix64) startPos.position.y;
+            pos.Z = (Fix64) startPos.position.z;
+            rc.Entity.Pos = pos;
+            rc.Entity.Euler = new JVector(0, -Fix64.PI * 0.5f , 0);
             rc.UpdatePostion();
             rc.UpdateFace();
         

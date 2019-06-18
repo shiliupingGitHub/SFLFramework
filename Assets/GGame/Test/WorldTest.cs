@@ -5,6 +5,7 @@ using UnityEngine;
 using GGame.Core;
 using GGame.Hybird.Procedure;
 using GGame.Math;
+using Jitter.LinearMath;
 
 
 public class WorldTest : MonoBehaviour
@@ -31,7 +32,8 @@ public class WorldTest : MonoBehaviour
             return;
         
         var world =procedure.world;
-        FixVector3 dir = FixVector3.Zero;
+        JVector dir = JVector.Zero;
+        bool isMove = false;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
                           Input.GetKeyUp(KeyCode.D) || 
                           Input.GetKeyUp(KeyCode.W)  ||
@@ -46,7 +48,8 @@ public class WorldTest : MonoBehaviour
         {
             changeCmd = true;
 
-            dir.x = -Fix64.One;
+            dir.Y = -Fix64.PI * 0.5;
+            isMove = true;
 
         }
 
@@ -54,7 +57,8 @@ public class WorldTest : MonoBehaviour
         {
             changeCmd = true;
 
-            dir.x = Fix64.One;
+            dir.Y = Fix64.PI * 0.5;
+            isMove = true;
         }
 
         if (changeCmd)
@@ -63,7 +67,7 @@ public class WorldTest : MonoBehaviour
             
             CmdInfo info;
             cmd.Dir = dir;
-            
+            cmd.isMove = isMove;
             info.Uuid = 1;
             info.Cmd = cmd;
             world?.AddCachCmde(world.FrameIndex +1, info);

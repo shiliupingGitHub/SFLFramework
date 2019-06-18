@@ -1,0 +1,8 @@
+<Map>
+  <Entity positionX="33.28371" positionY="-28.67081" eulerX="0" eulerY="0" eulerZ="0">
+    <BoxShaperComponent sizeX="1" sizeY="1" sizeZ="1" centerX="33.28371" centerY="-14.80519" centerZ="-28.67081" />
+  </Entity>
+  <Entity positionX="20" positionY="0" eulerX="0" eulerY="0" eulerZ="0">
+    <BoxShaperComponent sizeX="1" sizeY="3.369618" sizeZ="9.954501" centerX="20" centerY="1.19" centerZ="0" />
+  </Entity>
+</Map>

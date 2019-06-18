@@ -1,6 +1,7 @@
 
 
 using Jitter.Collision;
+using Jitter.Dynamics;
 
 namespace GGame.Core
 {
@@ -18,7 +19,9 @@ namespace GGame.Core
         }
         public override void OnUpdate()
         {
+            RigidBody bd;
             
+
         }
 
         public override void OnTick()

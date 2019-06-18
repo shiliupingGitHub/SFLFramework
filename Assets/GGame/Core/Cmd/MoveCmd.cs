@@ -1,5 +1,6 @@
 ﻿
 using GGame.Math;
+using Jitter.LinearMath;
 
 namespace GGame.Core
 {
@@ -7,8 +8,8 @@ namespace GGame.Core
     public struct MoveCmd
     {
 
-        public FixVector3 Dir;
-        
+        public JVector Dir;
+        public bool isMove;
     }
 }
 

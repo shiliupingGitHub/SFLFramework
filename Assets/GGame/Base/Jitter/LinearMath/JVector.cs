@@ -101,8 +101,8 @@ namespace Jitter.LinearMath
             Right = new JVector(-1, 0, 0);
             Up = new JVector(0, 1, 0);
             Down = new JVector(0, -1, 0);
-            Backward = new JVector(0, 0, 1);
-            Forward = new JVector(0, 0, -1);
+            Backward = new JVector(0, 0, -1);
+            Forward = new JVector(0, 0, 1);
             MinValue = new JVector(Fix64.MinValue);
             MaxValue = new JVector(Fix64.MaxValue);
             Arbitrary = new JVector(1, 1, 1);
