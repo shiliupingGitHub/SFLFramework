@@ -68,7 +68,7 @@ public class WorldTest : MonoBehaviour
             CmdInfo info;
             cmd.Dir = dir;
             cmd.isMove = isMove;
-            info.Uuid = 1;
+            info.Uuid = 10000001;
             info.Cmd = cmd;
             world?.AddCachCmde(world.FrameIndex +1, info);
         }

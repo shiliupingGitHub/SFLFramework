@@ -36,7 +36,7 @@ namespace GGame.Hotfix
 
                 cmd.id = 1;
                 CmdInfo info;
-                info.Uuid = 1;
+                info.Uuid = 10000001;
                 info.Cmd = cmd;
 
                 var procedure = GGameEnv.Instance.Get<BattleTestProcedure>();
