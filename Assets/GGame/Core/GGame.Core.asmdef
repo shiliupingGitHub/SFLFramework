@@ -1,7 +1,8 @@
 {
     "name": "GGame.Core",
     "references": [
-        "GUID:5c1ff9bd975acec488150743d53a93ca"
+        "GUID:5c1ff9bd975acec488150743d53a93ca",
+        "GUID:749b2bcb0efb3ec4683e993258c34d76"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
