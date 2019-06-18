@@ -72,21 +72,22 @@ namespace GGame.Core
             {
                 var rc = mc.Entity.GetComponent<RenderComponent>();
                 
-                mc.MoveScale += mc.Acceleration;
-                if (mc.MoveScale <= Fix64.Zero)
-                {
-                    mc.MoveScale = Fix64.Zero;
-                    mc.Acceleration = Fix64.Zero;
-                }
-
-                if (mc.MoveScale >= Fix64.One)
-                {
-                    mc.MoveScale = Fix64.One;
-                    mc.Acceleration = Fix64.Zero;
-                }
-                var dis = mc.Speed * mc.MoveScale * 0.033 ;
+            
                 if (!mc.IsLock)
                 {
+                    mc.MoveScale += mc.Acceleration;
+                    if (mc.MoveScale <= Fix64.Zero)
+                    {
+                        mc.MoveScale = Fix64.Zero;
+                        mc.Acceleration = Fix64.Zero;
+                    }
+
+                    if (mc.MoveScale >= Fix64.One)
+                    {
+                        mc.MoveScale = Fix64.One;
+                        mc.Acceleration = Fix64.Zero;
+                    }
+                    var dis = mc.Speed * mc.MoveScale * 0.033 ;
                     
                     var pos = mc.Entity.Pos;
                     var dir = mc.Entity.Forward;
