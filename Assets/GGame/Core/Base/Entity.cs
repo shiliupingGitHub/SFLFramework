@@ -22,12 +22,23 @@ namespace GGame.Core
                var v0 = JVector.Transform(JVector.Forward, xMatrix);
                var v1 = JVector.Transform(v0, yMatrix);
                var v2 = JVector.Transform(v1, zMatrix);
-               
+               v2.Normalize();
                return v2;
             }
         }
-        
-        
+
+        public JMatrix Orientation
+        {
+            get
+            {
+                var xMatrix = JMatrix.CreateRotationX(Euler.X);
+                var yMatrix = JMatrix.CreateRotationY(Euler.Y);
+                var zMatrix = JMatrix.CreateRotationZ(Euler.Z);
+
+                return xMatrix * yMatrix * zMatrix;
+            }
+            
+        }
         private World _world;
         public int Camp { get; set; }
         private readonly Dictionary<Type, Component> _components = new Dictionary<Type, Component>();

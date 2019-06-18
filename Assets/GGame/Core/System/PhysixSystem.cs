@@ -2,6 +2,7 @@
 
 using Jitter.Collision;
 using Jitter.Dynamics;
+using Jitter.LinearMath;
 
 namespace GGame.Core
 {
@@ -14,12 +15,13 @@ namespace GGame.Core
 
         public PhysixSystem()
         {
-            CollisionSystemSAP collisionSystemSap = new CollisionSystemSAP();
+            CollisionSystemPersistentSAP collisionSystemSap = new CollisionSystemPersistentSAP();
             _physixWorld = new Jitter.World(collisionSystemSap);
+            _physixWorld.Gravity = JVector.Zero;
         }
         public override void OnUpdate()
         {
-            RigidBody bd;
+           
             
 
         }

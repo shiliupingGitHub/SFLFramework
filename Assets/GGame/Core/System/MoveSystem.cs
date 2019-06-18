@@ -1,5 +1,6 @@
 
 using GGame.Math;
+using Jitter.LinearMath;
 using UnityEngine;
 
 namespace GGame.Core
@@ -31,16 +32,33 @@ namespace GGame.Core
                     mc.MoveScale = Fix64.One;
                     mc.Acceleration = Fix64.Zero;
                 }
-                
+                var speed = mc.Speed * mc.MoveScale ;
                 if (!mc.IsLock)
                 {
                     
                     var pos = mc.Entity.Pos;
                     var dir = mc.Entity.Forward;
-                    var speed = mc.Speed * mc.MoveScale;
 
+                    if (speed != Fix64.Zero)
+                    {
+                        var physix = World.GetSystem<PhysixSystem>().PhysixWorld;
 
-                    pos += dir * speed;
+                        if (physix.CollisionSystem.Raycast(pos, dir , null, out var body, out JVector n, out Fix64 f))
+                        {
+                            if (f > speed + 1)
+                            {
+                                pos += dir * speed;
+                            }
+                            
+                        }
+                        else
+                        {
+                            pos += dir * speed;
+                        }
+                    }
+ 
+                    
+                   
                     mc.Entity.Pos = pos;
                     
                     if(null != rc && null != rc.Animator)

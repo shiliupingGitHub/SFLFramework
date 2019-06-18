@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml;
 using UnityEngine;
 
 namespace GGame.Core
@@ -18,6 +19,7 @@ namespace GGame.Core
         List<IJob> _CacheRmoveJob = new List<IJob>();
         public ulong FrameIndex => _frameIndex;
         Controller _controller = new Controller();
+        private ulong incID = 1;
         public Controller Controller
         {
             get => _controller;
@@ -32,6 +34,18 @@ namespace GGame.Core
             if(autoTick)
                 StartTick();
         }
+
+        public ulong GeneratedUUIID
+        {
+            get
+            {
+                incID++;
+
+                return incID;
+            }
+            
+        }
+        
         
         async void StartTick()
         {
@@ -88,6 +102,27 @@ namespace GGame.Core
             return e;
         }
 
+        public void LoadMap(int configId)
+        {
+            var configPath = $"map_config_{configId}";
+            var configText = ResourceManager.Instance.LoadText(configPath);
+            
+            XmlDocument doc = new XmlDocument();
+            
+            doc.LoadXml(configText);
+            var rootNode = doc.FirstChild;
+
+            var entityNode = rootNode.FirstChild;
+
+            while (null != entityNode)
+            {
+                var e = ObjectPool.Instance.Fetch<Entity>();
+                e.Init(this,entityNode);
+                ulong uiid = GeneratedUUIID;
+                _entities[uiid] = e;
+                entityNode = entityNode.NextSibling;
+            }
+        }
         
         public void AddIntrest(Type t, System system)
         {

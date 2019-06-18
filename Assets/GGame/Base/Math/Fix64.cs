@@ -22,10 +22,10 @@ namespace GGame.Math
     public static readonly Fix64 PIOver180 = new Fix64((long)72);
     public static readonly Fix64 Rad2Deg = Fix64.Pi * (Fix64)2 / (Fix64)360;
     public static readonly Fix64 Deg2Rad = (Fix64)360 / (Fix64.Pi * (Fix64)2);
-    
-    public static readonly Fix64 MinValue = -3.402823E+38f;
+
+    public static readonly Fix64 MinValue = -3.402823E+12f;
     public static readonly Fix64 Epsilon = 1.401298E-45f;
-    public static readonly Fix64 MaxValue = 3.402823E+38f;
+    public static readonly Fix64 MaxValue = 3.402823E+12f;
     public static readonly Fix64 PositiveInfinity = 1.0f / 0.0f;
     public static readonly Fix64 NegativeInfinity = -1.0f / 0.0f;
     public static readonly Fix64 NaN = 0.0f / 0.0f;

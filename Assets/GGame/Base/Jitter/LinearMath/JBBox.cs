@@ -145,7 +145,8 @@ namespace Jitter.LinearMath
         private bool Intersect1D(Fix64 start, Fix64 dir, Fix64 min, Fix64 max,
             ref Fix64 enter,ref Fix64 exit)
         {
-            if (dir * dir < JMath.Epsilon * JMath.Epsilon) return (start >= min && start <= max);
+            
+            if (dir * dir <= JMath.Epsilon * JMath.Epsilon) return (start >= min && start <= max);
 
             Fix64 t0 = (min - start) / dir;
             Fix64 t1 = (max - start) / dir;
@@ -178,7 +179,7 @@ namespace Jitter.LinearMath
 
         public bool RayIntersect(ref JVector origin, ref JVector direction)
         {
-            Fix64 enter = 0.0f, exit = Fix64.MaxValue;
+            Fix64 enter = Fix64.MinValue, exit = Fix64.MaxValue;
 
             if (!Intersect1D(origin.X, direction.X, Min.X, Max.X, ref enter, ref exit))
                 return false;

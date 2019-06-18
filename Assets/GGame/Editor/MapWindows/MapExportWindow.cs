@@ -87,9 +87,9 @@ public class MapExportWindow : EditorWindow
                     var centerY = doc.CreateAttribute("centerY");
                     var centerZ = doc.CreateAttribute("centerZ");
 
-                    centerX.Value = box.bounds.center.x.ToString();
-                    centerY.Value = box.bounds.center.y.ToString();
-                    centerZ.Value = box.bounds.center.z.ToString();
+                    centerX.Value = box.center.x.ToString();
+                    centerY.Value = box.center.y.ToString();
+                    centerZ.Value = box.center.z.ToString();
 
                     bocC.Attributes.Append(centerX);
                     bocC.Attributes.Append(centerY);
@@ -97,7 +97,7 @@ public class MapExportWindow : EditorWindow
                     
                     var positionX = doc.CreateAttribute("positionX");
                     var positionY = doc.CreateAttribute("positionY");
-                    var positionZ = doc.CreateAttribute("positionY");
+                    var positionZ = doc.CreateAttribute("positionZ");
 
                     positionX.Value = go.transform.position.x.ToString();
                     positionY.Value = go.transform.position.y.ToString();
