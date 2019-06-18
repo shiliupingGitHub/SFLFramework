@@ -45,7 +45,7 @@ namespace GGame.Core
 
                         if (physix.CollisionSystem.Raycast(pos, dir , null, out var body, out JVector n, out Fix64 f))
                         {
-                            if (f > speed + 1)
+                            if (f > speed + mc.SizeX)
                             {
                                 pos += dir * speed;
                             }
