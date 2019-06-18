@@ -8,9 +8,8 @@
 //
 
 using System;
-using System.IO;
 
-namespace GGame.Core
+namespace GGame.Math
 {
     public partial struct Fix64 : IEquatable<Fix64>, IComparable<Fix64> {
     readonly long m_rawValue;
@@ -298,7 +297,7 @@ namespace GGame.Core
     }
     public string ToStringRound(int round = 2)
     {
-        return (float)Math.Round((float)this, round) + "";
+        return (float)System.Math.Round((float)this, round) + "";
     }
 
     public static Fix64 FromRaw(long rawValue) {

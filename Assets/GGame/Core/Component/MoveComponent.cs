@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using GGame.Math;
 
 namespace GGame.Core
 {

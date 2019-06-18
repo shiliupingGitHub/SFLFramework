@@ -1,4 +1,6 @@
 ﻿
+using GGame.Math;
+
 namespace GGame.Core
 {
     [Cmd("move")]
