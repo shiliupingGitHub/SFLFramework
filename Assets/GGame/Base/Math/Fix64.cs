@@ -22,6 +22,14 @@ namespace GGame.Math
     public static readonly Fix64 PIOver180 = new Fix64((long)72);
     public static readonly Fix64 Rad2Deg = Fix64.Pi * (Fix64)2 / (Fix64)360;
     public static readonly Fix64 Deg2Rad = (Fix64)360 / (Fix64.Pi * (Fix64)2);
+    
+    public static readonly Fix64 MinValue = -3.402823E+38f;
+    public static readonly Fix64 Epsilon = 1.401298E-45f;
+    public static readonly Fix64 MaxValue = 3.402823E+38f;
+    public static readonly Fix64 PositiveInfinity = 1.0f / 0.0f;
+    public static readonly Fix64 NegativeInfinity = -1.0f / 0.0f;
+    public static readonly Fix64 NaN = 0.0f / 0.0f;
+    
 
     const long Pi = 12868;
     const long PiTimes2 = 25736;
@@ -35,6 +43,7 @@ namespace GGame.Math
             value.m_rawValue > 0 ? 1 :
             0;
     }
+
 
     public static Fix64 Abs(Fix64 value) {
         return new Fix64(value.m_rawValue > 0 ? value.m_rawValue : -value.m_rawValue);
@@ -244,17 +253,18 @@ namespace GGame.Math
     {
         return new Fix64(x.RawValue << amount);
     }
-
-
+    
    public static explicit operator Fix64(long value) {
         return new Fix64(value * ONE);
     }
     public static explicit operator long(Fix64 value) {
         return value.m_rawValue >> FRACTIONAL_PLACES;
     }
-    public static explicit operator Fix64(float value) {
+    public static implicit operator Fix64(float value) {
         return new Fix64((long)(value * ONE));
     }
+    
+    
     public static explicit operator float(Fix64 value) {
         return (float)value.m_rawValue / ONE;
     }
@@ -332,7 +342,6 @@ namespace GGame.Math
     public Fix64(int value) {
         m_rawValue = value * ONE;
     }
-
     public static Fix64 Sqrt(Fix64 f, int numberIterations)
     {
         if (f.RawValue < 0)
@@ -361,6 +370,80 @@ namespace GGame.Math
         if (f.RawValue > 0x3e8000)
             numberOfIterations = 16;
         return Sqrt(f, numberOfIterations);
+    }
+    
+    
+    public static Fix64 Powf(Fix64 a, Fix64 b)
+    {
+        int ACCURACY = 100;
+        if (a == 0 && b > 0)
+        {
+            return 0;
+        }
+        else if (a == 0 && b <= 0)
+        {
+            return Fix64.NaN;
+        }
+        else if (a < 0 && !(b - (int)b < (Fix64)0.0001 || (b - (int)b > (Fix64)0.999)))
+        {
+            return Fix64.NaN;
+        }
+
+        if (a <= 2 && a >= 0)
+        {
+            Fix64 t = a - 1;
+            Fix64 answer = 1;
+            for (int i = 1; i < ACCURACY; i++)
+            {
+                answer = answer + func1(t, i) * func2(b, i);
+            }
+            return answer;
+        }
+
+        else if (a > 2)
+        {
+            int time = 0;
+
+            while (a > 2)
+            {
+                a = a / 2;
+                time++;
+            }
+
+            return Powf(a, b) * Powf(2, b * time);
+        }
+
+        else
+        {
+            if ((int)b % 2 == 0)
+            {
+                return Powf(-a, b);
+            }
+            else
+            {
+                return -Powf(-a, b);
+            }
+        }
+    }
+    static Fix64 func1(Fix64 t, int n)
+    {
+        Fix64 answer = 1;
+        for (int i = 0; i < n; i++)
+        {
+            answer = answer * t;
+        }
+
+        return answer;
+    }
+    static Fix64 func2(Fix64 b, int n)
+    {
+        Fix64 answer = 1;
+        for (int i = 1; i <= n; i++)
+        {
+            answer = answer * (b - i + 1) / i;
+        }
+
+        return answer;
     }
 
 
