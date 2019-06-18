@@ -50,8 +50,8 @@ namespace GGame.Core
         public void UpdatePostion()
         {
 #if UNITY_2017_1_OR_NEWER
-            
-            _gameObject.transform.position =new UnityEngine.Vector3((float)Entity.Pos.X, (float)Entity.Pos.Y, (float)Entity.Pos.Z);;
+            if(null != _gameObject)
+                _gameObject.transform.position =new UnityEngine.Vector3((float)Entity.Pos.X, (float)Entity.Pos.Y, (float)Entity.Pos.Z);;
 #endif
         }
 
@@ -59,7 +59,8 @@ namespace GGame.Core
         {
 #if UNITY_2017_1_OR_NEWER
             var dir = Entity.Forward;
-            _animator.transform.forward =new UnityEngine.Vector3((float)dir.X, (float)dir.Y, (float)dir.Z);;
+            if(null != _animator)
+                _animator.transform.forward =new UnityEngine.Vector3((float)dir.X, (float)dir.Y, (float)dir.Z);;
 #endif
         }
         

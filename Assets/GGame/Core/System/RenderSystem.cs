@@ -10,12 +10,7 @@ namespace GGame.Core
     {
         public override void OnUpdate()
         {
-            foreach (RenderComponent component in _interestComponents)
-            {
-                component.UpdateFace();
-                component.UpdatePostion();
-                
-            }
+            
         
         }
 
