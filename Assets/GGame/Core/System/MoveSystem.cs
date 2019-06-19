@@ -72,7 +72,7 @@ namespace GGame.Core
         void UpdateGameObjectPos(RenderComponent rc, MoveComponent mc)
         {
             
-#if UNITY_2017_1_OR_NEWER
+#if CLIENT_LOGIC
             if (null != rc)
             {
                 if(null != rc.Animator)

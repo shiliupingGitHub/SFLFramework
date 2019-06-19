@@ -53,7 +53,7 @@ namespace GGame.Core
             while (!isDisposed)
             {
                 Tick();
-                await Task.Delay(30);
+                await Task.Delay((int) ( ConstDefine.StepTime * 1000f));
             }
         }
 
