@@ -5,6 +5,7 @@ namespace GGame.Core
     public class PlayerLoopManager
     {
         public Action OnUpdate;
+        public Action OnTick;
         private static PlayerLoopManager _instance;
 
         public static PlayerLoopManager Instance

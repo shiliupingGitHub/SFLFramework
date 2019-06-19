@@ -20,6 +20,7 @@ namespace GGame.Core
         public ulong FrameIndex => _frameIndex;
         Controller _controller = new Controller();
         private ulong incID = 1;
+        private bool _isAutoTick = false;
         public Controller Controller
         {
             get => _controller;
@@ -30,9 +31,13 @@ namespace GGame.Core
         public World(bool autoTick)
         {
             GGameEnv.Instance.CreateWorldSystem(this);
-            PlayerLoopManager.Instance.OnUpdate += Update;
-            if(autoTick)
-                StartTick();
+            
+            _isAutoTick = autoTick;
+            if (autoTick)
+            {
+                PlayerLoopManager.Instance.OnUpdate += Update;
+                PlayerLoopManager.Instance.OnTick += Tick;
+            }
         }
 
         public ulong GeneratedUUIID
@@ -47,15 +52,7 @@ namespace GGame.Core
         }
         
         
-        async void StartTick()
-        {
-           
-            while (!isDisposed)
-            {
-                Tick();
-                await Task.Delay((int) ( ConstDefine.StepTime * 1000f));
-            }
-        }
+     
 
         public T GetSystem<T>() where T: System
         {
@@ -165,7 +162,13 @@ namespace GGame.Core
             _frameIndex = 0;
             _CacheAddJob.Clear();
             _CacheRmoveJob.Clear();
-            PlayerLoopManager.Instance.OnUpdate -= Update;
+           
+            if (_isAutoTick)
+            {
+                PlayerLoopManager.Instance.OnUpdate -= Update;
+                PlayerLoopManager.Instance.OnTick -= Tick;
+            }
+            
             
         }
 

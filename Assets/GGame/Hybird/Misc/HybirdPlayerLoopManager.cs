@@ -17,9 +17,15 @@ namespace GGame.Hybird
             
             looper.LoopAction += delegate
             {
-                if (null != OnUpdate)
-                    OnUpdate();
+                OnUpdate?.Invoke();
+            };
+            
+            looper.TickAction += delegate
+            {
+                OnTick?.Invoke();
             };
         }
+        
+        
     }
 }
