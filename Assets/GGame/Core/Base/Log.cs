@@ -4,14 +4,14 @@ namespace GGame.Core
     {
         public static void Debug(string info)
         {
-#if     UNITY_2017_1_OR_NEWER
+#if     CLIENT_LOGIC
             UnityEngine.Debug.Log(info);
 #endif
         }
 
         public static void Error(string info)
         {
-#if UNITY_2017_1_OR_NEWER
+#if CLIENT_LOGIC
             UnityEngine.Debug.LogError(info);
 #endif
         }

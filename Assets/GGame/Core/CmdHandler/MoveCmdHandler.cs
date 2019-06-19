@@ -10,17 +10,7 @@ namespace GGame.Core
         {
             var mc = entity.GetComponent<MoveComponent>();
 
-            if (!a.isMove)
-            {
-                mc.Acceleration = -mc.ConfigAcceleration;
-                //mc.MoveScale = (Fix64)1.0;
-            }
-            else
-            {
-                mc.MoveScale = 1.0f;
-                entity.Euler = a.Dir;
-                mc.Acceleration = mc.ConfigAcceleration;
-            }
+            
            
             
         }

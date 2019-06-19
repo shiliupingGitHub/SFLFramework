@@ -12,7 +12,7 @@ namespace GGame.Core
 
         public override byte[] FileOpen(string filePath, string ext)
         {
-#if UNITY_2017_1_OR_NEWER
+#if CLIENT_LOGIC
             string path = Path.GetFileNameWithoutExtension(filePath);
             return ResourceManager.Instance.LoadBytes(path);
 #endif

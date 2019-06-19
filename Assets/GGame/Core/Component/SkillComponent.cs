@@ -33,7 +33,6 @@ namespace GGame.Core
             if (_jobs.TryGetValue(id, out var job))
             {
                 CurJobId = id;
-                Entity.GetComponent<MoveComponent>().IsLock = true;
                 job.Schedule(OnFinishJob);
             }
             
@@ -42,8 +41,7 @@ namespace GGame.Core
         void OnFinishJob()
         {
             CurJobId = 0;
-            Entity.GetComponent<MoveComponent>().IsLock = false;
-            
+
         }
 
         public void Cancel()
@@ -53,7 +51,6 @@ namespace GGame.Core
                 job.Cancel();
             }
             CurJobId = 0;
-            Entity.GetComponent<MoveComponent>().IsLock = false;
         }
         void AddJobs(XmlNode xmlNode)
         {
