@@ -5,8 +5,6 @@ using UnityEngine;
 using GGame.Core;
 using GGame.Hybird.Procedure;
 using GGame.Math;
-using Jitter.LinearMath;
-
 
 public class WorldTest : MonoBehaviour
 {

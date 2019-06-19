@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using GGame.Math;
-using Jitter.LinearMath;
-
 
 namespace GGame.Core
 {
