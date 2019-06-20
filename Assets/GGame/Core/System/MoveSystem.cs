@@ -26,6 +26,13 @@ namespace GGame.Core
 
         void MoveX(MoveComponent moveComponent)
         {
+
+            if (moveComponent.CurJumpLandFrame > 0)
+            {
+                moveComponent.CurJumpLandFrame--;
+                return;
+            }
+            
             Fix64 move = moveComponent.Entity.MoveSpeedX * moveComponent.Entity.Face * moveComponent.HSpeed;
             var curPos = moveComponent.Entity.Pos;
 
@@ -33,6 +40,7 @@ namespace GGame.Core
             {
                 Fix64 x = curPos.x;
                 Fix64 t_x = x + move;
+                
                 int y = (int) curPos.y;
 
                 if (move > Fix64.Zero)
@@ -150,6 +158,7 @@ namespace GGame.Core
                                 if (moveComponent.IsJump)
                                 {
                                     moveComponent.IsJump = false;
+                                    moveComponent.CurJumpLandFrame = moveComponent.JumpLandFrame;
 #if CLIENT_LOGIC
                                     RenderComponent renderComponent = moveComponent.Entity.GetComponent<RenderComponent>();
                                 
@@ -165,6 +174,7 @@ namespace GGame.Core
                             if (moveComponent.IsJump)
                             {
                                 moveComponent.IsJump = false;
+                                moveComponent.CurJumpLandFrame = moveComponent.JumpLandFrame;
 #if CLIENT_LOGIC
                                 RenderComponent renderComponent = moveComponent.Entity.GetComponent<RenderComponent>();
                                 

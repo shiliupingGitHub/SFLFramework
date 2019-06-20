@@ -49,7 +49,7 @@ namespace GGame.Core
                 var minY = (int)global::System.Math.Floor(Convert.ToSingle(min[1]));
                 var maxY = (int)global::System.Math.Ceiling(Convert.ToSingle(max[1]));
                 
-                for(int x = minX; x <= maxX; x++)
+                for(int x = minX + 1; x < maxX; x++)
                 {
                     for (int y = minY; y < maxY; y++)
                     {

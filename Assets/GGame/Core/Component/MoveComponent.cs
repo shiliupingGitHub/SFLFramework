@@ -26,6 +26,14 @@ namespace GGame.Core
             get;
             set;
         }
+
+        public int JumpLandFrame
+        {
+            get;
+            set;
+        }
+
+        public int CurJumpLandFrame = 0;
         public override void Awake(World world, XmlNode node)
         {
             base.Awake(world, node);
@@ -33,6 +41,7 @@ namespace GGame.Core
             Gravity = Convert.ToSingle(node.Attributes["g"].Value);
             HSpeed = Convert.ToSingle(node.Attributes["hSpeed"].Value);
             VSpeed = Convert.ToSingle(node.Attributes["vSpeed"].Value);
+            JumpLandFrame = Convert.ToInt32(node.Attributes["jumpLandFrame"].Value);
         }
     }
 }
