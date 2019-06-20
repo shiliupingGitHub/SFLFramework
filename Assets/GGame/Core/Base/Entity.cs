@@ -7,29 +7,10 @@ namespace GGame.Core
 {
     public class Entity : IDisposable
     {
-        public JVector Pos { get; set; }
+        public FixVector2 Pos { get; set; }
         public JVector Euler { get; set; } = new JVector(0, Fix64.PI * 0.5, 0);
 
-        public JVector Forward
-        {
-            get
-            {
-                
-               var xMatrix = JMatrix.CreateRotationX(Euler.X);
-               var yMatrix = JMatrix.CreateRotationY(Euler.Y);
-               var zMatrix = JMatrix.CreateRotationZ(Euler.Z);
-
-               var v0 = JVector.Transform(JVector.Forward, xMatrix);
-               var v1 = JVector.Transform(v0, yMatrix);
-               var v2 = JVector.Transform(v1, zMatrix);
-               v2.Z = 0;
-               v2.Y = 0;
-               
-               if(v2 != JVector.Zero)
-                    v2.Normalize();
-               return v2;
-            }
-        }
+        public int Face = 1;
 
         public JMatrix Orientation
         {
@@ -60,16 +41,12 @@ namespace GGame.Core
 
         public void Init(World world, XmlNode entityNode)
         {
-            Fix64 x = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionX")?.Value);
-            Fix64 y = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionY")?.Value);
-            Fix64 z = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionZ")?.Value);
-            
-            Fix64 eulerX = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("eulerX")?.Value);
-            Fix64 eulerY = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("eulerY")?.Value);
-            Fix64 eulerZ = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("eulerZ")?.Value);
-            
-            Pos = new JVector(x, y, z);
-            Euler = new JVector(eulerX, eulerY, eulerZ);
+            if (null != entityNode.Attributes?.GetNamedItem("positionX"))
+            {
+                Fix64 x = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionX")?.Value);
+                Fix64 y = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionY")?.Value);
+                Pos = new FixVector2(x, y);
+            }
             
             this._world = world;
             var componentNode = entityNode.FirstChild;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using GGame.Math;
+using UnityEngine;
 
 
 namespace GGame.Core
@@ -44,16 +45,15 @@ namespace GGame.Core
         {
 #if CLIENT_LOGIC
             if(null != _gameObject)
-                _gameObject.transform.position =new UnityEngine.Vector3((float)Entity.Pos.X, (float)Entity.Pos.Y, (float)Entity.Pos.Z);;
+                _gameObject.transform.position =new UnityEngine.Vector3((float)Entity.Pos.x, (float)Entity.Pos.y, 0);;
 #endif
         }
 
         public void UpdateFace()
         {
 #if CLIENT_LOGIC
-            var dir = Entity.Forward;
             if(null != _animator)
-                _animator.transform.forward =new UnityEngine.Vector3((float)dir.X, (float)dir.Y, (float)dir.Z);;
+                _animator.transform.rotation = Quaternion.Euler(0, 90 * Entity.Face, 0);
 #endif
         }
         

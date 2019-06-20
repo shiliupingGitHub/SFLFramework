@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
+using GGame.Math;
 using UnityEngine;
 
 namespace GGame.Core
@@ -102,6 +103,20 @@ namespace GGame.Core
             
             return e;
         }
+        
+        public Entity CreateEntityWithPos(ulong uuid, int configId, Fix64 x, Fix64 y)
+        {
+            var configPath = $"entity_config_{configId}";
+            var configText = ResourceManager.Instance.LoadText(configPath);
+            var e = ObjectPool.Instance.Fetch<Entity>();
+            
+            e.Pos = new FixVector2(x, y);
+            e.Init(this, configText);
+            _entities[uuid] = e;
+            
+            return e;
+        }
+        
 
         public void LoadMap(int configId)
         {
