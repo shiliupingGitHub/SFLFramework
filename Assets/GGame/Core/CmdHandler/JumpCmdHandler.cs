@@ -15,7 +15,7 @@ namespace GGame.Core
             if(mc.IsJump)
                 return;
 
-            mc.CurVSpeed = 0.5f;
+            mc.CurVSpeed = mc.VSpeed;
             mc.IsJump = true;
 #if CLIENT_LOGIC
             var rc = entity.GetComponent<RenderComponent>();

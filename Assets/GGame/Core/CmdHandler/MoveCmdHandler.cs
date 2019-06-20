@@ -13,8 +13,12 @@ namespace GGame.Core
 
             if (a.isMove)
             {
-                entity.MoveSpeedX = 1.0f;
-                entity.Face = a.isLeft ? -1 : 1;
+                if (!mc.IsJump)
+                {
+                    entity.MoveSpeedX = 1.0f;
+                    entity.Face = a.isLeft ? -1 : 1;
+                }
+                
             }
             else
             {

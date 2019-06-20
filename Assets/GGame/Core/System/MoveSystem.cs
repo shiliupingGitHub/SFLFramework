@@ -26,7 +26,7 @@ namespace GGame.Core
 
         void MoveX(MoveComponent moveComponent)
         {
-            Fix64 move = moveComponent.Entity.MoveSpeedX * moveComponent.Entity.Face;
+            Fix64 move = moveComponent.Entity.MoveSpeedX * moveComponent.Entity.Face * moveComponent.HSpeed;
             var curPos = moveComponent.Entity.Pos;
 
             if (move != Fix64.Zero)
