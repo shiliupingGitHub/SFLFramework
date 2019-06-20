@@ -8,6 +8,7 @@ namespace GGame.Core
     {
         public Fix64 CurVSpeed = 0;
         public Fix64 Gravity = 0.01f;
+        public bool IsJump = false;
         public override void Awake(World world, XmlNode node)
         {
             base.Awake(world, node);

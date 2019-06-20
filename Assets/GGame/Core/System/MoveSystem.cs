@@ -101,6 +101,7 @@ namespace GGame.Core
                 {
                     if (moveComponent.CurVSpeed > Fix64.Zero)
                     {
+                        moveComponent.IsJump = true;
                         int down = (int) global::System.Math.Floor((float)y);
                         int up = (int) global::System.Math.Ceiling((float) tY);
                 
@@ -143,7 +144,33 @@ namespace GGame.Core
                         {
                             
                             curPos.y = JMath.Max(tY, down);
+
+                            if (down >= tY)
+                            {
+                                if (moveComponent.IsJump)
+                                {
+                                    moveComponent.IsJump = false;
+#if CLIENT_LOGIC
+                                    RenderComponent renderComponent = moveComponent.Entity.GetComponent<RenderComponent>();
+                                
+                                    renderComponent.Animator?.SetBool("IsJump", false);
+#endif
+                                }
+                            }
                             moveComponent.Entity.Pos = curPos;
+                            moveComponent.IsJump = true;
+                        }
+                        else
+                        {
+                            if (moveComponent.IsJump)
+                            {
+                                moveComponent.IsJump = false;
+#if CLIENT_LOGIC
+                                RenderComponent renderComponent = moveComponent.Entity.GetComponent<RenderComponent>();
+                                
+                                renderComponent.Animator?.SetBool("IsJump", false);
+#endif
+                            }
                         }
                     }
                     

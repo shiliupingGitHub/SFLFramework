@@ -70,6 +70,17 @@ public class WorldTest : MonoBehaviour
             info.Cmd = cmd;
             world?.AddCachCmde(world.FrameIndex +1, info);
         }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            JumpCmd cmd;
+            
+            CmdInfo info;
+            info.Uuid = 10000001;
+            info.Cmd = cmd;
+            world?.AddCachCmde(world.FrameIndex +1, info);
+        }
+        
         
     }
 
