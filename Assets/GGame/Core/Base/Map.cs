@@ -44,11 +44,14 @@ namespace GGame.Core
                 var max = childNode.Attributes["max"].Value.Split(',');
 
                 var minX = (int)global::System.Math.Floor(Convert.ToSingle(min[0]));
+                minX = global::System.Math.Max(0, minX);
                 var maxX = (int)global::System.Math.Ceiling(Convert.ToSingle(max[0]));
+                maxX = global::System.Math.Min(maxX, _grid.DimX -1);
                 
                 var minY = (int)global::System.Math.Floor(Convert.ToSingle(min[1]));
+                minY = global::System.Math.Max(0, minY);
                 var maxY = (int)global::System.Math.Ceiling(Convert.ToSingle(max[1]));
-                
+                maxY = global::System.Math.Min(maxY, _grid.DimY - 1);
                 for(int x = minX + 1; x < maxX; x++)
                 {
                     for (int y = minY; y < maxY; y++)
