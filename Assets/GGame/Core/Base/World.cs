@@ -21,6 +21,10 @@ namespace GGame.Core
         Controller _controller = new Controller();
         private ulong incID = 1;
         private bool _isAutoTick = false;
+        private Map _map = new Map();
+
+        public Map Map => _map;
+
         public Controller Controller
         {
             get => _controller;
@@ -105,20 +109,10 @@ namespace GGame.Core
             var configText = ResourceManager.Instance.LoadText(configPath);
             
             XmlDocument doc = new XmlDocument();
-            
             doc.LoadXml(configText);
-            var rootNode = doc.FirstChild;
-
-            var entityNode = rootNode.FirstChild;
-
-            while (null != entityNode)
-            {
-                var e = ObjectPool.Instance.Fetch<Entity>();
-                e.Init(this,entityNode);
-                ulong uiid = GeneratedUUIID;
-                _entities[uiid] = e;
-                entityNode = entityNode.NextSibling;
-            }
+            
+            _map.Load(doc.FirstChild);
+            
         }
         
         public void AddIntrest(Type t, System system)

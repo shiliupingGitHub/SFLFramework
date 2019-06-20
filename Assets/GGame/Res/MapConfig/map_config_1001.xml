@@ -1,5 +1,6 @@
 <Map>
-  <Entity positionX="20" positionY="1.19" positionZ="0" eulerX="0" eulerY="0" eulerZ="0">
-    <BoxShaperComponent sizeX="1" sizeY="3.369618" sizeZ="9.954501" centerX="0" centerY="0" centerZ="0" />
-  </Entity>
+  <Blocks x="1000" y="1000">
+    <Block min="81,0.5" max="82,3.5" />
+    <Block min="0,0" max="100,1" />
+  </Blocks>
 </Map>
