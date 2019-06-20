@@ -8,6 +8,9 @@ namespace GGame.Core
     public class Map
     {
         private Grid _grid;
+
+        public Grid Grid => _grid;
+
         public void Load(XmlNode mapNode)
         {
             if(null == mapNode)

@@ -8,22 +8,10 @@ namespace GGame.Core
     public class Entity : IDisposable
     {
         public FixVector2 Pos { get; set; }
-        public JVector Euler { get; set; } = new JVector(0, Fix64.PI * 0.5, 0);
+        public Fix64 MoveSpeedX { get; set; }
 
         public int Face = 1;
-
-        public JMatrix Orientation
-        {
-            get
-            {
-                var xMatrix = JMatrix.CreateRotationX(Euler.X);
-                var yMatrix = JMatrix.CreateRotationY(Euler.Y);
-                var zMatrix = JMatrix.CreateRotationZ(Euler.Z);
-
-                return xMatrix * yMatrix * zMatrix;
-            }
-            
-        }
+        
         private World _world;
         public int Camp { get; set; }
         private readonly Dictionary<Type, Component> _components = new Dictionary<Type, Component>();

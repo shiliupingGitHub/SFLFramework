@@ -7,7 +7,7 @@ namespace GGame.Core
     public struct MoveCmd
     {
 
-        public JVector Dir;
+        public bool isLeft;
         public bool isMove;
     }
 }

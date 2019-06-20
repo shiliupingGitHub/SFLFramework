@@ -30,7 +30,7 @@ public class WorldTest : MonoBehaviour
             return;
         
         var world =procedure.world;
-        JVector dir = JVector.Zero;
+        bool isLeft = true;
         bool isMove = false;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
                           Input.GetKeyUp(KeyCode.D) || 
@@ -46,7 +46,7 @@ public class WorldTest : MonoBehaviour
         {
             changeCmd = true;
 
-            dir.Y = -Fix64.PI * 0.5;
+            isLeft = true;
             isMove = true;
 
         }
@@ -55,7 +55,7 @@ public class WorldTest : MonoBehaviour
         {
             changeCmd = true;
 
-            dir.Y = Fix64.PI * 0.5;
+            isLeft = false;
             isMove = true;
         }
 
@@ -64,7 +64,7 @@ public class WorldTest : MonoBehaviour
             MoveCmd cmd;
             
             CmdInfo info;
-            cmd.Dir = dir;
+            cmd.isLeft = isLeft;
             cmd.isMove = isMove;
             info.Uuid = 10000001;
             info.Cmd = cmd;
