@@ -16,23 +16,84 @@ namespace GGame.Core
         {
             foreach (MoveComponent moveComponent in _interestComponents)
             {
-#region x
 
-                var curPos = moveComponent.Entity.Pos;
-                Fix64 x = curPos.x;
-
-                x += moveComponent.Entity.MoveSpeedX * moveComponent.Entity.Face;
+                MoveX(moveComponent);
+                MoveY(moveComponent);
                 
-                curPos.x = x ;
 
-                moveComponent.Entity.Pos = curPos;
+            }
+        }
 
-#endregion
+        void MoveX(MoveComponent moveComponent)
+        {
+            Fix64 move = moveComponent.Entity.MoveSpeedX * moveComponent.Entity.Face;
+            var curPos = moveComponent.Entity.Pos;
 
+            if (move != Fix64.Zero)
+            {
+                Fix64 x = curPos.x;
+                Fix64 t_x = x + move;
+                int y = (int) curPos.y;
 
-#region y
+                if (move > Fix64.Zero)
+                {
+                    int min =(int) global::System.Math.Floor((float)x);
+                    int max =(int) global::System.Math.Ceiling((float) t_x);
+                    
+                    for (int i = min + 1; i <= max; i++)
+                    {
+                        float cost = World.Map.Grid.GetCellCost(new Position((int) i, y));
 
-                Fix64 y = curPos.y;
+                        if (cost > 5.0f)
+                        {
+                            max--;
+                            break;
+                        }
+                    }
+
+                    if (max != min)
+                    {
+                        curPos.x = JMath.Min(t_x, max);
+                        moveComponent.Entity.Pos = curPos;
+                    }
+                    
+                }
+
+                else
+                {
+                    int min = (int)global::System.Math.Floor((float) t_x);
+                    int max = (int) global::System.Math.Ceiling((float) x);
+
+                    for (int i = max - 1; i >= min; i--)
+                    {
+                        float cost = World.Map.Grid.GetCellCost(new Position((int) i, y));
+
+                        if (cost > 5.0f)
+                        {
+                            min++;
+                            break;
+                        }
+                    }
+
+                    if (min != max)
+                    {
+                        curPos.x = JMath.Max(t_x, min);
+                        moveComponent.Entity.Pos = curPos;
+                    }
+                    
+                }
+                    
+                
+
+               
+            }
+        }
+
+        void MoveY(MoveComponent moveComponent)
+        {
+            var curPos = moveComponent.Entity.Pos;
+            Fix64 y = curPos.y;
+            int x = (int) curPos.x;
 
                 Fix64 tY = y + moveComponent.CurVSpeed;
 
@@ -57,7 +118,7 @@ namespace GGame.Core
 
                         if (up != down)
                         {
-                            curPos.y = tY;
+                            curPos.y = JMath.Min(tY, up);
                             moveComponent.Entity.Pos = curPos;
                         }
                     }
@@ -93,11 +154,9 @@ namespace GGame.Core
                     moveComponent.CurVSpeed = 0;
                 }
            
-
-#endregion
-
-            }
+                
         }
+        
         
     }
 }

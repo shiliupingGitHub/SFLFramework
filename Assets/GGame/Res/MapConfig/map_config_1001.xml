@@ -2,5 +2,6 @@
   <Blocks x="1000" y="1000">
     <Block min="60.8,0.5" max="61.8,3.5" />
     <Block min="0,0" max="100,1" />
+    <Block min="13.6,0.5" max="14.6,3.5" />
   </Blocks>
 </Map>
