@@ -1,4 +1,5 @@
 using GGame.Core;
+using GGame.Math;
 using UnityEngine;
 
 namespace GGame.Hybird
@@ -13,6 +14,9 @@ namespace GGame.Hybird
             {
                 GGameEnv.Instance.Init();
                 Log.Debug("Start up");
+                
+                SRandom r = new SRandom(2);
+                
             }
           
         }
