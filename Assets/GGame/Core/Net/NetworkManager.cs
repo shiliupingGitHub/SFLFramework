@@ -1,6 +1,6 @@
 namespace GGame.Core
 {
-    public enum NETWORKD_TYPE
+    public enum ConnectTye
     {
         TCP,
     }
@@ -25,7 +25,7 @@ namespace GGame.Core
             _instance = this;
         }
 
-        public virtual INetworkChannel CreateChannel(NETWORKD_TYPE type)
+        public  IChannel Create(ConnectTye type)
         {
             return null;
         }
