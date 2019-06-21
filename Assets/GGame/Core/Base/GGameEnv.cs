@@ -26,29 +26,75 @@ namespace GGame.Core
             AIManager.Instance.Init();
         }
 
+        void AddAbstractType<T>(Type type, List<Type> list)
+        {
+            var baseType = typeof(T);
+            
+            if (type.IsSubclassOf(baseType) && !type.IsAbstract)
+            {
+                list.Add(type);
+            }
+        }
+        
+        void AddAbstractType<T>(Type type, Dictionary<string, Type> dic)
+        {
+            var baseType = typeof(T);
+            
+            if (type.IsSubclassOf(baseType) && !type.IsAbstract)
+            {
+                dic[type.Name] = type;
+            }
+        }
+
+        void AddInfeceType<T>(Type type, List<Type> list)
+        {
+            var baseType = typeof(T);
+            
+            if (baseType.IsAssignableFrom(type))
+            {
+                if (!type.IsAbstract)
+                {
+
+                    list.Add(type);
+
+                }
+
+            }
+        }
+        
+        void AddInfeceType<T>(Type type, Dictionary<string,Type> dic)
+        {
+            var baseType = typeof(T);
+            
+            if (baseType.IsAssignableFrom(type))
+            {
+                if (!type.IsAbstract)
+                {
+
+                    dic[type.Name] = type;
+
+                }
+
+            }
+        }
         void AddAssembly(Assembly assembly)
         {
-              var baseSystemType = typeof(System);
-            var baseComponentType = typeof(Component);
             var baseCmdHandleType = typeof(ICmdHandler);
-            var baseJobType = typeof(IJob);
-            var baseActionType = typeof(IAction);
             var baseProcedureType = typeof(IProcedure);
             var types = assembly.GetTypes();
             var baseAutoInitType = typeof(IAutoInit);
             
             foreach (var type in types)
             {
-                if (type.IsSubclassOf(baseSystemType) && type != baseSystemType)
-                {
-                    _systemTypes.Add(type);
-                }
-                
-                if (type.IsSubclassOf(baseComponentType) && type != baseComponentType)
-                {
-                    _componentTypes[type.Name] = type;
-                }
+                AddAbstractType<System>(type, _systemTypes);
 
+                AddAbstractType<Component>(type, _componentTypes);
+
+                AddInfeceType<IJob>(type, _jobTypes);
+
+                AddInfeceType<IAction>(type, _actionTypes);
+                
+                
                 var attrs = type.GetCustomAttributes(typeof(CmdAttribute), false);
 
                 foreach (var attr in attrs)
@@ -77,27 +123,7 @@ namespace GGame.Core
 
                 }
                 
-                if (baseJobType.IsAssignableFrom(type))
-                {
-                    if (!type.IsAbstract)
-                    {
-
-                        _jobTypes[type.Name] = type;
-
-                    }
-
-                }
-                
-                if (baseActionType.IsAssignableFrom(type))
-                {
-                    if (!type.IsAbstract)
-                    {
-
-                        _actionTypes[type.Name] = type;
-
-                    }
-
-                }
+    
                 
                 
                 if (baseProcedureType.IsAssignableFrom(type) && !type.IsAbstract)
