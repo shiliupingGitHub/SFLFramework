@@ -13,7 +13,6 @@ public class WorldTest : MonoBehaviour
     public Transform startPos;
     void Start()
     {
-        ResourceManager.Instance.Init();
         GGameEnv.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
         var d = skill_config.Dic[1];
      
