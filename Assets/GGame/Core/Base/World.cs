@@ -25,10 +25,7 @@ namespace GGame.Core
         public Controller Controller
         {
             get => _controller;
-        }
-#if CLIENT_LOGIC
-        private UnityEngine.GameObject _worldLooper;
-#endif
+        } 
         public World(bool autoTick)
         {
             GGameEnv.Instance.CreateWorldSystem(this);
