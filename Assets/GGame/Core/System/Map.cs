@@ -5,7 +5,7 @@ using RoyT.AStar;
 
 namespace GGame.Core
 {
-    public class Map :IWorldData
+    public class Map 
     {
         private Grid _grid;
         

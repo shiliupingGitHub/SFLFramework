@@ -9,13 +9,11 @@ namespace GGame.Core
 {
     public class World : IDisposable
     {
-        private bool isDisposed = false;
         private ulong _frameIndex = 0;
         readonly Dictionary<Type,System> _systems = new Dictionary<Type, System>();
         readonly Dictionary<Type, List<System>> _interestSystems = new Dictionary<Type, List<System>>();
         Dictionary<ulong, Entity> _entities = new Dictionary<ulong, Entity>();
         Dictionary<ulong, List<CmdInfo>> _cmdCache = new Dictionary<ulong, List<CmdInfo>>();
-        Dictionary<Type,IWorldData> _worldDatas = new Dictionary<Type, IWorldData>();
         List<IJob> _tickJobs = new List<IJob>();
         List<IJob> _CacheAddJob = new List<IJob>();
         List<IJob> _CacheRmoveJob = new List<IJob>();
@@ -23,10 +21,7 @@ namespace GGame.Core
         Controller _controller = new Controller();
         private ulong incID = 1;
         private bool _isAutoTick = false;
-        private Map _map = new Map();
-
-        public Map Map => _map;
-
+        
         public Controller Controller
         {
             get => _controller;
@@ -119,17 +114,7 @@ namespace GGame.Core
         }
         
 
-        public void LoadMap(int configId)
-        {
-            var configPath = $"map_config_{configId}";
-            var configText = ResourceManager.Instance.LoadText(configPath);
-            
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(configText);
-            
-            _map.Load(doc.FirstChild);
-            
-        }
+     
         
         public void AddIntrest(Type t, System system)
         {
