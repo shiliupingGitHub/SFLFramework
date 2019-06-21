@@ -50,7 +50,7 @@ namespace GGame.Core
                     
                     for (int i = min + 1; i <= max; i++)
                     {
-                        float cost = World.Map.Grid.GetCellCost(new Position((int) i, y));
+                        var cost = World.Map.GetCellCost((int) i, y);
 
                         if (cost > 5.0f)
                         {
@@ -74,7 +74,7 @@ namespace GGame.Core
 
                     for (int i = max - 1; i >= min; i--)
                     {
-                        float cost = World.Map.Grid.GetCellCost(new Position((int) i, y));
+                        var cost = World.Map.GetCellCost((int) i, y);
 
                         if (cost > 5.0f)
                         {
@@ -115,7 +115,7 @@ namespace GGame.Core
                 
                         for (int i = down + 1; i <= up; i++)
                         {
-                            float cost = World.Map.Grid.GetCellCost(new Position((int) x, i));
+                            float cost = World.Map.GetCellCost( x, i);
 
                             if (cost > 5.0f)
                             {
@@ -139,7 +139,7 @@ namespace GGame.Core
 
                         for (int i = up - 1; i >= down; i--)
                         {
-                            float cost = World.Map.Grid.GetCellCost(new Position((int) x, i));
+                            float cost = World.Map.GetCellCost( x, i);
 
                             if (cost > 5.0f)
                             {

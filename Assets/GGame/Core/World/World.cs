@@ -15,6 +15,7 @@ namespace GGame.Core
         readonly Dictionary<Type, List<System>> _interestSystems = new Dictionary<Type, List<System>>();
         Dictionary<ulong, Entity> _entities = new Dictionary<ulong, Entity>();
         Dictionary<ulong, List<CmdInfo>> _cmdCache = new Dictionary<ulong, List<CmdInfo>>();
+        Dictionary<Type,IWorldData> _worldDatas = new Dictionary<Type, IWorldData>();
         List<IJob> _tickJobs = new List<IJob>();
         List<IJob> _CacheAddJob = new List<IJob>();
         List<IJob> _CacheRmoveJob = new List<IJob>();

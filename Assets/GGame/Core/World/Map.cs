@@ -5,12 +5,10 @@ using RoyT.AStar;
 
 namespace GGame.Core
 {
-    public class Map
+    public class Map :IWorldData
     {
         private Grid _grid;
-
-        public Grid Grid => _grid;
-
+        
         public void Load(XmlNode mapNode)
         {
             if(null == mapNode)
@@ -27,6 +25,12 @@ namespace GGame.Core
                 }
                 childNode = childNode.NextSibling;
             }
+        }
+
+
+        public float GetCellCost(int x, int y)
+        {
+            return _grid.GetCellCost(new Position(x, y));
         }
 
         void LoadBlocks(XmlNode node)
@@ -64,6 +68,11 @@ namespace GGame.Core
                 
                 childNode = childNode.NextSibling;
             }
+        }
+
+        public void Awake()
+        {
+            
         }
     }
 }
