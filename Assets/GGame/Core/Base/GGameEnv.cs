@@ -8,7 +8,6 @@ namespace GGame.Core
     {
         readonly List<Type> _systemTypes = new List<Type>();
         readonly Dictionary<string, Type> _componentTypes = new Dictionary<string, Type>();
-        readonly Dictionary<string, Type> _cmdTypes = new Dictionary<string, Type>();
         readonly Dictionary<string, Type> _jobTypes = new Dictionary<string, Type>();
         readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
         Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
@@ -77,12 +76,62 @@ namespace GGame.Core
 
             }
         }
-        void AddAssembly(Assembly assembly)
+
+        void AddCmdHandler(Type type)
         {
             var baseCmdHandleType = typeof(ICmdHandler);
-            var baseProcedureType = typeof(IProcedure);
-            var types = assembly.GetTypes();
+            if (baseCmdHandleType.IsAssignableFrom(type))
+            {
+                if (!type.IsAbstract)
+                {
+                                            
+                    var handler = Activator.CreateInstance(type) as ICmdHandler;
+
+                    List<ICmdHandler> cache = null;
+
+                    if (!_cmdHandler.TryGetValue(handler.Type, out cache))
+                    {
+                        cache = new List<ICmdHandler>();
+                        _cmdHandler[handler.Type] = cache;
+                    }
+                    cache.Add(handler);
+                        
+                }
+
+            }
+        }
+
+        void AddInstanceType<T>(Type type, Dictionary<Type, T> dic)
+        {
+            var baseType = typeof(T);
+            if (baseType.IsAssignableFrom(type) && !type.IsAbstract)
+            {
+                var instance = (T) Activator.CreateInstance(type);
+                dic[type] = instance;
+            }
+        }
+
+        void AuToInit(Type type)
+        {
             var baseAutoInitType = typeof(IAutoInit);
+            if (baseAutoInitType.IsAssignableFrom(type) )
+            {
+
+                if (!type.IsAbstract)
+                {
+                    var o = Activator.CreateInstance(type) as IAutoInit;
+                    
+                    o.Init();
+                }
+                    
+            }
+        }
+        
+        void AddAssembly(Assembly assembly)
+        {
+            
+            var types = assembly.GetTypes();
+           
             
             foreach (var type in types)
             {
@@ -93,57 +142,15 @@ namespace GGame.Core
                 AddInfeceType<IJob>(type, _jobTypes);
 
                 AddInfeceType<IAction>(type, _actionTypes);
-                
-                
-                var attrs = type.GetCustomAttributes(typeof(CmdAttribute), false);
 
-                foreach (var attr in attrs)
-                {
-                    var a = attr as CmdAttribute;
-                    _cmdTypes[a.Op] = type;
-                }
 
-                if (baseCmdHandleType.IsAssignableFrom(type))
-                {
-                    if (!type.IsAbstract)
-                    {
-                                            
-                        var handler = Activator.CreateInstance(type) as ICmdHandler;
+                AddCmdHandler(type);
 
-                        List<ICmdHandler> cache = null;
 
-                        if (!_cmdHandler.TryGetValue(handler.Type, out cache))
-                        {
-                            cache = new List<ICmdHandler>();
-                            _cmdHandler[handler.Type] = cache;
-                        }
-                        cache.Add(handler);
-                        
-                    }
+                AddInstanceType<IProcedure>(type, _procedures);
 
-                }
-                
-    
-                
-                
-                if (baseProcedureType.IsAssignableFrom(type) && !type.IsAbstract)
-                {
-                    var procedure = Activator.CreateInstance(type) as IProcedure;
-                    _procedures[type] = procedure;
-                }
-                
-                if (baseAutoInitType.IsAssignableFrom(type) )
-                {
+                AuToInit(type);
 
-                    if (!type.IsAbstract)
-                    {
-                        var o = Activator.CreateInstance(type) as IAutoInit;
-                    
-                        o.Init();
-                    }
-                    
-                }
-                
             }
         }
 
@@ -189,15 +196,7 @@ namespace GGame.Core
             
             return ret;
         }
-
-        public Type GetMapNodeType(string typeName)
-        {
-            Type ret = null;
-
-            _mapNodeTypes.TryGetValue(typeName, out ret);
-
-            return ret;
-        }
+        
         
         public Type GetActionType(string typeName)
         {
