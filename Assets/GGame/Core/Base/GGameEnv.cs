@@ -12,7 +12,6 @@ namespace GGame.Core
         readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
         Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
         Dictionary<Type, IProcedure> _procedures = new Dictionary<Type, IProcedure>();
-        Dictionary<string, Type> _mapNodeTypes = new Dictionary<string, Type>();
         public override void OnInit()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
