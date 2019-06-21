@@ -18,14 +18,9 @@ namespace GGame.Core
         List<IJob> _CacheAddJob = new List<IJob>();
         List<IJob> _CacheRmoveJob = new List<IJob>();
         public ulong FrameIndex => _frameIndex;
-        Controller _controller = new Controller();
         private ulong incID = 1;
         private bool _isAutoTick = false;
         
-        public Controller Controller
-        {
-            get => _controller;
-        } 
         public World(bool autoTick)
         {
             GGameEnv.Instance.CreateWorldSystem(this);
