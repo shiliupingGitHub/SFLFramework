@@ -14,12 +14,12 @@ namespace GGame.UnityCore
         {
             LoopAction?.Invoke();
         }
-
-        private void Start()
+        
+        public void StartTick(float time)
         {
-            InvokeRepeating("OnTick", 0,0.033f);
+            InvokeRepeating("OnTick", 0,time);
         }
-
+        
         void OnTick()
         {
             TickAction?.Invoke();

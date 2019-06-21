@@ -13,6 +13,9 @@ namespace GGame.Hybird
             
             GameObject.DontDestroyOnLoad(go);
 
+            go.name = "Looper";
+            go.hideFlags = HideFlags.HideInHierarchy;
+
             var looper =  go.AddComponent<Looper>();
             
             looper.LoopAction += delegate
@@ -24,6 +27,8 @@ namespace GGame.Hybird
             {
                 OnTick?.Invoke();
             };
+            
+            looper.StartTick((float)ConstDefine.StepTime);
         }
         
         

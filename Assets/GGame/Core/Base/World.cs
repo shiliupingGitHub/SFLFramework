@@ -49,9 +49,6 @@ namespace GGame.Core
             
         }
         
-        
-     
-
         public T GetSystem<T>() where T: System
         {
             System ret = null;
