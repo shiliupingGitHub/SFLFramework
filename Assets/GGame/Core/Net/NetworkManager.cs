@@ -1,3 +1,5 @@
+using NotImplementedException = System.NotImplementedException;
+
 namespace GGame.Core
 {
     public enum ConnectTye
@@ -5,7 +7,7 @@ namespace GGame.Core
         TCP,
     }
     
-    public class NetworkManager
+    public class NetworkManager : IAutoInit
     {
         private static NetworkManager _instance;
 
@@ -28,6 +30,11 @@ namespace GGame.Core
         public  IChannel Create(ConnectTye type)
         {
             return null;
+        }
+
+        public void Init()
+        {
+            
         }
     }
 }
