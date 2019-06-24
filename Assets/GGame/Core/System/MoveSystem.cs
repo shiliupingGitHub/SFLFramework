@@ -33,30 +33,29 @@ namespace GGame.Core
                 moveComponent.CurJumpLandFrame--;
                 return;
             }
-
+            
+            if(moveComponent.Entity.MoveSpeedX == Fix64.Zero)
+                return;
             Fix64 move = moveComponent.Entity.MoveSpeedX * moveComponent.Entity.Face * moveComponent.HSpeed;
             var curPos = moveComponent.Entity.Pos;
-
-            var ret =  World.GetSystem<MapSystem>()._physixWorld
-                .RayCast(new Vector2((float)curPos.x, (float)curPos.y), new Vector2((float)(curPos.x + move), (float)curPos.y));
-
-            if (ret.Count == 0)
+            FixVector2 outPoint;
+            if (!World.GetSystem<MapSystem>().GetHitPoint(new FixVector2((float)curPos.x, (float)curPos.y), new FixVector2((float)(curPos.x + move ), (float)curPos.y), out outPoint))
             {
                 curPos.x += move;
                 moveComponent.Entity.Pos = curPos;
             }
             else
             {
-                int a = 0;
-                int b = a;
-            }
+                
 
+                outPoint.x -= moveComponent.Entity.Face * 0.01f;
+                moveComponent.Entity.Pos = outPoint;
+            }
+            
         }
 
         void MoveY(MoveComponent moveComponent)
         {
-            if(!moveComponent.IsJump )
-                return;
             var curPos = moveComponent.Entity.Pos;
             var mapSystem = World.GetSystem<MapSystem>();
             Fix64 y = curPos.y;
@@ -68,16 +67,17 @@ namespace GGame.Core
                     if (moveComponent.CurVSpeed > Fix64.Zero)
                     {
 
-                        var ret =  World.GetSystem<MapSystem>()._physixWorld
-                            .RayCast(new Vector2((float)curPos.x, (float)curPos.y), new Vector2((float)(curPos.x), (float)tY));
-
-                        if (ret.Count == 0)
+                    
+                        FixVector2 outPoint;
+                        if (!mapSystem.GetHitPoint(new FixVector2((float)curPos.x, (float)curPos.y), new FixVector2((float)(curPos.x), (float)tY), out outPoint))
                         {
                             curPos.y = tY;
                             moveComponent.Entity.Pos = curPos;
                         }
                         else
                         {
+                            
+                            moveComponent.Entity.Pos = outPoint;
                             moveComponent.CurVSpeed = 0;
                         }
 
@@ -85,12 +85,10 @@ namespace GGame.Core
 
                     else if (moveComponent.CurVSpeed < Fix64.Zero)
                     {
-           
 
-                        var ret =  World.GetSystem<MapSystem>()._physixWorld
-                            .RayCast(new Vector2((float)curPos.x, (float)curPos.y), new Vector2((float)(curPos.x), (float)tY));
+                        FixVector2 outPoint;
                         
-                        if (ret.Count == 0)
+                        if (!mapSystem.GetHitPoint(new FixVector2((float)curPos.x, (float)curPos.y), new FixVector2((float)(curPos.x), (float) tY ), out outPoint))
                         {
 
                             curPos.y = tY;
@@ -100,6 +98,9 @@ namespace GGame.Core
                         }
                         else
                         {
+                            outPoint.y += 0.01f;
+                            curPos = outPoint;
+                            moveComponent.Entity.Pos = curPos;
                             if (moveComponent.IsJump)
                             {
                                 moveComponent.IsJump = false;
@@ -111,6 +112,8 @@ namespace GGame.Core
 #endif
                             }
                         }
+
+                        
                     }
                     
                     moveComponent.CurVSpeed -= moveComponent.Gravity;

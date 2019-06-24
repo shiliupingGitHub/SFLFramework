@@ -1177,13 +1177,20 @@ namespace VelcroPhysics.Dynamics
             _rayCastCallback = null;
         }
 
-        public List<Fixture> RayCast(Vector2 point1, Vector2 point2)
+        public List<(Fixture,Vector2, Vector2, float)> RayCast(Vector2 point1, Vector2 point2)
         {
-            List<Fixture> affected = new List<Fixture>();
+            List<(Fixture,Vector2, Vector2, float)> affected = new List<(Fixture,Vector2, Vector2, float)>();
 
             RayCast((f, p, n, fr) =>
             {
-                affected.Add(f);
+                (Fixture, Vector2, Vector2, float) t;
+
+                t.Item1 = f;
+                t.Item2 = p;
+                t.Item3 = n;
+                t.Item4 = fr;
+                
+                affected.Add(t);
                 return 1;
             }, point1, point2);
 

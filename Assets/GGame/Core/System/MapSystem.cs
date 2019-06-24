@@ -12,7 +12,7 @@ namespace GGame.Core
     public class MapSystem : System
     {
 
-        public VelcroPhysics.Dynamics.World _physixWorld  = new VelcroPhysics.Dynamics.World(Vector2.Zero);
+        VelcroPhysics.Dynamics.World _physixWorld  = new VelcroPhysics.Dynamics.World(Vector2.Zero);
         
         void Load(XmlNode mapNode)
         {
@@ -32,9 +32,36 @@ namespace GGame.Core
             }
         }
 
-        public override void Dispose()
+        public bool GetHitPoint(FixVector2 cur, FixVector2 target, out FixVector2 point)
         {
-            base.Dispose();
+            var ret =  World.GetSystem<MapSystem>()._physixWorld
+                .RayCast(new Vector2((float)cur.x, (float)cur.y), new Vector2((float)(target.x), (float)target.y));
+
+            if (ret.Count > 0)
+            {
+                float fraction = ret[0].Item4;
+                point = new FixVector2(ret[0].Item2.X, ret[0].Item2.Y);
+
+                for (int i = 1; i < ret.Count; i++)
+                {
+                    if (ret[i].Item4 < fraction)
+                    {
+                        fraction = ret[i].Item4;
+                        point = new FixVector2(ret[i].Item2.X, ret[i].Item2.Y);
+                    }
+                    
+                }
+                
+                
+                return true;
+            }
+            else
+            {
+               point = FixVector2.Zero;
+                
+                return false;
+            }
+         
         }
 
         void LoadBlocks(XmlNode node)

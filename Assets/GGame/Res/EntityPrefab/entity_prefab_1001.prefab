@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2346510405227862075}
-  - component: {fileID: 8603770953067496627}
   m_Layer: 0
   m_Name: entity_prefab_1001
   m_TagString: Untagged
@@ -32,24 +31,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &8603770953067496627
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2348984898283851091}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 3
-  m_Radius: 1
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.4, z: 0}
 --- !u!1001 &7986039563509197693
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57,6 +38,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8633474374388102216}
     m_Modifications:
+    - target: {fileID: 100050, guid: 9b8801d8aa383584b8c3f62346c33539, type: 3}
+      propertyPath: m_Name
+      value: 2Hand-Sword
+      objectReference: {fileID: 0}
     - target: {fileID: 400050, guid: 9b8801d8aa383584b8c3f62346c33539, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -113,10 +98,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 100050, guid: 9b8801d8aa383584b8c3f62346c33539, type: 3}
-      propertyPath: m_Name
-      value: 2Hand-Sword
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b8801d8aa383584b8c3f62346c33539, type: 3}
 --- !u!1001 &8633474374387707624
@@ -126,6 +107,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2346510405227862075}
     m_Modifications:
+    - target: {fileID: 100050, guid: e42d9259129992a4d95e0b320ca2a43d, type: 3}
+      propertyPath: m_Name
+      value: Model
+      objectReference: {fileID: 0}
     - target: {fileID: 400050, guid: e42d9259129992a4d95e0b320ca2a43d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -169,10 +154,6 @@ PrefabInstance:
     - target: {fileID: 400050, guid: e42d9259129992a4d95e0b320ca2a43d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 100050, guid: e42d9259129992a4d95e0b320ca2a43d, type: 3}
-      propertyPath: m_Name
-      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: e42d9259129992a4d95e0b320ca2a43d, type: 3}
       propertyPath: m_Controller
