@@ -87,15 +87,20 @@ public class MapExportWindow : EditorWindow
                     var block = doc.CreateElement("Block");
                     blocksNode.AppendChild(block);
 
-                    var MinAttr = doc.CreateAttribute("min");
-                    MinAttr.Value = $"{box.bounds.min.x},{box.bounds.min.y}";
+                    var postionAttr = doc.CreateAttribute("postion");
+                    postionAttr.Value = $"{box.bounds.center.x},{box.bounds.center.y}";
 
-                    block.Attributes.Append(MinAttr);
+                    block.Attributes.Append(postionAttr);
                     
-                    var MaxAttr = doc.CreateAttribute("max");
-                    MaxAttr.Value =$"{box.bounds.max.x},{box.bounds.max.y}";
+                    var widthAttr = doc.CreateAttribute("width");
+                    widthAttr.Value =$"{box.bounds.size.x}";
 
-                    block.Attributes.Append(MaxAttr);
+                    block.Attributes.Append(widthAttr);
+                    
+                    var heightAttr = doc.CreateAttribute("height");
+                    heightAttr.Value =$"{box.bounds.size.y}";
+
+                    block.Attributes.Append(heightAttr);
 
                 }
                     break;

@@ -1,6 +1,8 @@
 
 using GGame.Math;
+using Microsoft.Xna.Framework;
 using RoyT.AStar;
+using VelcroPhysics.Collision.RayCast;
 
 namespace GGame.Core
 {
@@ -19,7 +21,6 @@ namespace GGame.Core
 
                 MoveX(moveComponent);
                 MoveY(moveComponent);
-                
 
             }
         }
@@ -32,140 +33,68 @@ namespace GGame.Core
                 moveComponent.CurJumpLandFrame--;
                 return;
             }
-            
+
             Fix64 move = moveComponent.Entity.MoveSpeedX * moveComponent.Entity.Face * moveComponent.HSpeed;
             var curPos = moveComponent.Entity.Pos;
 
-            if (move != Fix64.Zero)
+            var ret =  World.GetSystem<MapSystem>()._physixWorld
+                .RayCast(new Vector2((float)curPos.x, (float)curPos.y), new Vector2((float)(curPos.x + move), (float)curPos.y));
+
+            if (ret.Count == 0)
             {
-                Fix64 x = curPos.x;
-                Fix64 t_x = x + move;
-                
-                int y = (int) curPos.y;
-
-                if (move > Fix64.Zero)
-                {
-                    int min =(int) global::System.Math.Floor((float)x);
-                    int max =(int) global::System.Math.Ceiling((float) t_x);
-                    
-                    for (int i = min + 1; i <= max; i++)
-                    {
-                        var cost = World.GetSystem<MapSystem>().GetCellCost((int) i, y);
-
-                        if (cost > 5.0f)
-                        {
-                            max--;
-                            break;
-                        }
-                    }
-
-                    if (max != min)
-                    {
-                        curPos.x = JMath.Min(t_x, max);
-                        moveComponent.Entity.Pos = curPos;
-                    }
-                    
-                }
-
-                else
-                {
-                    int min = (int)global::System.Math.Floor((float) t_x);
-                    int max = (int) global::System.Math.Ceiling((float) x);
-
-                    for (int i = max - 1; i >= min; i--)
-                    {
-                        var cost = World.GetSystem<MapSystem>().GetCellCost((int) i, y);
-
-                        if (cost > 5.0f)
-                        {
-                            min++;
-                            break;
-                        }
-                    }
-
-                    if (min != max)
-                    {
-                        curPos.x = JMath.Max(t_x, min);
-                        moveComponent.Entity.Pos = curPos;
-                    }
-                    
-                }
-                    
-                
-
-               
+                curPos.x += move;
+                moveComponent.Entity.Pos = curPos;
             }
+            else
+            {
+                int a = 0;
+                int b = a;
+            }
+
         }
 
         void MoveY(MoveComponent moveComponent)
         {
+            if(!moveComponent.IsJump )
+                return;
             var curPos = moveComponent.Entity.Pos;
+            var mapSystem = World.GetSystem<MapSystem>();
             Fix64 y = curPos.y;
-            int x = (int) curPos.x;
 
-                Fix64 tY = y + moveComponent.CurVSpeed;
+            Fix64 tY = y + moveComponent.CurVSpeed;
 
                 if (tY >= 0)
                 {
                     if (moveComponent.CurVSpeed > Fix64.Zero)
                     {
-                        moveComponent.IsJump = true;
-                        int down = (int) global::System.Math.Floor((float)y);
-                        int up = (int) global::System.Math.Ceiling((float) tY);
-                
-                        for (int i = down + 1; i <= up; i++)
-                        {
-                            float cost = World.GetSystem<MapSystem>().GetCellCost( x, i);
 
-                            if (cost > 5.0f)
-                            {
-                                up = i - 1;
-                                break;
-                            }
-                    
-                        }
+                        var ret =  World.GetSystem<MapSystem>()._physixWorld
+                            .RayCast(new Vector2((float)curPos.x, (float)curPos.y), new Vector2((float)(curPos.x), (float)tY));
 
-                        if (up != down)
+                        if (ret.Count == 0)
                         {
-                            curPos.y = JMath.Min(tY, up);
+                            curPos.y = tY;
                             moveComponent.Entity.Pos = curPos;
                         }
+                        else
+                        {
+                            moveComponent.CurVSpeed = 0;
+                        }
+
                     }
 
                     else if (moveComponent.CurVSpeed < Fix64.Zero)
                     {
-                        int up = (int) global::System.Math.Ceiling((float)y);
-                        int down = (int) global::System.Math.Floor((float) tY);
+           
 
-                        for (int i = up - 1; i >= down; i--)
-                        {
-                            float cost = World.GetSystem<MapSystem>().GetCellCost( x, i);
-
-                            if (cost > 5.0f)
-                            {
-                                down = i + 1;
-                                break;
-                            }
-                        }
+                        var ret =  World.GetSystem<MapSystem>()._physixWorld
+                            .RayCast(new Vector2((float)curPos.x, (float)curPos.y), new Vector2((float)(curPos.x), (float)tY));
                         
-                        if (up != down)
+                        if (ret.Count == 0)
                         {
-                            
-                            curPos.y = JMath.Max(tY, down);
 
-                            if (down >= tY)
-                            {
-                                if (moveComponent.IsJump)
-                                {
-                                    moveComponent.IsJump = false;
-                                    moveComponent.CurJumpLandFrame = moveComponent.JumpLandFrame;
-#if CLIENT_LOGIC
-                                    RenderComponent renderComponent = moveComponent.Entity.GetComponent<RenderComponent>();
-                                
-                                    renderComponent.Animator?.SetBool("IsJump", false);
-#endif
-                                }
-                            }
+                            curPos.y = tY;
+                            
                             moveComponent.Entity.Pos = curPos;
                             moveComponent.IsJump = true;
                         }
@@ -193,7 +122,7 @@ namespace GGame.Core
            
                 
         }
-        
-        
+
+
     }
 }
