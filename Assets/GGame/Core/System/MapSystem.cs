@@ -72,23 +72,34 @@ namespace GGame.Core
 
             while (null != childNode)
             {
-
-                float width = Convert.ToSingle(childNode.Attributes["width"].Value);
-                float height = Convert.ToSingle(childNode.Attributes["height"].Value);
-                Vector2 postion = Vector2.Zero;
-
-                var strPos = childNode.Attributes["postion"].Value.Split(',');
-
-                postion.X = Convert.ToSingle(strPos[0]);
-                postion.Y = Convert.ToSingle(strPos[1]);
+                switch ( childNode.Name)
+                {
+                    case "Box":
+                        LoadBox(childNode);
+                        break;
+                }
+            
                 
-                float rotation = 0;
-                float density = 1.0f;
-
-                BodyFactory.CreateRectangle(_physixWorld, width, height, density, postion, rotation, BodyType.Static);
-                
+              
                 childNode = childNode.NextSibling;
             }
+        }
+
+        void LoadBox(XmlNode node)
+        {
+            float width = Convert.ToSingle(node.Attributes["width"].Value);
+            float height = Convert.ToSingle(node.Attributes["height"].Value);
+            Vector2 postion = Vector2.Zero;
+
+            var strPos = node.Attributes["postion"].Value.Split(',');
+
+            postion.X = Convert.ToSingle(strPos[0]);
+            postion.Y = Convert.ToSingle(strPos[1]);
+                
+            float rotation = 0;
+            float density = 1.0f;
+
+            BodyFactory.CreateRectangle(_physixWorld, width, height, density, postion, rotation, BodyType.Static);
         }
         
         public void LoadMap(int configId)

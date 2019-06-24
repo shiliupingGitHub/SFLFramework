@@ -6,9 +6,6 @@
     xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
 >
     <engine:TextField text="1001" name = "id"/>
-    <engine:Label text="sizeX"/>
-    <engine:TextField text="1000" name = "x"/>
-    <engine:Label text="sizeY"/>
-    <engine:TextField text="1000" name = "y"/>
+ 
     <engine:Button text = "export" name = "btn_export"/>
 </engine:UXML>

@@ -30,8 +30,7 @@ public class MapExportWindow : EditorWindow
         root.Add(labelFromUXML);
 
         var ti = labelFromUXML.Query<TextField>("id").First();
-        var tsizeX = labelFromUXML.Query<TextField>("x").First();
-        var tsizeY = labelFromUXML.Query<TextField>("y").First();
+
         
         labelFromUXML.Query<Button>("btn_export").First().clickable.clicked += delegate
         {
@@ -49,15 +48,7 @@ public class MapExportWindow : EditorWindow
 
             var blocksNode = doc.CreateElement("Blocks");
             rootNode.AppendChild(blocksNode);
-
-            var sizeXAttr =doc.CreateAttribute("x");
-            var sizeYAttr = doc.CreateAttribute("y");
-
-            sizeXAttr.Value = tsizeX.text;
-            sizeYAttr.Value = tsizeY.text;
-
-            blocksNode.Attributes.Append(sizeXAttr);
-            blocksNode.Attributes.Append(sizeYAttr);
+            
             string path = Path.Combine("Assets/GGame/Res/MapConfig", $"map_config_{strId}.xml");
 
             foreach (var go in gos)
@@ -76,15 +67,18 @@ public class MapExportWindow : EditorWindow
     {
         if(!go.activeSelf)
             return;
-        Collider collider = go.GetComponent<Collider>();
+        Collider2D collider = go.GetComponent<Collider2D>();
 
         if (null != collider)
         {
             switch (collider)
             {
-                case BoxCollider box:
+              
+                    
+                case BoxCollider2D box:
                 {
-                    var block = doc.CreateElement("Block");
+                    
+                    var block = doc.CreateElement("Box");
                     blocksNode.AppendChild(block);
 
                     var postionAttr = doc.CreateAttribute("postion");
