@@ -39,7 +39,7 @@ namespace GGame.Core
 
             if (ret.Count > 0)
             {
-                float fraction = ret[0].Item4;
+                var fraction = ret[0].Item4;
                 point = new FixVector2(ret[0].Item2.X, ret[0].Item2.Y);
 
                 for (int i = 1; i < ret.Count; i++)
