@@ -18,14 +18,8 @@ namespace GGame.Math
     public static readonly Fix64 One = new Fix64(ONE);
     public static readonly Fix64 Zero = new Fix64();
     public static readonly Fix64 PI = new Fix64(Pi);
-    public static readonly Fix64 PITimes2 = new Fix64(PiTimes2);
-    public static readonly Fix64 PIOver180 = new Fix64((long)72);
-    public static readonly Fix64 Rad2Deg = Fix64.Pi * (Fix64)2 / (Fix64)360;
-    public static readonly Fix64 Deg2Rad = (Fix64)360 / (Fix64.Pi * (Fix64)2);
-
-    public static readonly Fix64 MinValue = -9999999;
-    public static readonly Fix64 Epsilon = 1.401298E-45f;
-    public static readonly Fix64 MaxValue = 99999999;
+    public static readonly Fix64 MinValue = -long.MaxValue << FRACTIONAL_PLACES;
+    public static readonly Fix64 MaxValue = long.MaxValue << FRACTIONAL_PLACES;
     public static readonly Fix64 NaN = 0.0f / 0.0f;
     
 
