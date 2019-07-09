@@ -35,8 +35,41 @@ namespace GGame.Math
             value.m_rawValue > 0 ? 1 :
             0;
     }
+    
+    
+    public static Fix64 IEEERemainder(Fix64 x, Fix64 y)
+    {
+        Fix64 d = x % y;
 
+        if (d == Fix64.Zero && x < 0)
+            return Fix64.Zero;
+        Fix64 num = d - Abs(y) *  Sign(x);
+        if (Abs(num) == Abs(d))
+        {
+            Fix64 a = x / y;
+            if (Abs((Fix64)System.Math.Round((float)a)) > Abs(a))
+                return num;
+            return d;
+        }
+        if (Abs(num) < Abs(d))
+            return num;
+        return d;
+    }
 
+    public static Fix64 Min(Fix64 val1, Fix64 val2)
+    {
+        if ( val1 < val2)
+            return val1;
+        return val2;
+    }
+    
+    public static Fix64 Max(Fix64 val1, Fix64 val2)
+    {
+        if (val1 >  val2 )
+            return val1;
+        return val2;
+    }
+    
     public static Fix64 Abs(Fix64 value) {
         return new Fix64(value.m_rawValue > 0 ? value.m_rawValue : -value.m_rawValue);
     }
