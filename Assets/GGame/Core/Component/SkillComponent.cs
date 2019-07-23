@@ -20,7 +20,7 @@ namespace GGame.Core
                 switch (childNode.Name)
                 {
                     case "Job":
-                        AddJobs(childNode);
+                        JobServer.Instance.AddJobs(childNode, world, Entity, _jobs);
                         break;
                 }
                 childNode = childNode.NextSibling;
@@ -52,37 +52,6 @@ namespace GGame.Core
             }
             CurJobId = 0;
         }
-        void AddJobs(XmlNode xmlNode)
-        {
-            IJob job = null;
-            var childNode = xmlNode.FirstChild;
-
-            while (null != childNode)
-            {
-                var jobType = JobServer.Instance.GetJobType(childNode.Name);
-                var temp = ObjectServer.Instance.Fetch(jobType) as IJob;
-
-                if (null != temp)
-                {
-                    temp.Init(_world, Entity, childNode);
-                    if (null == job)
-                        job = temp;
-                    else
-                    {
-                        job.AddChild(temp);
-                    }
-                    
-                }
-                
-                childNode = childNode.NextSibling;
-            }
-
-            if (null != job)
-            {
-                int id = Convert.ToInt32(xmlNode.Attributes["id"].Value);
-                _jobs[id] = job;
-            }
-               
-        }
+        
     }
 }
