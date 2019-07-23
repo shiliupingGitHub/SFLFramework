@@ -15,8 +15,7 @@ public class WorldTest : MonoBehaviour
     {
         GGameEnv.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
         var d = skill_config.Dic[1];
-     
-        SoundManager.Instance.DoEvent("event:/attack_01");
+        
     }
 
  
