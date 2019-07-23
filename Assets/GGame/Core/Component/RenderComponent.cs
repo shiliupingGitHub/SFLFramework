@@ -30,7 +30,7 @@ namespace GGame.Core
             int  _modelId = Convert.ToInt32(node.Attributes?["model"].Value);
 #if CLIENT_LOGIC
             var modelPath = $"entity_prefab_{_modelId}";
-            var asset = ResourceManager.Instance.LoadPrefab(modelPath);
+            var asset = ResourceServer.Instance.LoadPrefab(modelPath);
 
             _gameObject = UnityEngine.GameObject.Instantiate(asset);
             _animator = _gameObject.GetComponentInChildren<UnityEngine. Animator>();

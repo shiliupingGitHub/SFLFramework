@@ -3,18 +3,17 @@ using System.Collections.Generic;
 
 namespace GGame.Core
 {
-    public class ComponentServer : SingleTon<ComponentServer>, IAddType
+    public class ComponentServer : ServerAddType<ComponentServer>
     {
         readonly Dictionary<string, Type> _componentTypes = new Dictionary<string, Type>();
-        public override void OnInit()
+
+
+        protected override void OnAdd(Type type)
         {
-            
+            GGameEnv.Instance.AddAbstractType<Component>(type, _componentTypes);
         }
 
-        public void AddType(Type t)
-        {
-          GGameEnv.Instance.AddAbstractType<Component>(t, _componentTypes);
-        }
+
         
         public Type GetComponentType(string typeName)
         {

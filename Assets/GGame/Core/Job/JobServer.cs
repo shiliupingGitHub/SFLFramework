@@ -3,19 +3,14 @@ using System.Collections.Generic;
 
 namespace GGame.Core
 {
-    public class JobServer : SingleTon<JobServer>,IAddType
+    public class JobServer : ServerAddType<JobServer>
     {
         readonly Dictionary<string, Type> _jobTypes = new Dictionary<string, Type>();
-        public override void OnInit()
-        {
-            
-        }
-
-        public void AddType(Type t)
-        {
-            GGameEnv.Instance.AddInfeceType<IJob>(t, _jobTypes);
-        }
         
+        protected override void OnAdd(Type type)
+        {
+            GGameEnv.Instance.AddInfeceType<IJob>(type, _jobTypes);
+        }
         
         public Type GetJobType(string typeName)
         {

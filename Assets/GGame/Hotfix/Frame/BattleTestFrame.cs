@@ -23,7 +23,7 @@ namespace GGame.Hotfix
         public void OnInit()
         {
             
-            var asset = ResourceManager.Instance.LoadPrefab("frame_battle_test");
+            var asset = ResourceServer.Instance.LoadPrefab("frame_battle_test");
 
             go = GameObject.Instantiate(asset);
             var collector = go.GetComponent<ReferenceCollector>();

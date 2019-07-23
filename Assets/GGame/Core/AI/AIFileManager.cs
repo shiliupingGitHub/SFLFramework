@@ -14,7 +14,7 @@ namespace GGame.Core
         {
 #if CLIENT_LOGIC
             string path = Path.GetFileNameWithoutExtension(filePath);
-            return ResourceManager.Instance.LoadBytes(path);
+            return ResourceServer.Instance.LoadBytes(path);
 #endif
             return null;
         }

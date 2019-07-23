@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace GGame.Core
 {
-    public class ResourceManager : SingleTon<ResourceManager>
+    public class ResourceServer : SingleTon<ResourceServer>
 {
 #if CLIENT_LOGIC   
      Dictionary<string, string[]> _dependenciesCache = new Dictionary<string, string[]>();

@@ -3,18 +3,10 @@ using System.Collections.Generic;
 
 namespace GGame.Core
 {
-    public class ActionServer : SingleTon<ActionServer>, IAddType
+    public class ActionServer : ServerAddType<ActionServer>
     {
         readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
-        public override void OnInit()
-        {
-            
-        }
 
-        public void AddType(Type t)
-        {
-           GGameEnv.Instance.AddInfeceType<IAction>(t, _actionTypes);
-        }
         
         public Type GetActionType(string typeName)
         {
@@ -23,6 +15,11 @@ namespace GGame.Core
             _actionTypes.TryGetValue(typeName, out ret);
             
             return ret;
+        }
+
+        protected override void OnAdd(Type type)
+        {
+            GGameEnv.Instance.AddInfeceType<IAction>(type, _actionTypes);
         }
     }
 }

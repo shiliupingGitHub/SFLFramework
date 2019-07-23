@@ -3,19 +3,16 @@ using System.Collections.Generic;
 
 namespace GGame.Core
 {
-    public class CmdServer : SingleTon<CmdServer>,IAddType
+    public class CmdServer : ServerAddType<CmdServer>
     {
         Dictionary<Type, List<ICmdHandler>> _cmdHandler = new Dictionary<Type, List<ICmdHandler>>();
-        public override void OnInit()
+ 
+
+        protected override void OnAdd(Type type)
         {
-            
+            AddCmdHandler(type);
         }
 
-        public void AddType(Type t)
-        {
-            AddCmdHandler(t);
-        }
-        
         
         void AddCmdHandler(Type type)
         {

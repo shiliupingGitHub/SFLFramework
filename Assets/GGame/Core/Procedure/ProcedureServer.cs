@@ -3,20 +3,16 @@ using System.Collections.Generic;
 
 namespace GGame.Core
 {
-    public class ProcedureServer : SingleTon<ProcedureServer> , IAddType
+    public class ProcedureServer : ServerAddType<ProcedureServer>
     {
         Dictionary<Type, IProcedure> _procedures = new Dictionary<Type, IProcedure>();
-        public override void OnInit()
+        
+        protected override void OnAdd(Type type)
         {
-           
+            GGameEnv.Instance.AddInstanceType(type, _procedures);
         }
 
-        public void AddType(Type t)
-        {
-            GGameEnv.Instance.AddInstanceType(t, _procedures);
-        }
         
-                
         public T Enter<T, W>(W w) where T:IProcedure
         {
             var type = typeof(T);

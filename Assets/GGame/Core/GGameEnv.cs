@@ -113,11 +113,7 @@ namespace GGame.Core
                 JobServer.Instance.AddType(type);
                 ActionServer.Instance.AddType(type);
                 ProcedureServer.Instance.AddType(type);
-
                 CmdServer.Instance.AddType(type);
-
-                
-                
                 AuToInit(type);
 
             }
