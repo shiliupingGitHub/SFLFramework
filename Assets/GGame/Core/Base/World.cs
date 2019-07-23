@@ -23,7 +23,7 @@ namespace GGame.Core
         
         public World(bool autoTick)
         {
-            GGameEnv.Instance.CreateWorldSystem(this);
+            SystemServer.Instance.Create(this);
             
             _isAutoTick = autoTick;
             if (autoTick)
@@ -191,7 +191,7 @@ namespace GGame.Core
                     Entity entity = null;
                     
                     _entities.TryGetValue(cmdInfo.Uuid, out entity);
-                    GGameEnv.Instance.ExecuteCmd(this, entity, cmdInfo.Cmd);
+                    CmdServer.Instance.ExecuteCmd(this, entity, cmdInfo.Cmd);
                 }
             }
             

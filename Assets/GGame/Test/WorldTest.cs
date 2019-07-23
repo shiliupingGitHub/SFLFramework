@@ -13,7 +13,7 @@ public class WorldTest : MonoBehaviour
     public Transform startPos;
     void Start()
     {
-        GGameEnv.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
+        ProcedureServer.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
         var d = skill_config.Dic[1];
         
     }
@@ -23,7 +23,7 @@ public class WorldTest : MonoBehaviour
     void Update()
     {
       
-        var procedure = GGameEnv.Instance.Get<BattleTestProcedure>();
+        var procedure = ProcedureServer.Instance.Get<BattleTestProcedure>();
         if(null == procedure)
             return;
         

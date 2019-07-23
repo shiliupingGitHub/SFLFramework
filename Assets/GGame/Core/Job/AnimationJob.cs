@@ -14,7 +14,7 @@ namespace GGame.Core
 
             while (null != childNode)
             {
-                var type = GGameEnv.Instance.GetActionType(childNode.Name);
+                var type = ActionServer.Instance.GetActionType(childNode.Name);
                 if (null != type)
                 {
                     var action = ObjectPool.Instance.Fetch(type) as IAction;
@@ -64,7 +64,7 @@ namespace GGame.Core
             {
                 foreach (var action in actions)
                 {
-                    GGameEnv.Instance.ExecuteCmd(_world, _entity, action);
+                    CmdServer.Instance.ExecuteCmd(_world, _entity, action);
                 }
             }
 

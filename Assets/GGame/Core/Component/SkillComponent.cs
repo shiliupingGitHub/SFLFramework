@@ -59,7 +59,7 @@ namespace GGame.Core
 
             while (null != childNode)
             {
-                var jobType = GGameEnv.Instance.GetJobType(childNode.Name);
+                var jobType = JobServer.Instance.GetJobType(childNode.Name);
                 var temp = ObjectPool.Instance.Fetch(jobType) as IJob;
 
                 if (null != temp)

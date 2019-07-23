@@ -48,7 +48,7 @@ namespace GGame.Core
         
         public void AddComponent(XmlNode node)
         {
-            var type = GGameEnv.Instance.GetComponentType(node.Name);
+            var type = ComponentServer.Instance.GetComponentType(node.Name);
             var component = ObjectPool.Instance.Fetch(type) as Component;
             
             component.Entity = this;

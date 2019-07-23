@@ -13,7 +13,7 @@ namespace GGame.Hotfix
         public override void OnInit()
         {
             _types.Clear();
-            UIManager.Instance.OnNewFrame += OnCreateFrame;
+            UISever.Instance.OnNewFrame += OnCreateFrame;
        
             foreach (var type in HotfixManager.Instance.HotfixType)
             {

@@ -28,11 +28,11 @@ namespace GGame.Hybird.Procedure
             rc.UpdateFace();
             
             
-            UIManager.Instance.Show(0);
+            UISever.Instance.Show(0);
 
             TestCmd tc;
             
-            GGameEnv.Instance.ExecuteCmd(tc);
+            CmdServer.Instance.ExecuteCmd(tc);
         }           
 
     }

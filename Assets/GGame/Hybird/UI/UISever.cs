@@ -6,9 +6,9 @@ using GGame.Hybird;
 
 namespace GGame.Hybird
 {
-    public class UIManager : SingleTon<UIManager>, IAutoInit
+    public class UISever : SingleTon<UISever>, IAutoInit
     {
-        public UIManager()
+        public UISever()
         {
             _instance = this;
         }
