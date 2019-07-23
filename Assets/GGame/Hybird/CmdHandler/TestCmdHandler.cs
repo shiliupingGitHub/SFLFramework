@@ -7,7 +7,7 @@ namespace GGame.Hybird
     {
         protected override void Run(TestCmd o)
         {
-            Log.Debug("testcmd");
+            LogServer.Instance.Debug("testcmd");
         }
     }
 }

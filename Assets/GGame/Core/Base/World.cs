@@ -80,7 +80,7 @@ namespace GGame.Core
         public Entity CreateEntity(ulong uuid, int configId)
         {
             var configPath = $"entity_config_{configId}";
-            var configText = ResourceServer.Instance.LoadText(configPath);
+            var configText = GResourceServer.Instance.LoadText(configPath);
             var e = ObjectServer.Instance.Fetch<Entity>();
             
             e.Init(this, configText);
@@ -92,7 +92,7 @@ namespace GGame.Core
         public Entity CreateEntityWithPos(ulong uuid, int configId, Fix64 x, Fix64 y)
         {
             var configPath = $"entity_config_{configId}";
-            var configText = ResourceServer.Instance.LoadText(configPath);
+            var configText = GResourceServer.Instance.LoadText(configPath);
             var e = ObjectServer.Instance.Fetch<Entity>();
             
             e.Pos = new FixVector2(x, y);

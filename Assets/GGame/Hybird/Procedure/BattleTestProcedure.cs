@@ -20,13 +20,8 @@ namespace GGame.Hybird.Procedure
             entity.Camp = 0;
         
             var rc = entity.GetComponent<RenderComponent>();
-            camera.m_Follow = rc.GameObject.transform;
-            camera.m_LookAt = rc.GameObject.transform;
-            
-            
-            rc.UpdatePostion();
-            rc.UpdateFace();
-            
+            camera.m_Follow = (rc.GameObject as HybirdGGameObject).GameObject.transform;
+            camera.m_LookAt = (rc.GameObject as HybirdGGameObject).GameObject.transform;
             
             UISever.Instance.Show(0);
 

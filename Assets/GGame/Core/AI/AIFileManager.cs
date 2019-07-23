@@ -12,11 +12,10 @@ namespace GGame.Core
 
         public override byte[] FileOpen(string filePath, string ext)
         {
-#if CLIENT_LOGIC
+
             string path = Path.GetFileNameWithoutExtension(filePath);
-            return ResourceServer.Instance.LoadBytes(path);
-#endif
-            return null;
+            return GResourceServer.Instance.LoadBytes(path);
+            
         }
 
         public override void FileClose(string filePath, string ext, byte[] pBuffer)

@@ -22,10 +22,9 @@ namespace GGame.Hotfix
 
         public void OnInit()
         {
-            
-            var asset = ResourceServer.Instance.LoadPrefab("frame_battle_test");
 
-            go = GameObject.Instantiate(asset);
+            var go = (GResourceServer.Instance.LoadPrefab("frame_battle_test") as HybirdGGameObject).GameObject;
+            
             var collector = go.GetComponent<ReferenceCollector>();
 
             Button b = collector.Get<GameObject>("btn_use_skill").GetComponent<Button>();

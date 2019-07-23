@@ -7,7 +7,7 @@ namespace GGame.Hotfix
     {
         public static void Main()
         {
-            Log.Debug("Hotfixed start");
+            LogServer.Instance.Debug("Hotfixed start");
             FrameFactory.Instance.Init();
         }
     }

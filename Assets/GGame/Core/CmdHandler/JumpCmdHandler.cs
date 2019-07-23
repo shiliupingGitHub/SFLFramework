@@ -17,12 +17,6 @@ namespace GGame.Core
 
             mc.CurVSpeed = mc.VSpeed;
             mc.IsJump = true;
-#if CLIENT_LOGIC
-            var rc = entity.GetComponent<RenderComponent>();
-            
-            rc.Animator.SetTrigger("Jump");
-            rc.Animator?.SetBool("IsJump", true);
-#endif
         }
     }
 }

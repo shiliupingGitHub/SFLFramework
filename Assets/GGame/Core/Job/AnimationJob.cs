@@ -43,11 +43,6 @@ namespace GGame.Core
         protected override void OnSchedule()
         {
             _curFrame = 0;
-#if CLIENT_LOGIC
-            var rc = _entity.GetComponent<RenderComponent>();
-            
-            rc.Animator.SetTrigger("Skill");
-#endif
         }
 
         public override void Tick()

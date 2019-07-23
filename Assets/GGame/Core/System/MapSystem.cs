@@ -105,7 +105,7 @@ namespace GGame.Core
         public void LoadMap(int configId)
         {
             var configPath = $"map_config_{configId}";
-            var configText = ResourceServer.Instance.LoadText(configPath);
+            var configText = GResourceServer.Instance.LoadText(configPath);
             
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(configText);

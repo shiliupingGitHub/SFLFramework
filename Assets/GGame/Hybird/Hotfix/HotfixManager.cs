@@ -44,8 +44,8 @@ namespace GGame.Hybird.Hotfix
 #endif
         public void Init()
         {
-            var dllBytes = ResourceServer.Instance.LoadBytes(dllPath);
-            var pdbBytes = ResourceServer.Instance.LoadBytes(pdbPath);
+            var dllBytes = GResourceServer.Instance.LoadBytes(dllPath);
+            var pdbBytes = GResourceServer.Instance.LoadBytes(pdbPath);
             var hotfixAssembly = Assembly.Load(dllBytes, pdbBytes);
 #if !ILRuntime
             var hotfixProgramType = hotfixAssembly.GetType("GGame.Hotfix.Program");

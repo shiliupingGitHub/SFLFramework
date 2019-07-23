@@ -105,11 +105,6 @@ namespace GGame.Core
                             {
                                 moveComponent.IsJump = false;
                                 moveComponent.CurJumpLandFrame = moveComponent.JumpLandFrame;
-#if CLIENT_LOGIC
-                                RenderComponent renderComponent = moveComponent.Entity.GetComponent<RenderComponent>();
-                                
-                                renderComponent.Animator?.SetBool("IsJump", false);
-#endif
                             }
                         }
 

@@ -13,9 +13,7 @@ namespace GGame.Hybird
             if (!_isStartedUp)
             {
                 GGameEnv.Instance.Init();
-                Log.Debug("Start up");
-                
-                SRandom r = new SRandom(2);
+                LogServer.Instance.Debug("Start up");
                 
             }
           
