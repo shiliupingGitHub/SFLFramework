@@ -2,10 +2,11 @@ using NotImplementedException = System.NotImplementedException;
 
 namespace GGame.Core
 {
-    public class AIManager : SingleTon<AIManager>
+    public class AIServer : SingleTon<AIServer>, IInit
     {
         private AIFileManager fileMgr;
-        public override void OnInit()
+        
+        public void Init()
         {
             fileMgr = new AIFileManager();
             behaviac.Workspace.Instance.FilePath = "AI";

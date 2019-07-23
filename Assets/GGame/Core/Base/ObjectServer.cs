@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using behaviac;
 
 namespace GGame.Core
 {
-    public class ObjectPool : SingleTon<ObjectPool>
+    public class ObjectServer : SingleTon<ObjectServer>
     {
         
         Dictionary<Type, List<Object>> _cache = new Dictionary<Type, List<object>>();
@@ -47,10 +48,6 @@ namespace GGame.Core
             cache.Add(o);
         }
 
-
-        public override void OnInit()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

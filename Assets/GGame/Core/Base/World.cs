@@ -28,8 +28,8 @@ namespace GGame.Core
             _isAutoTick = autoTick;
             if (autoTick)
             {
-                PlayerLoopManager.Instance.OnUpdate += Update;
-                PlayerLoopManager.Instance.OnTick += Tick;
+                PlayerLoopServer.Instance.OnUpdate += Update;
+                PlayerLoopServer.Instance.OnTick += Tick;
             }
         }
 
@@ -81,7 +81,7 @@ namespace GGame.Core
         {
             var configPath = $"entity_config_{configId}";
             var configText = ResourceServer.Instance.LoadText(configPath);
-            var e = ObjectPool.Instance.Fetch<Entity>();
+            var e = ObjectServer.Instance.Fetch<Entity>();
             
             e.Init(this, configText);
             _entities[uuid] = e;
@@ -93,7 +93,7 @@ namespace GGame.Core
         {
             var configPath = $"entity_config_{configId}";
             var configText = ResourceServer.Instance.LoadText(configPath);
-            var e = ObjectPool.Instance.Fetch<Entity>();
+            var e = ObjectServer.Instance.Fetch<Entity>();
             
             e.Pos = new FixVector2(x, y);
             e.Init(this, configText);
@@ -149,8 +149,8 @@ namespace GGame.Core
            
             if (_isAutoTick)
             {
-                PlayerLoopManager.Instance.OnUpdate -= Update;
-                PlayerLoopManager.Instance.OnTick -= Tick;
+                PlayerLoopServer.Instance.OnUpdate -= Update;
+                PlayerLoopServer.Instance.OnTick -= Tick;
             }
             
             

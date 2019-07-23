@@ -17,7 +17,7 @@ namespace GGame.Core
                 var type = ActionServer.Instance.GetActionType(childNode.Name);
                 if (null != type)
                 {
-                    var action = ObjectPool.Instance.Fetch(type) as IAction;
+                    var action = ObjectServer.Instance.Fetch(type) as IAction;
                     
                     action.Init(childNode);
 

@@ -15,7 +15,7 @@ namespace GGame.Hotfix
             _types.Clear();
             UISever.Instance.OnNewFrame += OnCreateFrame;
        
-            foreach (var type in HotfixManager.Instance.HotfixType)
+            foreach (var type in HotfixServer.Instance.HotfixType)
             {
                 var frameIdAttrs = type.GetCustomAttributes(typeof(FrameIDAttribute), false);
 

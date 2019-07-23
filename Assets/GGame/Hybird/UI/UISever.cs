@@ -6,7 +6,7 @@ using GGame.Hybird;
 
 namespace GGame.Hybird
 {
-    public class UISever : SingleTon<UISever>, IAutoInit
+    public class UISever : SingleTon<UISever>
     {
         public UISever()
         {
@@ -43,10 +43,6 @@ namespace GGame.Hybird
             }
         }
 
-
-        public override void OnInit()
-        {
-            
-        }
+        
     }
 }

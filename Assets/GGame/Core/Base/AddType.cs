@@ -15,7 +15,6 @@ namespace GGame.Core
             OnAdd(t);
         }
         
-        public override  void OnInit(){}
         protected abstract void OnAdd(Type type);
     }
 }

@@ -19,7 +19,7 @@ namespace GGame.Core
         public override void Dispose()
         {
             base.Dispose();
-            ObjectPool.Instance.Recycle(Agent);
+            ObjectServer.Instance.Recycle(Agent);
             Agent = null;
         }
     }

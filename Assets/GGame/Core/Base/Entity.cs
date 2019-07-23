@@ -49,7 +49,7 @@ namespace GGame.Core
         public void AddComponent(XmlNode node)
         {
             var type = ComponentServer.Instance.GetComponentType(node.Name);
-            var component = ObjectPool.Instance.Fetch(type) as Component;
+            var component = ObjectServer.Instance.Fetch(type) as Component;
             
             component.Entity = this;
             component.Awake(this._world, node);
@@ -70,7 +70,7 @@ namespace GGame.Core
         
         public void Dispose()
         {
-            ObjectPool.Instance.Recycle(this);
+            ObjectServer.Instance.Recycle(this);
 
             _world = null;
             foreach (var component in _components)

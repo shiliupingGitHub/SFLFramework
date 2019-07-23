@@ -28,7 +28,7 @@ namespace GGame.Core
             _world = null;
             Entity = null;
             
-            ObjectPool.Instance.Recycle(this);
+            ObjectServer.Instance.Recycle(this);
 
         }
 

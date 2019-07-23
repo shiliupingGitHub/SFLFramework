@@ -1,23 +1,25 @@
+using UnityEngine.SceneManagement;
+
 namespace GGame.Core
 {
-    public class SceneManager
+    public class SceneServer
     {
-        private static SceneManager _instance;
+        private static SceneServer _instance;
 
-        public static SceneManager Instance
+        public static SceneServer Instance
         {
             get
             {
                 if (null == _instance)
                 {
-                    _instance = new SceneManager();
+                    _instance = new SceneServer();
                 }
 
                 return _instance;
             }
         }
 
-        public SceneManager()
+        public SceneServer()
         {
             _instance = this;
         }

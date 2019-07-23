@@ -23,7 +23,7 @@ namespace GGame.Core
 
         public void Dispose()
         {
-            ObjectPool.Instance.Recycle(this);
+            ObjectServer.Instance.Recycle(this);
         }
     }
 }

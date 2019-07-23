@@ -18,13 +18,6 @@ namespace GGame.Core
                 return _instance;
             }
         }
-
-        public  void Init()
-        {
-            OnInit();
-        }
-
-        public abstract void OnInit();
     }
 }
 

@@ -4,7 +4,7 @@ using GGame.Core;
 
 namespace GGame.Hybird.Hotfix
 {
-    public class HotfixManager : SingleTon<HotfixManager> , IDisposable
+    public class HotfixServer : SingleTon<HotfixServer> , IDisposable , IInit
     {
         private const string dllPath = "hotfix_dll";
         private const string pdbPath = "hotfix_pdb";
@@ -14,9 +14,36 @@ namespace GGame.Hybird.Hotfix
         private MemoryStream _dllStream;
         private MemoryStream _pdbStream;
 #endif
-        public override void OnInit()
-        {
 
+        
+        public void Dispose()
+        {
+#if ILRuntime
+            _domain = null;
+            _dllStream.Dispose();
+            _pdbStream.Dispose();
+#endif
+        }
+#if ILRuntime
+        void OnILInitialize()
+        {
+            _domain?.DelegateManager.RegisterFunctionDelegate<int, GGame.Support.Frame>();
+
+            _domain?.RegisterCrossBindingAdaptor(new FrameAdapter());
+            
+            _domain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
+            {
+                return new UnityEngine.Events.UnityAction(() =>
+                {
+                    ((Action)act)();
+                });
+            });
+
+
+        }
+#endif
+        public void Init()
+        {
             var dllBytes = ResourceServer.Instance.LoadBytes(dllPath);
             var pdbBytes = ResourceServer.Instance.LoadBytes(pdbPath);
             var hotfixAssembly = Assembly.Load(dllBytes, pdbBytes);
@@ -45,33 +72,5 @@ namespace GGame.Hybird.Hotfix
            _domain.Invoke("GGame.Hotfix.Program", "Main", null);
 #endif
         }
-
-
-        public void Dispose()
-        {
-#if ILRuntime
-            _domain = null;
-            _dllStream.Dispose();
-            _pdbStream.Dispose();
-#endif
-        }
-#if ILRuntime
-        void OnILInitialize()
-        {
-            _domain?.DelegateManager.RegisterFunctionDelegate<int, GGame.Support.Frame>();
-
-            _domain?.RegisterCrossBindingAdaptor(new FrameAdapter());
-            
-            _domain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
-            {
-                return new UnityEngine.Events.UnityAction(() =>
-                {
-                    ((Action)act)();
-                });
-            });
-
-
-        }
-#endif
     }
 }

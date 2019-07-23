@@ -94,7 +94,7 @@ namespace GGame.Core
             
             _childs.Clear();
             _finish = null;
-            ObjectPool.Instance.Recycle(this);
+            ObjectServer.Instance.Recycle(this);
         }
     }
 }

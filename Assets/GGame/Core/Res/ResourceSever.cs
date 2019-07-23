@@ -126,11 +126,7 @@ namespace GGame.Core
         return dependencies;
     }
 #endif
-
-    public override void OnInit()
-    {
-       
-    }
+    
 }
 
 }

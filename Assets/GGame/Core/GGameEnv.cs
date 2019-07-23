@@ -4,22 +4,9 @@ using System.Reflection;
 
 namespace GGame.Core
 {
-    public class GGameEnv : SingleTon<GGameEnv>
+    public class GGameEnv : SingleTon<GGameEnv>, IInit
     {
         
-        
-        public override void OnInit()
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            foreach (var assembly in assemblies)
-            {
-                if(assembly.FullName.Contains("GGame.Core") || assembly.FullName.Contains("GGame.Hybird"))
-                    AddAssembly(assembly);
-            }
-            
-            AIManager.Instance.Init();
-        }
 
         public void AddAbstractType<T>(Type type, List<Type> list)
         {
@@ -119,13 +106,19 @@ namespace GGame.Core
             }
         }
 
-        
-  
 
-        
-        
+        public void Init()
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-        
+            foreach (var assembly in assemblies)
+            {
+                if(assembly.FullName.Contains("GGame.Core") || assembly.FullName.Contains("GGame.Hybird"))
+                    AddAssembly(assembly);
+            }
+            
+            AIServer.Instance.Init();
+        }
     }
 
 }

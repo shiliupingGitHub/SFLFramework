@@ -6,12 +6,7 @@ namespace GGame.Core
     public class SystemServer : SingleTon<SystemServer>, IAddType
     {
         readonly List<Type> _systemTypes = new List<Type>();
-        public override void OnInit()
-        {
-            
-        }
-
-
+        
         public void AddType(Type t)
         {
             GGameEnv.Instance.AddAbstractType<System>(t, _systemTypes);
@@ -21,7 +16,7 @@ namespace GGame.Core
         {
             foreach (var systemType in _systemTypes)
             {
-                var system = ObjectPool.Instance.Fetch(systemType) as System;
+                var system = ObjectServer.Instance.Fetch(systemType) as System;
                 var attrs = systemType.GetCustomAttributes(typeof(InterestAttribute), false);
                 
                 world.AddSystem(system);

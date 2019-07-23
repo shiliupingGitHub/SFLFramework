@@ -2,26 +2,26 @@ using System;
 
 namespace GGame.Core
 {
-    public class PlayerLoopManager
+    public class PlayerLoopServer
     {
         public Action OnUpdate;
         public Action OnTick;
-        private static PlayerLoopManager _instance;
+        private static PlayerLoopServer _instance;
 
-        public static PlayerLoopManager Instance
+        public static PlayerLoopServer Instance
         {
             get
             {
                 if (null == _instance)
                 {
-                    _instance = new PlayerLoopManager();
+                    _instance = new PlayerLoopServer();
                 }
 
                 return _instance;
             }
         }
 
-        public PlayerLoopManager()
+        public PlayerLoopServer()
         {
             _instance = this;
         }

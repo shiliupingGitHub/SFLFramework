@@ -11,7 +11,7 @@ namespace GGame.Hybird.Procedure
         public World world { get; set; }
         protected override void OnEnter(Transform startPos, CinemachineVirtualCamera camera)
         {
-            HotfixManager.Instance.Init();
+            HotfixServer.Instance.Init();
             
             world = new World(true);
             
