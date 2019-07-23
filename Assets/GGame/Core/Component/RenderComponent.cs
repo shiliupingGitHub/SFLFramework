@@ -29,7 +29,13 @@ namespace GGame.Core
             _gameObject = GResourceServer.Instance.LoadPrefab(modelPath);
 
         }
-        
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            
+            _gameObject.Dispose();
+        }
     }
 }
 

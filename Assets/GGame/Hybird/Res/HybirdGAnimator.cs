@@ -6,9 +6,11 @@ namespace GGame.Core
     public class HybirdGAnimator : GAnimator, IDisposable
     {
         public Animator Animator { get; set; }
-        public void Dispose()
+        public override void Dispose()
         {
-            ObjectServer.Instance.Recycle(this);
+            base.Dispose();
+
+            Animator = null;
         }
     }
 }
