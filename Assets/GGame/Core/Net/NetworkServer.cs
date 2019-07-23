@@ -7,22 +7,22 @@ namespace GGame.Core
         TCP,
     }
     
-    public class NetworkManager : IAutoInit
+    public class NetworkServer : IAutoInit
     {
-        private static NetworkManager _instance;
+        private static NetworkServer _instance;
 
-        public static NetworkManager Instance
+        public static NetworkServer Instance
         {
             get
             {
                 if(null == _instance)
-                    _instance = new NetworkManager();
+                    _instance = new NetworkServer();
                 return _instance;
             }
             
         }
 
-        public NetworkManager()
+        public NetworkServer()
         {
             _instance = this;
         }
