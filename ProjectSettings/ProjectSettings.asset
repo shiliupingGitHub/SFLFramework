@@ -543,7 +543,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: BEHAVIAC_NOT_USE_UNITY
+    1: BEHAVIAC_NOT_USE_UNITY;BEHAVIAC_RELEASE
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}
