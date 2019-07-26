@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using GGame.Core;
@@ -33,7 +34,109 @@ namespace GGame.Hybird
         return o.bytes;
 
     }
-    
+
+    public override  Task<GGameObject> LoadPrefabAsync(string path, Action<float> onProgress)
+    {
+        TaskCompletionSource<GGameObject> tcs = new TaskCompletionSource<GGameObject>();
+
+        LoadBundleAsync(path, () =>
+        {
+            var o = _objects[path] as UnityEngine.GameObject;
+            var go =ObjectServer.Instance.Fetch<HybirdGGameObject>();
+
+            go.GameObject = GameObject.Instantiate(o);
+            
+            tcs.SetResult(go);
+        }, onProgress);
+        
+        return tcs.Task;
+    }
+
+    public async void LoadBundleAsync(string path, Action onCompliete, Action<float> onProgress)
+    {
+        path = $"{path}.unity3d";
+        string[] depends = GetSortedDependencies(path);
+        float curCount = 0;
+        float max = depends.Length; 
+        foreach (var depend in depends)
+        {
+#if UNITY_EDITOR
+            var assetPaths =  UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundle(depend);
+
+            foreach (var assetPath in assetPaths)
+            {
+                string assetName = Path.GetFileNameWithoutExtension(assetPath);
+                var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
+                _objects[assetName] = asset;
+                
+            }
+
+            onProgress(1.0f);
+            onCompliete();
+#else
+            if (_loadedBundles.ContainsKey(depend))
+            {
+                curCount++;
+
+                onProgress(curCount / max);
+                continue;
+            }
+
+            string fullPath = null;
+            var fullPersistPath = Path.Combine(Application.persistentDataPath, depend);
+            if (File.Exists(fullPersistPath))
+            {
+                fullPath = fullPersistPath;
+            }
+            else
+            {
+                var fullStreamPath = Path.Combine(Application.streamingAssetsPath, depend);
+
+                if (File.Exists(fullStreamPath))
+                {
+                    fullPath = fullStreamPath;
+                }
+                
+               
+            }
+            
+            if (string.IsNullOrEmpty(fullPath))
+            {
+                LogServer.Instance.Error($"{path} doest not exist");
+            }
+            else
+            {
+                var request = AssetBundle.LoadFromFileAsync(fullPath);
+
+                while (!request.isDone)
+                {
+                    await Task.Delay(1);
+                }
+                var objects = request.assetBundle.LoadAllAssets();
+
+                foreach (var o in objects)
+                {
+                    _objects[o.name] = o;
+                }
+
+                _loadedBundles[depend] = request.assetBundle;
+            }
+            
+            curCount++;
+
+            onProgress(curCount / max);
+
+           
+          
+#endif
+
+
+        }
+        onProgress(1.0f);
+        
+        onCompliete();
+    }
+
     public override GGameObject LoadPrefab(string path)
     {
         LoadBundle(path);
@@ -45,10 +148,9 @@ namespace GGame.Hybird
         return go;
     }
     
-
     
 
-    void LoadBundle(string path)
+    public void LoadBundle(string path)
     {
         path = $"{path}.unity3d";
         string[] depends = GetSortedDependencies(path);

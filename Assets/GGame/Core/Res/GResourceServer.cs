@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 namespace GGame.Core
 {
     public class GResourceServer
@@ -40,6 +43,11 @@ namespace GGame.Core
         public virtual GGameObject LoadPrefab(string path)
         {
            
+            return null;
+        }
+
+        public virtual Task<GGameObject> LoadPrefabAsync(string path, Action<float> onProgress)
+        {
             return null;
         }
 
