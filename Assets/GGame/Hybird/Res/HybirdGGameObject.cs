@@ -43,9 +43,12 @@ namespace GGame.Hybird
             return null;
         }
 
-        public virtual FixVector3 Position
+        public override FixVector3 Position
         {
-            set { }
+            set
+            {
+                mGo.transform.position = new Vector3((float)value.x, (float) value.y, (float) value.z);
+            }
         }
 
    

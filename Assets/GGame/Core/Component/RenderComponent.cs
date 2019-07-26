@@ -24,8 +24,8 @@ namespace GGame.Core
         {
             base.Awake(world, node);
             int  _modelId = Convert.ToInt32(node.Attributes?["model"].Value);
-
             var modelPath = $"entity_prefab_{_modelId}";
+            
             _gameObject = GResourceServer.Instance.LoadPrefab(modelPath);
 
         }
@@ -34,7 +34,7 @@ namespace GGame.Core
         {
             base.Dispose();
             
-            _gameObject.Dispose();
+            _gameObject?.Dispose();
         }
     }
 }

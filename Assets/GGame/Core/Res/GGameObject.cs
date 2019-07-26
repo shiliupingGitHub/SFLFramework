@@ -1,4 +1,5 @@
 using System;
+using GGame.Math;
 
 namespace GGame.Core
 {
@@ -15,6 +16,15 @@ namespace GGame.Core
         {
             ObjectServer.Instance.Recycle(this);
         }
+
+        public virtual FixVector3 Position
+        {
+            set
+            {
+                
+            }
+        }
+        
         
     }
 }
