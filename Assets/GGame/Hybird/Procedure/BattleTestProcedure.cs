@@ -16,7 +16,7 @@ namespace GGame.Hybird.Procedure
             world = new World(true);
             
             world.GetSystem<MapSystem>() .LoadMap(1001);
-            var entity = world.CreateEntityWithPos(10000001,1001, startPos.transform.position.x, startPos.transform.position.y);
+            var entity = world.CreateEntityWithPos(10000001,1001, startPos.transform.position.x, startPos.transform.position.y, startPos.transform.position.z);
             entity.Camp = 0;
         
             var rc = entity.GetComponent<RenderComponent>();

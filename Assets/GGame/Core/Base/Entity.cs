@@ -7,7 +7,7 @@ namespace GGame.Core
 {
     public class Entity : IDisposable
     {
-        public FixVector2 Pos { get; set; }
+        public FixVector3 Pos { get; set; }
         public Fix64 MoveSpeedX { get; set; }
 
         public int Face = 1;
@@ -33,7 +33,8 @@ namespace GGame.Core
             {
                 Fix64 x = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionX")?.Value);
                 Fix64 y = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionY")?.Value);
-                Pos = new FixVector2(x, y);
+                Fix64 z = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionZ")?.Value);
+                Pos = new FixVector3(x, y,z);
             }
             
             this._world = world;

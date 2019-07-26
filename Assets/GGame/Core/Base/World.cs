@@ -89,13 +89,13 @@ namespace GGame.Core
             return e;
         }
         
-        public Entity CreateEntityWithPos(ulong uuid, int configId, Fix64 x, Fix64 y)
+        public Entity CreateEntityWithPos(ulong uuid, int configId, Fix64 x, Fix64 y, Fix64 z)
         {
             var configPath = $"entity_config_{configId}";
             var configText = GResourceServer.Instance.LoadText(configPath);
             var e = ObjectServer.Instance.Fetch<Entity>();
             
-            e.Pos = new FixVector2(x, y);
+            e.Pos = new FixVector3(x, y, z);
             e.Init(this, configText);
             _entities[uuid] = e;
             
