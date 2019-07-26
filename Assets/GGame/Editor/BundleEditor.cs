@@ -54,7 +54,7 @@ namespace GGame.Editor
             for (var i = 0; i < bundles.Length; i++)
                 bundles[i].addressableNames = bundles[i].assetNames.Select(Path.GetFileNameWithoutExtension).ToArray();
         
-            var result = CompatibilityBuildPipeline.BuildAssetBundles($"{Application.streamingAssetsPath}/{folder}", BuildAssetBundleOptions.None,
+            var result = CompatibilityBuildPipeline.BuildAssetBundles($"{Application.streamingAssetsPath}", BuildAssetBundleOptions.None,
                 target);
             var manifest = new HybirdResManifest();
 
@@ -72,14 +72,14 @@ namespace GGame.Editor
                 manifest.Res[bunde] = res;
             }
 
-            var resPath = Path.Combine(Application.streamingAssetsPath, folder);
+            var resPath = Application.streamingAssetsPath;
             var infoPath = Path.Combine(resPath, "res.manifest");
             var json = LitJson.JsonMapper.ToJson(manifest);
             File.WriteAllText(infoPath, json);
 
-            if (File.Exists($"{resPath}/{folder}.manifest"))
+            if (File.Exists($"{resPath}/StreamingAssets.manifest"))
             {
-                File.Delete($"{resPath}/{folder}.manifest");
+                File.Delete($"{resPath}/StreamingAssets.manifest");
             }
             
             AssetDatabase.Refresh();

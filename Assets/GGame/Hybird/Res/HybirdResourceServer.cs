@@ -11,6 +11,9 @@ namespace GGame.Hybird
 {
     Dictionary<string, string[]> _dependenciesCache = new Dictionary<string, string[]>();
      Dictionary<string, UnityEngine.Object> _objects = new Dictionary<string, Object>();
+     Dictionary<string, AssetBundle> _loadedBundles = new Dictionary<string, AssetBundle>();
+
+     HybirdResManifest _manifest = new HybirdResManifest();
 
     public override string LoadText(string path)
     {
@@ -52,6 +55,9 @@ namespace GGame.Hybird
 
         foreach (var depend in depends)
         {
+           
+            
+            
 #if UNITY_EDITOR
             var assetPaths =  UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundle(depend);
 
@@ -64,8 +70,42 @@ namespace GGame.Hybird
                 _objects[assetName] = asset;
                 
             }
-            
-            return;
+#else
+             if(_loadedBundles.ContainsKey(depend))
+                continue;
+            string fullPath = null;
+            var fullPersistPath = Path.Combine(Application.persistentDataPath, depend);
+            if (File.Exists(fullPersistPath))
+            {
+                fullPath = fullPersistPath;
+            }
+            else
+            {
+                var fullStreamPath = Path.Combine(Application.streamingAssetsPath, depend);
+
+                if (File.Exists(fullStreamPath))
+                {
+                    fullPath = fullStreamPath;
+                }
+            }
+
+            if (string.IsNullOrEmpty(fullPath))
+            {
+                LogServer.Instance.Error($"{path} doest not exist");
+            }
+            else
+            {
+                var bundle = AssetBundle.LoadFromFile(fullPath);
+                var objects = bundle.LoadAllAssets();
+
+                foreach (var o in objects)
+                {
+                    _objects[o.name] = o;
+                }
+
+                _loadedBundles[depend] = bundle;
+            }
+
 #endif
         }
     }
@@ -114,8 +154,12 @@ namespace GGame.Hybird
 #if UNITY_EDITOR
         dependencies = UnityEditor.AssetDatabase.GetAssetBundleDependencies(assetBundleName, true);
 #else
+     HybirdRes res = _manifest.Res[assetBundleName];
 
+        dependencies = res.Dependence;
 #endif
+
+       
         
         _dependenciesCache.Add(assetBundleName, dependencies);
         return dependencies;
@@ -123,7 +167,28 @@ namespace GGame.Hybird
     
     public void Init()
     {
+        string path = null;
+        var persistPath = Path.Combine(Application.persistentDataPath, "res.manifest");
         
+        if (File.Exists(persistPath))
+            path = persistPath;
+        else
+        {
+            var streamPath = Path.Combine(Application.streamingAssetsPath, "res.manifest");
+
+            if (File.Exists(streamPath))
+            {
+                path = streamPath;
+            }
+            
+        }
+
+        if (null != path)
+        {
+            var txt = File.ReadAllText(path);
+
+            _manifest =  LitJson.JsonMapper.ToObject<HybirdResManifest>(txt);
+        }
     }
 }
 
