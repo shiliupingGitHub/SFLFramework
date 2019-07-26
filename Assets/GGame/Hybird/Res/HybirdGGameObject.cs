@@ -1,8 +1,8 @@
 using System;
 using GGame.Math;
 using UnityEngine;
-
-namespace GGame.Core
+using GGame.Core;
+namespace GGame.Hybird
 {
     public class HybirdGGameObject : GGameObject
     {

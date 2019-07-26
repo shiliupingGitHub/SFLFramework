@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
-
-namespace GGame.Core
+using GGame.Core;
+namespace GGame.Hybird
 {
     public class HybirdResourceServer  : GResourceServer, IAutoInit
 {

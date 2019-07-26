@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
-
-namespace GGame.Core
+using GGame.Core;
+namespace GGame.Hybird
 {
     public class HybirdGAnimator : GAnimator, IDisposable
     {
