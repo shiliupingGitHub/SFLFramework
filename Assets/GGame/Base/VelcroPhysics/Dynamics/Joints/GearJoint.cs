@@ -21,6 +21,7 @@
 */
 
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Dynamics.Solver;
 using VelcroPhysics.Shared;
@@ -64,16 +65,16 @@ namespace VelcroPhysics.Dynamics.Joints
         private Body _bodyC;
         private Body _bodyD;
 
-        private float _constant;
-        private float _iA, _iB, _iC, _iD;
+        private GGame.Math.Fix64 _constant;
+        private GGame.Math.Fix64 _iA, _iB, _iC, _iD;
 
-        private float _impulse;
+        private GGame.Math.Fix64 _impulse;
 
         // Solver temp
         private int _indexA, _indexB, _indexC, _indexD;
 
         private Vector2 _JvAC, _JvBD;
-        private float _JwA, _JwB, _JwC, _JwD;
+        private GGame.Math.Fix64 _JwA, _JwB, _JwC, _JwD;
         private Vector2 _lcA, _lcB, _lcC, _lcD;
 
         // Solver shared
@@ -85,12 +86,12 @@ namespace VelcroPhysics.Dynamics.Joints
 
         private Vector2 _localAxisC;
         private Vector2 _localAxisD;
-        private float _mA, _mB, _mC, _mD;
-        private float _mass;
-        private float _ratio;
+        private GGame.Math.Fix64 _mA, _mB, _mC, _mD;
+        private GGame.Math.Fix64 _mass;
+        private GGame.Math.Fix64 _ratio;
 
-        private float _referenceAngleA;
-        private float _referenceAngleB;
+        private GGame.Math.Fix64 _referenceAngleA;
+        private GGame.Math.Fix64 _referenceAngleB;
         private JointType _typeA;
         private JointType _typeB;
 
@@ -100,10 +101,10 @@ namespace VelcroPhysics.Dynamics.Joints
         /// </summary>
         /// <param name="jointA">The first joint.</param>
         /// <param name="jointB">The second joint.</param>
-        /// <param name="ratio">The ratio.</param>
+        /// <param name="ratio">The ratio.  默认传 1</param>
         /// <param name="bodyA">The first body</param>
         /// <param name="bodyB">The second body</param>
-        public GearJoint(Body bodyA, Body bodyB, Joint jointA, Joint jointB, float ratio = 1f)
+        public GearJoint(Body bodyA, Body bodyB, Joint jointA, Joint jointB, GGame.Math.Fix64 ratio )
         {
             JointType = JointType.Gear;
             BodyA = bodyA;
@@ -118,7 +119,7 @@ namespace VelcroPhysics.Dynamics.Joints
             Debug.Assert(_typeA == JointType.Revolute || _typeA == JointType.Prismatic || _typeA == JointType.FixedRevolute || _typeA == JointType.FixedPrismatic);
             Debug.Assert(_typeB == JointType.Revolute || _typeB == JointType.Prismatic || _typeB == JointType.FixedRevolute || _typeB == JointType.FixedPrismatic);
 
-            float coordinateA, coordinateB;
+            GGame.Math.Fix64 coordinateA, coordinateB;
 
             // TODO_ERIN there might be some problem with the joint edges in b2Joint.
 
@@ -127,9 +128,9 @@ namespace VelcroPhysics.Dynamics.Joints
 
             // Get geometry of joint1
             Transform xfA = _bodyA._xf;
-            float aA = _bodyA._sweep.A;
+            GGame.Math.Fix64 aA = _bodyA._sweep.A;
             Transform xfC = _bodyC._xf;
-            float aC = _bodyC._sweep.A;
+            GGame.Math.Fix64 aC = _bodyC._sweep.A;
 
             if (_typeA == JointType.Revolute)
             {
@@ -159,9 +160,9 @@ namespace VelcroPhysics.Dynamics.Joints
 
             // Get geometry of joint2
             Transform xfB = _bodyB._xf;
-            float aB = _bodyB._sweep.A;
+            GGame.Math.Fix64 aB = _bodyB._sweep.A;
             Transform xfD = _bodyD._xf;
-            float aD = _bodyD._sweep.A;
+            GGame.Math.Fix64 aD = _bodyD._sweep.A;
 
             if (_typeB == JointType.Revolute)
             {
@@ -206,7 +207,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// The gear ratio.
         /// </summary>
-        public float Ratio
+        public GGame.Math.Fix64 Ratio
         {
             get { return _ratio; }
             set
@@ -226,15 +227,15 @@ namespace VelcroPhysics.Dynamics.Joints
         /// </summary>
         public Joint JointB { get; private set; }
 
-        public override Vector2 GetReactionForce(float invDt)
+        public override Vector2 GetReactionForce(GGame.Math.Fix64 invDt)
         {
             Vector2 P = _impulse * _JvAC;
             return invDt * P;
         }
 
-        public override float GetReactionTorque(float invDt)
+        public override GGame.Math.Fix64 GetReactionTorque(GGame.Math.Fix64 invDt)
         {
-            float L = _impulse * _JwA;
+            GGame.Math.Fix64 L = _impulse * _JwA;
             return invDt * L;
         }
 
@@ -257,21 +258,21 @@ namespace VelcroPhysics.Dynamics.Joints
             _iC = _bodyC._invI;
             _iD = _bodyD._invI;
 
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
 
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
-            float aC = data.Positions[_indexC].A;
+            GGame.Math.Fix64 aC = data.Positions[_indexC].A;
             Vector2 vC = data.Velocities[_indexC].V;
-            float wC = data.Velocities[_indexC].W;
+            GGame.Math.Fix64 wC = data.Velocities[_indexC].W;
 
-            float aD = data.Positions[_indexD].A;
+            GGame.Math.Fix64 aD = data.Positions[_indexD].A;
             Vector2 vD = data.Velocities[_indexD].V;
-            float wD = data.Velocities[_indexD].W;
+            GGame.Math.Fix64 wD = data.Velocities[_indexD].W;
 
             Rot qA = new Rot(aA), qB = new Rot(aB), qC = new Rot(aC), qD = new Rot(aD);
 
@@ -345,18 +346,18 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override void SolveVelocityConstraints(ref SolverData data)
         {
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
             Vector2 vC = data.Velocities[_indexC].V;
-            float wC = data.Velocities[_indexC].W;
+            GGame.Math.Fix64 wC = data.Velocities[_indexC].W;
             Vector2 vD = data.Velocities[_indexD].V;
-            float wD = data.Velocities[_indexD].W;
+            GGame.Math.Fix64 wD = data.Velocities[_indexD].W;
 
-            float Cdot = Vector2.Dot(_JvAC, vA - vC) + Vector2.Dot(_JvBD, vB - vD);
+            GGame.Math.Fix64 Cdot = Vector2.Dot(_JvAC, vA - vC) + Vector2.Dot(_JvBD, vB - vD);
             Cdot += (_JwA * wA - _JwC * wC) + (_JwB * wB - _JwD * wD);
 
-            float impulse = -_mass * Cdot;
+            GGame.Math.Fix64 impulse = -_mass * Cdot;
             _impulse += impulse;
 
             vA += (_mA * impulse) * _JvAC;
@@ -381,23 +382,23 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override bool SolvePositionConstraints(ref SolverData data)
         {
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
             Vector2 cC = data.Positions[_indexC].C;
-            float aC = data.Positions[_indexC].A;
+            GGame.Math.Fix64 aC = data.Positions[_indexC].A;
             Vector2 cD = data.Positions[_indexD].C;
-            float aD = data.Positions[_indexD].A;
+            GGame.Math.Fix64 aD = data.Positions[_indexD].A;
 
             Rot qA = new Rot(aA), qB = new Rot(aB), qC = new Rot(aC), qD = new Rot(aD);
 
-            const float linearError = 0.0f;
+             GGame.Math.Fix64 linearError = 0.0f;
 
-            float coordinateA, coordinateB;
+            GGame.Math.Fix64 coordinateA, coordinateB;
 
             Vector2 JvAC, JvBD;
-            float JwA, JwB, JwC, JwD;
-            float mass = 0.0f;
+            GGame.Math.Fix64 JwA, JwB, JwC, JwD;
+            GGame.Math.Fix64 mass = 0.0f;
 
             if (_typeA == JointType.Revolute)
             {
@@ -447,9 +448,9 @@ namespace VelcroPhysics.Dynamics.Joints
                 coordinateB = Vector2.Dot(pB - pD, _localAxisD);
             }
 
-            float C = (coordinateA + _ratio * coordinateB) - _constant;
+            GGame.Math.Fix64 C = (coordinateA + _ratio * coordinateB) - _constant;
 
-            float impulse = 0.0f;
+            GGame.Math.Fix64 impulse = 0.0f;
             if (mass > 0.0f)
             {
                 impulse = -C / mass;

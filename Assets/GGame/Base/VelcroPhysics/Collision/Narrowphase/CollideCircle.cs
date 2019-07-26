@@ -18,9 +18,9 @@ namespace VelcroPhysics.Collision.Narrowphase
             Vector2 pB = MathUtils.Mul(ref xfB, circleB.Position);
 
             Vector2 d = pB - pA;
-            float distSqr = Vector2.Dot(d, d);
-            float rA = circleA.Radius, rB = circleB.Radius;
-            float radius = rA + rB;
+            GGame.Math.Fix64 distSqr = Vector2.Dot(d, d);
+            GGame.Math.Fix64 rA = circleA.Radius, rB = circleB.Radius;
+            GGame.Math.Fix64 radius = rA + rB;
             if (distSqr > radius * radius)
             {
                 return;
@@ -55,15 +55,15 @@ namespace VelcroPhysics.Collision.Narrowphase
 
             // Find the min separating edge.
             int normalIndex = 0;
-            float separation = -Settings.MaxFloat;
-            float radius = polygonA.Radius + circleB.Radius;
+            GGame.Math.Fix64 separation = -Settings.MaxFloat;
+            GGame.Math.Fix64 radius = polygonA.Radius + circleB.Radius;
             int vertexCount = polygonA.Vertices.Count;
             Vertices vertices = polygonA.Vertices;
             Vertices normals = polygonA.Normals;
 
             for (int i = 0; i < vertexCount; ++i)
             {
-                float s = Vector2.Dot(normals[i], cLocal - vertices[i]);
+                GGame.Math.Fix64 s = Vector2.Dot(normals[i], cLocal - vertices[i]);
 
                 if (s > radius)
                 {
@@ -97,8 +97,8 @@ namespace VelcroPhysics.Collision.Narrowphase
             }
 
             // Compute barycentric coordinates
-            float u1 = Vector2.Dot(cLocal - v1, v2 - v1);
-            float u2 = Vector2.Dot(cLocal - v2, v1 - v2);
+            GGame.Math.Fix64 u1 = Vector2.Dot(cLocal - v1, v2 - v1);
+            GGame.Math.Fix64 u2 = Vector2.Dot(cLocal - v2, v1 - v2);
 
             if (u1 <= 0.0f)
             {
@@ -133,7 +133,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             else
             {
                 Vector2 faceCenter = 0.5f * (v1 + v2);
-                float s = Vector2.Dot(cLocal - faceCenter, normals[vertIndex1]);
+                GGame.Math.Fix64 s = Vector2.Dot(cLocal - faceCenter, normals[vertIndex1]);
                 if (s > radius)
                 {
                     return;

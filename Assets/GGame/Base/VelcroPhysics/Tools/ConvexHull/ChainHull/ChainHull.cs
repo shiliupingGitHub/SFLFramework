@@ -37,7 +37,7 @@ namespace VelcroPhysics.Tools.ConvexHull.ChainHull
 
             // Get the indices of points with min x-coord and min|max y-coord
             const int minmin = 0;
-            float xmin = pointSet[0].X;
+            GGame.Math.Fix64 xmin = pointSet[0].X;
             for (i = 1; i < pointSet.Count; i++)
             {
                 if (pointSet[i].X != xmin)
@@ -68,7 +68,7 @@ namespace VelcroPhysics.Tools.ConvexHull.ChainHull
 
             // Get the indices of points with max x-coord and min|max y-coord
             int maxmax = pointSet.Count - 1;
-            float xmax = pointSet[pointSet.Count - 1].X;
+            GGame.Math.Fix64 xmax = pointSet[pointSet.Count - 1].X;
             for (i = pointSet.Count - 2; i >= 0; i--)
             {
                 if (pointSet[i].X != xmax)

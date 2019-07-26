@@ -11,7 +11,7 @@ namespace VelcroPhysics.Collision.RayCast
         /// The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
         /// Contains the actual fraction of the ray where it has the intersection point.
         /// </summary>
-        public float Fraction;
+        public GGame.Math.Fix64 Fraction;
 
         /// <summary>
         /// The normal of the face of the shape the ray has hit.

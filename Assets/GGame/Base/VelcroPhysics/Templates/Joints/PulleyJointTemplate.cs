@@ -24,12 +24,12 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The a reference length for the segment attached to bodyA.
         /// </summary>
-        public float LengthA { get; set; }
+        public GGame.Math.Fix64 LengthA { get; set; }
 
         /// <summary>
         /// The a reference length for the segment attached to bodyB.
         /// </summary>
-        public float LengthB { get; set; }
+        public GGame.Math.Fix64 LengthB { get; set; }
 
         /// <summary>
         /// The local anchor point relative to bodyA's origin.
@@ -43,7 +43,7 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The pulley ratio, used to simulate a block-and-tackle.
         /// </summary>
-        public float Ratio { get; set; }
+        public GGame.Math.Fix64 Ratio { get; set; }
 
         public override void SetDefaults()
         {

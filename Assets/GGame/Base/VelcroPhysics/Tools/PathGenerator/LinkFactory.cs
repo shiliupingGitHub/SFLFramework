@@ -25,7 +25,7 @@ namespace VelcroPhysics.Tools.PathGenerator
         /// another way: it makes the rope less bouncy.
         /// </param>
         /// <returns></returns>
-        public static Path CreateChain(World world, Vector2 start, Vector2 end, float linkWidth, float linkHeight, int numberOfLinks, float linkDensity, bool attachRopeJoint)
+        public static Path CreateChain(World world, Vector2 start, Vector2 end, GGame.Math.Fix64 linkWidth, GGame.Math.Fix64 linkHeight, int numberOfLinks, GGame.Math.Fix64 linkDensity, bool attachRopeJoint)
         {
             Debug.Assert(numberOfLinks >= 2);
 

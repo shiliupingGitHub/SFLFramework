@@ -12,21 +12,21 @@ namespace VelcroPhysics.Utilities
     /// </summary>
     public static class ConvertUnits
     {
-        private static float _displayUnitsToSimUnitsRatio = 100f;
-        private static float _simUnitsToDisplayUnitsRatio = 1 / _displayUnitsToSimUnitsRatio;
+        private static GGame.Math.Fix64 _displayUnitsToSimUnitsRatio = 100f;
+        private static GGame.Math.Fix64 _simUnitsToDisplayUnitsRatio = 1 / _displayUnitsToSimUnitsRatio;
 
-        public static void SetDisplayUnitToSimUnitRatio(float displayUnitsPerSimUnit)
+        public static void SetDisplayUnitToSimUnitRatio(GGame.Math.Fix64 displayUnitsPerSimUnit)
         {
             _displayUnitsToSimUnitsRatio = displayUnitsPerSimUnit;
             _simUnitsToDisplayUnitsRatio = 1 / displayUnitsPerSimUnit;
         }
 
-        public static float ToDisplayUnits(float simUnits)
+        public static GGame.Math.Fix64 ToDisplayUnits(GGame.Math.Fix64 simUnits)
         {
             return simUnits * _displayUnitsToSimUnitsRatio;
         }
 
-        public static float ToDisplayUnits(int simUnits)
+        public static GGame.Math.Fix64 ToDisplayUnits(int simUnits)
         {
             return simUnits * _displayUnitsToSimUnitsRatio;
         }
@@ -46,29 +46,25 @@ namespace VelcroPhysics.Utilities
             return simUnits * _displayUnitsToSimUnitsRatio;
         }
 
-        public static Vector2 ToDisplayUnits(float x, float y)
+        public static Vector2 ToDisplayUnits(GGame.Math.Fix64 x, GGame.Math.Fix64 y)
         {
             return new Vector2(x, y) * _displayUnitsToSimUnitsRatio;
         }
 
-        public static void ToDisplayUnits(float x, float y, out Vector2 displayUnits)
+        public static void ToDisplayUnits(GGame.Math.Fix64 x, GGame.Math.Fix64 y, out Vector2 displayUnits)
         {
             displayUnits = Vector2.Zero;
             displayUnits.X = x * _displayUnitsToSimUnitsRatio;
             displayUnits.Y = y * _displayUnitsToSimUnitsRatio;
         }
 
-        public static float ToSimUnits(float displayUnits)
+        public static GGame.Math.Fix64 ToSimUnits(GGame.Math.Fix64 displayUnits)
         {
             return displayUnits * _simUnitsToDisplayUnitsRatio;
         }
+        
 
-        public static float ToSimUnits(double displayUnits)
-        {
-            return (float)displayUnits * _simUnitsToDisplayUnitsRatio;
-        }
-
-        public static float ToSimUnits(int displayUnits)
+        public static GGame.Math.Fix64 ToSimUnits(int displayUnits)
         {
             return displayUnits * _simUnitsToDisplayUnitsRatio;
         }
@@ -88,17 +84,13 @@ namespace VelcroPhysics.Utilities
             Vector2.Multiply(ref displayUnits, _simUnitsToDisplayUnitsRatio, out simUnits);
         }
 
-        public static Vector2 ToSimUnits(float x, float y)
+        public static Vector2 ToSimUnits(GGame.Math.Fix64 x, GGame.Math.Fix64 y)
         {
             return new Vector2(x, y) * _simUnitsToDisplayUnitsRatio;
         }
+        
 
-        public static Vector2 ToSimUnits(double x, double y)
-        {
-            return new Vector2((float)x, (float)y) * _simUnitsToDisplayUnitsRatio;
-        }
-
-        public static void ToSimUnits(float x, float y, out Vector2 simUnits)
+        public static void ToSimUnits(GGame.Math.Fix64 x, GGame.Math.Fix64 y, out Vector2 simUnits)
         {
             simUnits = Vector2.Zero;
             simUnits.X = x * _simUnitsToDisplayUnitsRatio;

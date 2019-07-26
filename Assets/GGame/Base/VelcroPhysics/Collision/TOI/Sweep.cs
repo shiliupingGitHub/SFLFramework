@@ -17,15 +17,15 @@ namespace VelcroPhysics.Collision.TOI
         /// <summary>
         /// World angles
         /// </summary>
-        public float A;
+        public GGame.Math.Fix64 A;
 
-        public float A0;
+        public GGame.Math.Fix64 A0;
 
         /// <summary>
         /// Fraction of the current time step in the range [0,1]
         /// c0 and a0 are the positions at alpha0.
         /// </summary>
-        public float Alpha0;
+        public GGame.Math.Fix64 Alpha0;
 
         /// <summary>
         /// Center world positions
@@ -44,12 +44,12 @@ namespace VelcroPhysics.Collision.TOI
         /// </summary>
         /// <param name="xfb">The transform.</param>
         /// <param name="beta">beta is a factor in [0,1], where 0 indicates alpha0.</param>
-        public void GetTransform(out Transform xfb, float beta)
+        public void GetTransform(out Transform xfb, GGame.Math.Fix64 beta)
         {
             xfb = new Transform();
             xfb.p.X = (1.0f - beta) * C0.X + beta * C.X;
             xfb.p.Y = (1.0f - beta) * C0.Y + beta * C.Y;
-            float angle = (1.0f - beta) * A0 + beta * A;
+            GGame.Math.Fix64 angle = (1.0f - beta) * A0 + beta * A;
             xfb.q.Set(angle);
 
             // Shift to origin
@@ -60,10 +60,10 @@ namespace VelcroPhysics.Collision.TOI
         /// Advance the sweep forward, yielding a new initial state.
         /// </summary>
         /// <param name="alpha">new initial time</param>
-        public void Advance(float alpha)
+        public void Advance(GGame.Math.Fix64 alpha)
         {
             Debug.Assert(Alpha0 < 1.0f);
-            float beta = (alpha - Alpha0) / (1.0f - Alpha0);
+            GGame.Math.Fix64 beta = (alpha - Alpha0) / (1.0f - Alpha0);
             C0 += beta * (C - C0);
             A0 += beta * (A - A0);
             Alpha0 = alpha;
@@ -74,7 +74,7 @@ namespace VelcroPhysics.Collision.TOI
         /// </summary>
         public void Normalize()
         {
-            float d = MathHelper.TwoPi * (float)Math.Floor(A0 / MathHelper.TwoPi);
+            GGame.Math.Fix64 d = MathHelper.TwoPi * GGame.Math.Fix64.Floor(A0 / MathHelper.TwoPi);
             A0 -= d;
             A -= d;
         }

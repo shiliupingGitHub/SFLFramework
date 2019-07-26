@@ -22,6 +22,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Shared;
 
@@ -29,12 +30,12 @@ namespace VelcroPhysics.Utilities
 {
     public static class MathUtils
     {
-        public static float Cross(ref Vector2 a, ref Vector2 b)
+        public static GGame.Math.Fix64 Cross(ref Vector2 a, ref Vector2 b)
         {
             return a.X * b.Y - a.Y * b.X;
         }
 
-        public static float Cross(Vector2 a, Vector2 b)
+        public static GGame.Math.Fix64 Cross(Vector2 a, Vector2 b)
         {
             return Cross(ref a, ref b);
         }
@@ -45,19 +46,19 @@ namespace VelcroPhysics.Utilities
             return new Vector3(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
         }
 
-        public static Vector2 Cross(Vector2 a, float s)
+        public static Vector2 Cross(Vector2 a, GGame.Math.Fix64 s)
         {
             return new Vector2(s * a.Y, -s * a.X);
         }
 
-        public static Vector2 Cross(float s, Vector2 a)
+        public static Vector2 Cross(GGame.Math.Fix64 s, Vector2 a)
         {
             return new Vector2(-s * a.Y, s * a.X);
         }
 
         public static Vector2 Abs(Vector2 v)
         {
-            return new Vector2(Math.Abs(v.X), Math.Abs(v.Y));
+            return new Vector2(Fix64.Abs(v.X), Fix64.Abs(v.Y));
         }
 
         public static Vector2 Mul(ref Mat22 A, Vector2 v)
@@ -77,8 +78,8 @@ namespace VelcroPhysics.Utilities
 
         public static Vector2 Mul(ref Transform T, ref Vector2 v)
         {
-            float x = (T.q.c * v.X - T.q.s * v.Y) + T.p.X;
-            float y = (T.q.s * v.X + T.q.c * v.Y) + T.p.Y;
+            GGame.Math.Fix64 x = (T.q.c * v.X - T.q.s * v.Y) + T.p.X;
+            GGame.Math.Fix64 y = (T.q.s * v.X + T.q.c * v.Y) + T.p.Y;
 
             return new Vector2(x, y);
         }
@@ -100,10 +101,10 @@ namespace VelcroPhysics.Utilities
 
         public static Vector2 MulT(ref Transform T, ref Vector2 v)
         {
-            float px = v.X - T.p.X;
-            float py = v.Y - T.p.Y;
-            float x = (T.q.c * px + T.q.s * py);
-            float y = (-T.q.s * px + T.q.c * py);
+            GGame.Math.Fix64 px = v.X - T.p.X;
+            GGame.Math.Fix64 py = v.Y - T.p.Y;
+            GGame.Math.Fix64 x = (T.q.c * px + T.q.s * py);
+            GGame.Math.Fix64 y = (-T.q.s * px + T.q.c * py);
 
             return new Vector2(x, y);
         }
@@ -171,10 +172,10 @@ namespace VelcroPhysics.Utilities
 
         public static Vector2 MulT(Transform T, Vector2 v)
         {
-            float px = v.X - T.p.X;
-            float py = v.Y - T.p.Y;
-            float x = (T.q.c * px + T.q.s * py);
-            float y = (-T.q.s * px + T.q.c * py);
+            GGame.Math.Fix64 px = v.X - T.p.X;
+            GGame.Math.Fix64 py = v.Y - T.p.Y;
+            GGame.Math.Fix64 x = (T.q.c * px + T.q.s * py);
+            GGame.Math.Fix64 y = (-T.q.s * px + T.q.c * py);
 
             return new Vector2(x, y);
         }
@@ -221,22 +222,22 @@ namespace VelcroPhysics.Utilities
         }
 
         /// <summary>
-        /// This function is used to ensure that a floating point number is
+        /// This function is used to ensure that a GGame.Math.Fix64ing point number is
         /// not a NaN or infinity.
         /// </summary>
         /// <param name="x">The x.</param>
         /// <returns>
         /// <c>true</c> if the specified x is valid; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsValid(float x)
+        public static bool IsValid(GGame.Math.Fix64 x)
         {
-            if (float.IsNaN(x))
+            if (Fix64.IsNaN(x))
             {
                 // NaN.
                 return false;
             }
 
-            return !float.IsInfinity(x);
+            return !float.IsInfinity((float)x);
         }
 
         public static bool IsValid(this Vector2 x)
@@ -249,11 +250,11 @@ namespace VelcroPhysics.Utilities
         /// </summary>
         /// <param name="x">The x.</param>
         /// <returns></returns>
-        public static float InvSqrt(float x)
+        public static GGame.Math.Fix64 InvSqrt(GGame.Math.Fix64 x)
         {
-            FloatConverter convert = new FloatConverter();
+           Fix64Converter convert = new Fix64Converter();
             convert.x = x;
-            float xhalf = 0.5f * x;
+            GGame.Math.Fix64 xhalf = 0.5f * x;
             convert.i = 0x5f3759df - (convert.i >> 1);
             x = convert.x;
             x = x * (1.5f - xhalf * x * x);
@@ -265,9 +266,9 @@ namespace VelcroPhysics.Utilities
             return Math.Max(low, Math.Min(a, high));
         }
 
-        public static float Clamp(float a, float low, float high)
+        public static GGame.Math.Fix64 Clamp(GGame.Math.Fix64 a, GGame.Math.Fix64 low, GGame.Math.Fix64 high)
         {
-            return Math.Max(low, Math.Min(a, high));
+            return Math.Max((float)low, Math.Min((float)a, (float)high));
         }
 
         public static Vector2 Clamp(Vector2 a, Vector2 low, Vector2 high)
@@ -275,7 +276,7 @@ namespace VelcroPhysics.Utilities
             return Vector2.Max(low, Vector2.Min(a, high));
         }
 
-        public static void Cross(ref Vector2 a, ref Vector2 b, out float c)
+        public static void Cross(ref Vector2 a, ref Vector2 b, out GGame.Math.Fix64 c)
         {
             c = a.X * b.Y - a.Y * b.X;
         }
@@ -285,26 +286,26 @@ namespace VelcroPhysics.Utilities
         /// The angle is from vector 1 to vector 2, positive anticlockwise
         /// The result is between -pi -> pi
         /// </summary>
-        public static double VectorAngle(ref Vector2 p1, ref Vector2 p2)
+        public static GGame.Math.Fix64 VectorAngle(ref Vector2 p1, ref Vector2 p2)
         {
-            double theta1 = Math.Atan2(p1.Y, p1.X);
-            double theta2 = Math.Atan2(p2.Y, p2.X);
-            double dtheta = theta2 - theta1;
-            while (dtheta > Math.PI)
+            GGame.Math.Fix64 theta1 = Fix64.Atan2(p1.Y, p1.X);
+            GGame.Math.Fix64 theta2 = Fix64.Atan2(p2.Y, p2.X);
+            GGame.Math.Fix64 dtheta = theta2 - theta1;
+            while (dtheta > (Fix64)Math.PI)
                 dtheta -= (2 * Math.PI);
-            while (dtheta < -Math.PI)
+            while (dtheta < -(Fix64)Math.PI)
                 dtheta += (2 * Math.PI);
 
             return (dtheta);
         }
 
         /// Perform the dot product on two vectors.
-        public static float Dot(Vector3 a, Vector3 b)
+        public static GGame.Math.Fix64 Dot(Vector3 a, Vector3 b)
         {
             return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
         }
 
-        public static double VectorAngle(Vector2 p1, Vector2 p2)
+        public static GGame.Math.Fix64 VectorAngle(Vector2 p1, Vector2 p2)
         {
             return VectorAngle(ref p1, ref p2);
         }
@@ -316,7 +317,7 @@ namespace VelcroPhysics.Utilities
         /// Positive number if point is left, negative if point is right,
         /// and 0 if points are collinear.
         /// </returns>
-        public static float Area(Vector2 a, Vector2 b, Vector2 c)
+        public static GGame.Math.Fix64 Area(Vector2 a, Vector2 b, Vector2 c)
         {
             return Area(ref a, ref b, ref c);
         }
@@ -328,7 +329,7 @@ namespace VelcroPhysics.Utilities
         /// Positive number if point is left, negative if point is right,
         /// and 0 if points are collinear.
         /// </returns>
-        public static float Area(ref Vector2 a, ref Vector2 b, ref Vector2 c)
+        public static GGame.Math.Fix64 Area(ref Vector2 a, ref Vector2 b, ref Vector2 c)
         {
             return a.X * (b.Y - c.Y) + b.X * (c.Y - a.Y) + c.X * (a.Y - b.Y);
         }
@@ -341,36 +342,37 @@ namespace VelcroPhysics.Utilities
         /// <param name="c">Third vertex</param>
         /// <param name="tolerance">The tolerance</param>
         /// <returns></returns>
-        public static bool IsCollinear(ref Vector2 a, ref Vector2 b, ref Vector2 c, float tolerance = 0)
+        public static bool IsCollinear(ref Vector2 a, ref Vector2 b, ref Vector2 c, GGame.Math.Fix64 tolerance = new Fix64())
         {
-            return FloatInRange(Area(ref a, ref b, ref c), -tolerance, tolerance);
+            
+            return Fix64InRange(Area(ref a, ref b, ref c), -tolerance, tolerance);
         }
 
-        public static void Cross(float s, ref Vector2 a, out Vector2 b)
+        public static void Cross(GGame.Math.Fix64 s, ref Vector2 a, out Vector2 b)
         {
             b = new Vector2(-s * a.Y, s * a.X);
         }
 
-        public static bool FloatEquals(float value1, float value2)
+        public static bool Fix64Equals(GGame.Math.Fix64 value1, GGame.Math.Fix64 value2)
         {
-            return Math.Abs(value1 - value2) <= Settings.Epsilon;
+            return Fix64.Abs(value1 - value2) <= Settings.Epsilon;
         }
 
         /// <summary>
-        /// Checks if a floating point Value is equal to another,
+        /// Checks if a GGame.Math.Fix64ing point Value is equal to another,
         /// within a certain tolerance.
         /// </summary>
-        /// <param name="value1">The first floating point Value.</param>
-        /// <param name="value2">The second floating point Value.</param>
-        /// <param name="delta">The floating point tolerance.</param>
+        /// <param name="value1">The first GGame.Math.Fix64ing point Value.</param>
+        /// <param name="value2">The second GGame.Math.Fix64ing point Value.</param>
+        /// <param name="delta">The GGame.Math.Fix64ing point tolerance.</param>
         /// <returns>True if the values are "equal", false otherwise.</returns>
-        public static bool FloatEquals(float value1, float value2, float delta)
+        public static bool Fix64Equals(GGame.Math.Fix64 value1, GGame.Math.Fix64 value2, GGame.Math.Fix64 delta)
         {
-            return FloatInRange(value1, value2 - delta, value2 + delta);
+            return Fix64InRange(value1, value2 - delta, value2 + delta);
         }
 
         /// <summary>
-        /// Checks if a floating point Value is within a specified
+        /// Checks if a GGame.Math.Fix64ing point Value is within a specified
         /// range of values (inclusive).
         /// </summary>
         /// <param name="value">The Value to check.</param>
@@ -380,7 +382,7 @@ namespace VelcroPhysics.Utilities
         /// True if the Value is within the range specified,
         /// false otherwise.
         /// </returns>
-        public static bool FloatInRange(float value, float min, float max)
+        public static bool Fix64InRange(GGame.Math.Fix64 value, GGame.Math.Fix64 min, GGame.Math.Fix64 max)
         {
             return (value >= min && value <= max);
         }
@@ -395,13 +397,13 @@ namespace VelcroPhysics.Utilities
             return MulT(rot, axis);
         }
 
-        #region Nested type: FloatConverter
+        #region Nested type: GGame.Math.Fix64Converter
 
         [StructLayout(LayoutKind.Explicit)]
-        private struct FloatConverter
+        private struct Fix64Converter
         {
             [FieldOffset(0)]
-            public float x;
+            public GGame.Math.Fix64 x;
 
             [FieldOffset(0)]
             public int i;

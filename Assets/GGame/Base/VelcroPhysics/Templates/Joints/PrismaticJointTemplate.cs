@@ -43,27 +43,27 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The lower translation limit, usually in meters.
         /// </summary>
-        public float LowerTranslation { get; set; }
+        public GGame.Math.Fix64 LowerTranslation { get; set; }
 
         /// <summary>
         /// The maximum motor torque, usually in N-m.
         /// </summary>
-        public float MaxMotorForce { get; set; }
+        public GGame.Math.Fix64 MaxMotorForce { get; set; }
 
         /// <summary>
         /// The desired motor speed in radians per second.
         /// </summary>
-        public float MotorSpeed { get; set; }
+        public GGame.Math.Fix64 MotorSpeed { get; set; }
 
         /// <summary>
         /// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
         /// </summary>
-        public float ReferenceAngle { get; set; }
+        public GGame.Math.Fix64 ReferenceAngle { get; set; }
 
         /// <summary>
         /// The upper translation limit, usually in meters.
         /// </summary>
-        public float UpperTranslation { get; set; }
+        public GGame.Math.Fix64 UpperTranslation { get; set; }
 
         public override void SetDefaults()
         {

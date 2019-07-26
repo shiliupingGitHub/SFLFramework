@@ -11,7 +11,7 @@ namespace VelcroPhysics.Tools.Triangulation.Seidel
         private Edge _cross;
 
         // AABB margin
-        private float _margin;
+        private GGame.Math.Fix64 _margin;
 
         // Trapezoid container
         public HashSet<Trapezoid> Map;

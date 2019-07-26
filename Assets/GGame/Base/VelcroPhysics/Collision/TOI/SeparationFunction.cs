@@ -9,7 +9,7 @@ namespace VelcroPhysics.Collision.TOI
 {
     public static class SeparationFunction
     {
-        public static void Initialize(ref SimplexCache cache, DistanceProxy proxyA, ref Sweep sweepA, DistanceProxy proxyB, ref Sweep sweepB, float t1, out Vector2 axis, out Vector2 localPoint, out SeparationFunctionType type)
+        public static void Initialize(ref SimplexCache cache, DistanceProxy proxyA, ref Sweep sweepA, DistanceProxy proxyB, ref Sweep sweepB, GGame.Math.Fix64 t1, out Vector2 axis, out Vector2 localPoint, out SeparationFunctionType type)
         {
             int count = cache.Count;
             Debug.Assert(0 < count && count < 3);
@@ -47,7 +47,7 @@ namespace VelcroPhysics.Collision.TOI
                 Vector2 localPointA = proxyA.Vertices[cache.IndexA[0]];
                 Vector2 pointA = MathUtils.Mul(ref xfA, localPointA);
 
-                float s = Vector2.Dot(pointA - pointB, normal);
+                GGame.Math.Fix64 s = Vector2.Dot(pointA - pointB, normal);
                 if (s < 0.0f)
                 {
                     axis = -axis;
@@ -71,7 +71,7 @@ namespace VelcroPhysics.Collision.TOI
                 Vector2 localPointB = proxyB.Vertices[cache.IndexB[0]];
                 Vector2 pointB = MathUtils.Mul(ref xfB, localPointB);
 
-                float s = Vector2.Dot(pointB - pointA, normal);
+                GGame.Math.Fix64 s = Vector2.Dot(pointB - pointA, normal);
                 if (s < 0.0f)
                 {
                     axis = -axis;
@@ -81,7 +81,7 @@ namespace VelcroPhysics.Collision.TOI
             //Velcro note: the returned value that used to be here has been removed, as it was not used.
         }
 
-        public static float FindMinSeparation(out int indexA, out int indexB, float t, DistanceProxy proxyA, ref Sweep sweepA, DistanceProxy proxyB, ref Sweep sweepB, ref Vector2 axis, ref Vector2 localPoint, SeparationFunctionType type)
+        public static GGame.Math.Fix64 FindMinSeparation(out int indexA, out int indexB, GGame.Math.Fix64 t, DistanceProxy proxyA, ref Sweep sweepA, DistanceProxy proxyB, ref Sweep sweepB, ref Vector2 axis, ref Vector2 localPoint, SeparationFunctionType type)
         {
             Transform xfA, xfB;
             sweepA.GetTransform(out xfA, t);
@@ -103,7 +103,7 @@ namespace VelcroPhysics.Collision.TOI
                         Vector2 pointA = MathUtils.Mul(ref xfA, localPointA);
                         Vector2 pointB = MathUtils.Mul(ref xfB, localPointB);
 
-                        float separation = Vector2.Dot(pointB - pointA, axis);
+                        GGame.Math.Fix64 separation = Vector2.Dot(pointB - pointA, axis);
                         return separation;
                     }
 
@@ -120,7 +120,7 @@ namespace VelcroPhysics.Collision.TOI
                         Vector2 localPointB = proxyB.Vertices[indexB];
                         Vector2 pointB = MathUtils.Mul(ref xfB, localPointB);
 
-                        float separation = Vector2.Dot(pointB - pointA, normal);
+                        GGame.Math.Fix64 separation = Vector2.Dot(pointB - pointA, normal);
                         return separation;
                     }
 
@@ -137,7 +137,7 @@ namespace VelcroPhysics.Collision.TOI
                         Vector2 localPointA = proxyA.Vertices[indexA];
                         Vector2 pointA = MathUtils.Mul(ref xfA, localPointA);
 
-                        float separation = Vector2.Dot(pointA - pointB, normal);
+                        GGame.Math.Fix64 separation = Vector2.Dot(pointA - pointB, normal);
                         return separation;
                     }
 
@@ -149,7 +149,7 @@ namespace VelcroPhysics.Collision.TOI
             }
         }
 
-        public static float Evaluate(int indexA, int indexB, float t, DistanceProxy proxyA, ref Sweep sweepA, DistanceProxy proxyB, ref Sweep sweepB, ref Vector2 axis, ref Vector2 localPoint, SeparationFunctionType type)
+        public static GGame.Math.Fix64 Evaluate(int indexA, int indexB, GGame.Math.Fix64 t, DistanceProxy proxyA, ref Sweep sweepA, DistanceProxy proxyB, ref Sweep sweepB, ref Vector2 axis, ref Vector2 localPoint, SeparationFunctionType type)
         {
             Transform xfA, xfB;
             sweepA.GetTransform(out xfA, t);
@@ -164,7 +164,7 @@ namespace VelcroPhysics.Collision.TOI
 
                         Vector2 pointA = MathUtils.Mul(ref xfA, localPointA);
                         Vector2 pointB = MathUtils.Mul(ref xfB, localPointB);
-                        float separation = Vector2.Dot(pointB - pointA, axis);
+                        GGame.Math.Fix64 separation = Vector2.Dot(pointB - pointA, axis);
 
                         return separation;
                     }
@@ -176,7 +176,7 @@ namespace VelcroPhysics.Collision.TOI
                         Vector2 localPointB = proxyB.Vertices[indexB];
                         Vector2 pointB = MathUtils.Mul(ref xfB, localPointB);
 
-                        float separation = Vector2.Dot(pointB - pointA, normal);
+                        GGame.Math.Fix64 separation = Vector2.Dot(pointB - pointA, normal);
                         return separation;
                     }
                 case SeparationFunctionType.FaceB:
@@ -187,7 +187,7 @@ namespace VelcroPhysics.Collision.TOI
                         Vector2 localPointA = proxyA.Vertices[indexA];
                         Vector2 pointA = MathUtils.Mul(ref xfA, localPointA);
 
-                        float separation = Vector2.Dot(pointA - pointB, normal);
+                        GGame.Math.Fix64 separation = Vector2.Dot(pointA - pointB, normal);
                         return separation;
                     }
                 default:

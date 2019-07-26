@@ -114,7 +114,7 @@ namespace Microsoft.Xna.Framework
             return curve;
         }
 
-        public float Evaluate(float position)
+        public GGame.Math.Fix64 Evaluate(GGame.Math.Fix64 position)
         {
             CurveKey first = keys[0];
             CurveKey last = keys[keys.Count - 1];
@@ -134,7 +134,7 @@ namespace Microsoft.Xna.Framework
                     case CurveLoopType.Cycle:
                         //start -> end / start -> end
                         int cycle = GetNumberOfCycle(position);
-                        float virtualPos = position - (cycle * (last.Position - first.Position));
+                        GGame.Math.Fix64 virtualPos = position - (cycle * (last.Position - first.Position));
                         return GetCurvePosition(virtualPos);
 
                     case CurveLoopType.CycleOffset:
@@ -171,7 +171,7 @@ namespace Microsoft.Xna.Framework
                     case CurveLoopType.Cycle:
                         //start -> end / start -> end
                         cycle = GetNumberOfCycle(position);
-                        float virtualPos = position - (cycle * (last.Position - first.Position));
+                        GGame.Math.Fix64 virtualPos = position - (cycle * (last.Position - first.Position));
                         return GetCurvePosition(virtualPos);
 
                     case CurveLoopType.CycleOffset:
@@ -202,15 +202,15 @@ namespace Microsoft.Xna.Framework
 
         #region Private Methods
 
-        private int GetNumberOfCycle(float position)
+        private int GetNumberOfCycle(GGame.Math.Fix64 position)
         {
-            float cycle = (position - keys[0].Position) / (keys[keys.Count - 1].Position - keys[0].Position);
+            GGame.Math.Fix64 cycle = (position - keys[0].Position) / (keys[keys.Count - 1].Position - keys[0].Position);
             if (cycle < 0f)
                 cycle--;
             return (int)cycle;
         }
 
-        private float GetCurvePosition(float position)
+        private GGame.Math.Fix64 GetCurvePosition(GGame.Math.Fix64 position)
         {
             //only for position in curve
             CurveKey prev = keys[0];
@@ -228,9 +228,9 @@ namespace Microsoft.Xna.Framework
                         }
                         return prev.Value;
                     }
-                    float t = (position - prev.Position) / (next.Position - prev.Position); //to have t in [0,1]
-                    float ts = t * t;
-                    float tss = ts * t;
+                    GGame.Math.Fix64 t = (position - prev.Position) / (next.Position - prev.Position); //to have t in [0,1]
+                    GGame.Math.Fix64 ts = t * t;
+                    GGame.Math.Fix64 tss = ts * t;
                     //After a lot of search on internet I have found all about spline function
                     // and bezier (phi'sss ancien) but finaly use hermite curve 
                     //http://en.wikipedia.org/wiki/Cubic_Hermite_spline

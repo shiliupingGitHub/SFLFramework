@@ -45,9 +45,9 @@ namespace VelcroPhysics.Dynamics
         internal Category _collidesWith;
         internal Category _collisionCategories;
         internal short _collisionGroup;
-        private float _friction;
+        private GGame.Math.Fix64 _friction;
         private bool _isSensor;
-        private float _restitution;
+        private GGame.Math.Fix64 _restitution;
 
         /// <summary>
         /// Fires after two shapes has collided and are solved. This gives you a chance to get the impact force.
@@ -203,12 +203,12 @@ namespace VelcroPhysics.Dynamics
         /// existing contacts.
         /// </summary>
         /// <value>The friction.</value>
-        public float Friction
+        public GGame.Math.Fix64 Friction
         {
             get { return _friction; }
             set
             {
-                Debug.Assert(!float.IsNaN(value));
+                Debug.Assert(!float.IsNaN((float)value));
 
                 _friction = value;
             }
@@ -219,12 +219,12 @@ namespace VelcroPhysics.Dynamics
         /// existing contacts.
         /// </summary>
         /// <value>The restitution.</value>
-        public float Restitution
+        public GGame.Math.Fix64 Restitution
         {
             get { return _restitution; }
             set
             {
-                Debug.Assert(!float.IsNaN(value));
+                Debug.Assert(!float.IsNaN((float)value));
 
                 _restitution = value;
             }

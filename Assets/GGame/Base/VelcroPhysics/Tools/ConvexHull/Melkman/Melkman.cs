@@ -28,13 +28,13 @@ namespace VelcroPhysics.Tools.ConvexHull.Melkman
                 return vertices;
 
             //We'll never need a queue larger than the current number of Vertices +1
-            //Create double-ended queue
+            //Create GGame.Math.Fix64-ended queue
             Vector2[] deque = new Vector2[vertices.Count + 1];
             int qf = 3, qb = 0; //Queue front index, queue back index
 
             //Start by placing first 3 vertices in convex CCW order
             int startIndex = 3;
-            float k = MathUtils.Area(vertices[0], vertices[1], vertices[2]);
+            GGame.Math.Fix64 k = MathUtils.Area(vertices[0], vertices[1], vertices[2]);
             if (k == 0)
             {
                 //Vertices are collinear.

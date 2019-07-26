@@ -4,12 +4,12 @@ namespace VelcroPhysics.Dynamics.Solver
 {
     public sealed class VelocityConstraintPoint
     {
-        public float NormalImpulse;
-        public float NormalMass;
+        public GGame.Math.Fix64 NormalImpulse;
+        public GGame.Math.Fix64 NormalMass;
         public Vector2 rA;
         public Vector2 rB;
-        public float TangentImpulse;
-        public float TangentMass;
-        public float VelocityBias;
+        public GGame.Math.Fix64 TangentImpulse;
+        public GGame.Math.Fix64 TangentMass;
+        public GGame.Math.Fix64 VelocityBias;
     }
 }

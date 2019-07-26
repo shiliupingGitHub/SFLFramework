@@ -1,4 +1,5 @@
 ﻿using System;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Shared;
 
@@ -6,11 +7,11 @@ namespace VelcroPhysics.Utilities
 {
     /// <summary>
     /// Collection of helper methods for misc collisions.
-    /// Does float tolerance and line collisions with lines and AABBs.
+    /// Does GGame.Math.Fix64 tolerance and line collisions with lines and AABBs.
     /// </summary>
     public static class LineUtils
     {
-        public static float DistanceBetweenPointAndLineSegment(ref Vector2 point, ref Vector2 start, ref Vector2 end)
+        public static GGame.Math.Fix64 DistanceBetweenPointAndLineSegment(ref Vector2 point, ref Vector2 start, ref Vector2 end)
         {
             if (start == end)
                 return Vector2.Distance(point, start);
@@ -18,15 +19,15 @@ namespace VelcroPhysics.Utilities
             Vector2 v = Vector2.Subtract(end, start);
             Vector2 w = Vector2.Subtract(point, start);
 
-            float c1 = Vector2.Dot(w, v);
+            GGame.Math.Fix64 c1 = Vector2.Dot(w, v);
             if (c1 <= 0)
                 return Vector2.Distance(point, start);
 
-            float c2 = Vector2.Dot(v, v);
+            GGame.Math.Fix64 c2 = Vector2.Dot(v, v);
             if (c2 <= c1)
                 return Vector2.Distance(point, end);
 
-            float b = c1 / c2;
+            GGame.Math.Fix64 b = c1 / c2;
             Vector2 pointOnLine = Vector2.Add(start, Vector2.Multiply(v, b));
             return Vector2.Distance(point, pointOnLine);
         }
@@ -45,26 +46,26 @@ namespace VelcroPhysics.Utilities
             if (a0 == b0 || a0 == b1 || a1 == b0 || a1 == b1)
                 return false;
 
-            float x1 = a0.X;
-            float y1 = a0.Y;
-            float x2 = a1.X;
-            float y2 = a1.Y;
-            float x3 = b0.X;
-            float y3 = b0.Y;
-            float x4 = b1.X;
-            float y4 = b1.Y;
+            GGame.Math.Fix64 x1 = a0.X;
+            GGame.Math.Fix64 y1 = a0.Y;
+            GGame.Math.Fix64 x2 = a1.X;
+            GGame.Math.Fix64 y2 = a1.Y;
+            GGame.Math.Fix64 x3 = b0.X;
+            GGame.Math.Fix64 y3 = b0.Y;
+            GGame.Math.Fix64 x4 = b1.X;
+            GGame.Math.Fix64 y4 = b1.Y;
 
             //AABB early exit
-            if (Math.Max(x1, x2) < Math.Min(x3, x4) || Math.Max(x3, x4) < Math.Min(x1, x2))
+            if (Math.Max((float)x1, (float)x2) < Math.Min((float)x3, (float)x4) || Math.Max((float)x3, (float)x4) < Math.Min((float)x1, (float)x2))
                 return false;
 
-            if (Math.Max(y1, y2) < Math.Min(y3, y4) || Math.Max(y3, y4) < Math.Min(y1, y2))
+            if (Math.Max((float)y1, (float)y2) < Math.Min((float)y3, (float)y4) || Math.Max((float)y3, (float)y4) < Math.Min((float)y1, (float)y2))
                 return false;
 
-            float ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3));
-            float ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3));
-            float denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
-            if (Math.Abs(denom) < Settings.Epsilon)
+            GGame.Math.Fix64 ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3));
+            GGame.Math.Fix64 ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3));
+            GGame.Math.Fix64 denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+            if (Fix64.Abs(denom) < Settings.Epsilon)
             {
                 //Lines are too close to parallel to call
                 return false;
@@ -86,15 +87,15 @@ namespace VelcroPhysics.Utilities
         public static Vector2 LineIntersect(Vector2 p1, Vector2 p2, Vector2 q1, Vector2 q2)
         {
             Vector2 i = Vector2.Zero;
-            float a1 = p2.Y - p1.Y;
-            float b1 = p1.X - p2.X;
-            float c1 = a1 * p1.X + b1 * p1.Y;
-            float a2 = q2.Y - q1.Y;
-            float b2 = q1.X - q2.X;
-            float c2 = a2 * q1.X + b2 * q1.Y;
-            float det = a1 * b2 - a2 * b1;
+            GGame.Math.Fix64 a1 = p2.Y - p1.Y;
+            GGame.Math.Fix64 b1 = p1.X - p2.X;
+            GGame.Math.Fix64 c1 = a1 * p1.X + b1 * p1.Y;
+            GGame.Math.Fix64 a2 = q2.Y - q1.Y;
+            GGame.Math.Fix64 b2 = q1.X - q2.X;
+            GGame.Math.Fix64 c2 = a2 * q1.X + b2 * q1.Y;
+            GGame.Math.Fix64 det = a1 * b2 - a2 * b1;
 
-            if (!MathUtils.FloatEquals(det, 0))
+            if (!MathUtils.Fix64Equals(det, 0))
             {
                 // lines are not parallel
                 i.X = (b2 * c1 - b1 * c2) / det;
@@ -140,30 +141,30 @@ namespace VelcroPhysics.Utilities
             // these are reused later.
             // each lettered sub-calculation is used twice, except
             // for b and d, which are used 3 times
-            float a = point4.Y - point3.Y;
-            float b = point2.X - point1.X;
-            float c = point4.X - point3.X;
-            float d = point2.Y - point1.Y;
+            GGame.Math.Fix64 a = point4.Y - point3.Y;
+            GGame.Math.Fix64 b = point2.X - point1.X;
+            GGame.Math.Fix64 c = point4.X - point3.X;
+            GGame.Math.Fix64 d = point2.Y - point1.Y;
 
             // denominator to solution of linear system
-            float denom = (a * b) - (c * d);
+            GGame.Math.Fix64 denom = (a * b) - (c * d);
 
             // if denominator is 0, then lines are parallel
             if (!(denom >= -Settings.Epsilon && denom <= Settings.Epsilon))
             {
-                float e = point1.Y - point3.Y;
-                float f = point1.X - point3.X;
-                float oneOverDenom = 1.0f / denom;
+                GGame.Math.Fix64 e = point1.Y - point3.Y;
+                GGame.Math.Fix64 f = point1.X - point3.X;
+                GGame.Math.Fix64 oneOverDenom = 1.0f / denom;
 
                 // numerator of first equation
-                float ua = (c * e) - (a * f);
+                GGame.Math.Fix64 ua = (c * e) - (a * f);
                 ua *= oneOverDenom;
 
                 // check if intersection point of the two lines is on line segment 1
                 if (!firstIsSegment || ua >= 0.0f && ua <= 1.0f)
                 {
                     // numerator of second equation
-                    float ub = (b * e) - (d * f);
+                    GGame.Math.Fix64 ub = (b * e) - (d * f);
                     ub *= oneOverDenom;
 
                     // check if intersection point of the two lines is on line segment 2

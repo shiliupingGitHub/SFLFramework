@@ -6,7 +6,7 @@ namespace VelcroPhysics.Collision.Narrowphase
     public struct EPAxis
     {
         public int Index;
-        public float Separation;
+        public GGame.Math.Fix64 Separation;
         public EPAxisType Type;
     }
 }

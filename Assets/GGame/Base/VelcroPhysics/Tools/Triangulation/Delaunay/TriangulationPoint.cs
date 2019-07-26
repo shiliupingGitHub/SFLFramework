@@ -38,9 +38,9 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay
     {
         // List of edges this point constitutes an upper ending point (CDT)
 
-        public double X, Y;
+        public GGame.Math.Fix64 X, Y;
 
-        public TriangulationPoint(double x, double y)
+        public TriangulationPoint(GGame.Math.Fix64 x, GGame.Math.Fix64 y)
         {
             X = x;
             Y = y;
@@ -48,15 +48,15 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay
 
         public List<DTSweepConstraint> Edges { get; private set; }
 
-        public float Xf
+        public GGame.Math.Fix64 Xf
         {
-            get { return (float)X; }
+            get { return (GGame.Math.Fix64)X; }
             set { X = value; }
         }
 
-        public float Yf
+        public GGame.Math.Fix64 Yf
         {
-            get { return (float)Y; }
+            get { return (GGame.Math.Fix64)Y; }
             set { Y = value; }
         }
 

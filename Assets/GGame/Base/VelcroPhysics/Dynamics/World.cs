@@ -44,7 +44,7 @@ namespace VelcroPhysics.Dynamics
     /// </summary>
     public class World
     {
-        private float _invDt0;
+        private GGame.Math.Fix64 _invDt0;
         private Body[] _stack = new Body[64];
         private bool _stepComplete;
         private HashSet<Body> _bodyAddList = new HashSet<Body>();
@@ -58,8 +58,8 @@ namespace VelcroPhysics.Dynamics
         private Vector2 _point2;
         private List<Fixture> _testPointAllFixtures;
         private Stopwatch _watch = new Stopwatch();
-        private Func<Fixture, Vector2, Vector2, float, float> _rayCastCallback;
-        private Func<RayCastInput, int, float> _rayCastCallbackWrapper;
+        private Func<Fixture, Vector2, Vector2, GGame.Math.Fix64, GGame.Math.Fix64> _rayCastCallback;
+        private Func<RayCastInput, int, GGame.Math.Fix64> _rayCastCallbackWrapper;
 
         internal Queue<Contact> _contactPool = new Queue<Contact>(256);
         internal bool _worldHasNewFixture;
@@ -353,7 +353,7 @@ namespace VelcroPhysics.Dynamics
             return _queryAABBCallback(proxy.Fixture);
         }
 
-        private float RayCastCallbackWrapper(RayCastInput rayCastInput, int proxyId)
+        private GGame.Math.Fix64 RayCastCallbackWrapper(RayCastInput rayCastInput, int proxyId)
         {
             FixtureProxy proxy = ContactManager.BroadPhase.GetProxy(proxyId);
             Fixture fixture = proxy.Fixture;
@@ -363,7 +363,7 @@ namespace VelcroPhysics.Dynamics
 
             if (hit)
             {
-                float fraction = output.Fraction;
+                GGame.Math.Fix64 fraction = output.Fraction;
                 Vector2 point = (1.0f - fraction) * rayCastInput.Point1 + fraction * rayCastInput.Point2;
                 return _rayCastCallback(fixture, point, output.Normal, fraction);
             }
@@ -593,7 +593,7 @@ namespace VelcroPhysics.Dynamics
             {
                 // Find the first TOI.
                 Contact minContact = null;
-                float minAlpha = 1.0f;
+                GGame.Math.Fix64 minAlpha = 1.0f;
 
                 for (int i = 0; i < ContactManager.ContactList.Count; i++)
                 {
@@ -611,7 +611,7 @@ namespace VelcroPhysics.Dynamics
                         continue;
                     }
 
-                    float alpha;
+                    GGame.Math.Fix64 alpha;
                     if (c.TOIFlag)
                     {
                         // This contact has a valid cached TOI.
@@ -655,7 +655,7 @@ namespace VelcroPhysics.Dynamics
 
                         // Compute the TOI for this contact.
                         // Put the sweeps onto the same time interval.
-                        float alpha0 = bA._sweep.Alpha0;
+                        GGame.Math.Fix64 alpha0 = bA._sweep.Alpha0;
 
                         if (bA._sweep.Alpha0 < bB._sweep.Alpha0)
                         {
@@ -682,10 +682,10 @@ namespace VelcroPhysics.Dynamics
                         TimeOfImpact.CalculateTimeOfImpact(ref input, out output);
 
                         // Beta is the fraction of the remaining portion of the .
-                        float beta = output.T;
+                        GGame.Math.Fix64 beta = output.T;
                         if (output.State == TOIOutputState.Touching)
                         {
-                            alpha = Math.Min(alpha0 + (1.0f - alpha0) * beta, 1.0f);
+                            alpha = Math.Min((float)(alpha0 + (1.0f - alpha0) * beta), 1.0f);
                         }
                         else
                         {
@@ -886,19 +886,19 @@ namespace VelcroPhysics.Dynamics
 
         public List<BreakableBody> BreakableBodyList { get; private set; }
 
-        public float UpdateTime { get; private set; }
+        public GGame.Math.Fix64 UpdateTime { get; private set; }
 
-        public float ContinuousPhysicsTime { get; private set; }
+        public GGame.Math.Fix64 ContinuousPhysicsTime { get; private set; }
 
-        public float ControllersUpdateTime { get; private set; }
+        public GGame.Math.Fix64 ControllersUpdateTime { get; private set; }
 
-        public float AddRemoveTime { get; private set; }
+        public GGame.Math.Fix64 AddRemoveTime { get; private set; }
 
-        public float NewContactsTime { get; private set; }
+        public GGame.Math.Fix64 NewContactsTime { get; private set; }
 
-        public float ContactsUpdateTime { get; private set; }
+        public GGame.Math.Fix64 ContactsUpdateTime { get; private set; }
 
-        public float SolveUpdateTime { get; private set; }
+        public GGame.Math.Fix64 SolveUpdateTime { get; private set; }
 
         /// <summary>
         /// Get the number of broad-phase proxies.
@@ -1026,7 +1026,7 @@ namespace VelcroPhysics.Dynamics
         /// and constraint solution.
         /// </summary>
         /// <param name="dt">The amount of time to simulate, this should not vary.</param>
-        public void Step(float dt)
+        public void Step(GGame.Math.Fix64 dt)
         {
             if (!Enabled)
                 return;
@@ -1165,7 +1165,7 @@ namespace VelcroPhysics.Dynamics
         /// <param name="callback">A user implemented callback class.</param>
         /// <param name="point1">The ray starting point.</param>
         /// <param name="point2">The ray ending point.</param>
-        public void RayCast(Func<Fixture, Vector2, Vector2, float, float> callback, Vector2 point1, Vector2 point2)
+        public void RayCast(Func<Fixture, Vector2, Vector2, GGame.Math.Fix64, GGame.Math.Fix64> callback, Vector2 point1, Vector2 point2)
         {
             RayCastInput input = new RayCastInput();
             input.MaxFraction = 1.0f;
@@ -1177,13 +1177,13 @@ namespace VelcroPhysics.Dynamics
             _rayCastCallback = null;
         }
 
-        public List<(Fixture,Vector2, Vector2, float)> RayCast(Vector2 point1, Vector2 point2)
+        public List<(Fixture,Vector2, Vector2, GGame.Math.Fix64)> RayCast(Vector2 point1, Vector2 point2)
         {
-            List<(Fixture,Vector2, Vector2, float)> affected = new List<(Fixture,Vector2, Vector2, float)>();
+            List<(Fixture,Vector2, Vector2, GGame.Math.Fix64)> affected = new List<(Fixture,Vector2, Vector2, GGame.Math.Fix64)>();
 
             RayCast((f, p, n, fr) =>
             {
-                (Fixture, Vector2, Vector2, float) t;
+                (Fixture, Vector2, Vector2, GGame.Math.Fix64) t;
 
                 t.Item1 = f;
                 t.Item2 = p;

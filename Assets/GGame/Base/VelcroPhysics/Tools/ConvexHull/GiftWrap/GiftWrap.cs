@@ -24,10 +24,10 @@ namespace VelcroPhysics.Tools.ConvexHull.GiftWrap
 
             // Find the right most point on the hull
             int i0 = 0;
-            float x0 = vertices[0].X;
+            GGame.Math.Fix64 x0 = vertices[0].X;
             for (int i = 1; i < vertices.Count; ++i)
             {
-                float x = vertices[i].X;
+                GGame.Math.Fix64 x = vertices[i].X;
                 if (x > x0 || (x == x0 && vertices[i].Y < vertices[i0].Y))
                 {
                     i0 = i;
@@ -54,7 +54,7 @@ namespace VelcroPhysics.Tools.ConvexHull.GiftWrap
 
                     Vector2 r = vertices[ie] - vertices[hull[m]];
                     Vector2 v = vertices[j] - vertices[hull[m]];
-                    float c = MathUtils.Cross(ref r, ref v);
+                    GGame.Math.Fix64 c = MathUtils.Cross(ref r, ref v);
                     if (c < 0.0f)
                     {
                         ie = j;

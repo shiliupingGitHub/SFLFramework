@@ -12,7 +12,7 @@ namespace VelcroPhysics.Tools.Cutting
 
     public static class YuPengClipper
     {
-        private const float ClipperEpsilonSquared = 1.192092896e-07f;
+        private static GGame.Math.Fix64 ClipperEpsilonSquared = 1.192092896e-07f;
 
         public static List<Vertices> Union(Vertices polygon1, Vertices polygon2, out PolyClipError error)
         {
@@ -80,9 +80,9 @@ namespace VelcroPhysics.Tools.Cutting
             slicedClip.ForceCounterClockWise();
 
             List<Edge> subjectSimplices;
-            List<float> subjectCoeff;
+            List<GGame.Math.Fix64> subjectCoeff;
             List<Edge> clipSimplices;
-            List<float> clipCoeff;
+            List<GGame.Math.Fix64> clipCoeff;
 
             // Build simplical chains from the polygons and calculate the
             // the corresponding coefficients
@@ -145,7 +145,7 @@ namespace VelcroPhysics.Tools.Cutting
                     if (LineUtils.LineIntersect(a, b, c, d, out intersectionPoint))
                     {
                         // calculate alpha values for sorting multiple intersections points on a edge
-                        float alpha;
+                        GGame.Math.Fix64 alpha;
 
                         // Insert intersection point into first polygon
                         alpha = GetAlpha(a, b, intersectionPoint);
@@ -205,11 +205,11 @@ namespace VelcroPhysics.Tools.Cutting
         /// Calculates the simplical chain corresponding to the input polygon.
         /// </summary>
         /// <remarks>Used by method <c>Execute()</c>.</remarks>
-        private static void CalculateSimplicalChain(Vertices poly, out List<float> coeff,
+        private static void CalculateSimplicalChain(Vertices poly, out List<GGame.Math.Fix64> coeff,
                                                     out List<Edge> simplicies)
         {
             simplicies = new List<Edge>();
-            coeff = new List<float>();
+            coeff = new List<GGame.Math.Fix64>();
             for (int i = 0; i < poly.Count; ++i)
             {
                 simplicies.Add(new Edge(poly[i], poly[poly.NextIndex(i)]));
@@ -222,15 +222,15 @@ namespace VelcroPhysics.Tools.Cutting
         /// the given simplical chains and builds the result chain.
         /// </summary>
         /// <remarks>Used by method <c>Execute()</c>.</remarks>
-        private static void CalculateResultChain(List<float> poly1Coeff, List<Edge> poly1Simplicies,
-                                                 List<float> poly2Coeff, List<Edge> poly2Simplicies,
+        private static void CalculateResultChain(List<GGame.Math.Fix64> poly1Coeff, List<Edge> poly1Simplicies,
+                                                 List<GGame.Math.Fix64> poly2Coeff, List<Edge> poly2Simplicies,
                                                  PolyClipType clipType, out List<Edge> resultSimplices)
         {
             resultSimplices = new List<Edge>();
 
             for (int i = 0; i < poly1Simplicies.Count; ++i)
             {
-                float edgeCharacter = 0;
+                GGame.Math.Fix64 edgeCharacter = 0;
                 if (poly2Simplicies.Contains(poly1Simplicies[i]))
                 {
                     edgeCharacter = 1f;
@@ -267,7 +267,7 @@ namespace VelcroPhysics.Tools.Cutting
             }
             for (int i = 0; i < poly2Simplicies.Count; ++i)
             {
-                float edgeCharacter = 0f;
+                GGame.Math.Fix64 edgeCharacter = 0f;
                 if (!resultSimplices.Contains(poly2Simplicies[i]) &&
                     !resultSimplices.Contains(-poly2Simplicies[i]))
                 {
@@ -380,9 +380,9 @@ namespace VelcroPhysics.Tools.Cutting
         /// Needed to calculate the characteristics function of a simplex.
         /// </summary>
         /// <remarks>Used by method <c>CalculateEdgeCharacter()</c>.</remarks>
-        private static float CalculateBeta(Vector2 point, Edge e, float coefficient)
+        private static GGame.Math.Fix64 CalculateBeta(Vector2 point, Edge e, GGame.Math.Fix64 coefficient)
         {
-            float result = 0f;
+            GGame.Math.Fix64 result = 0f;
             if (PointInSimplex(point, e))
             {
                 result = coefficient;
@@ -399,7 +399,7 @@ namespace VelcroPhysics.Tools.Cutting
         /// Needed for sorting multiple intersections points on the same edge.
         /// </summary>
         /// <remarks>Used by method <c>CalculateIntersections()</c>.</remarks>
-        private static float GetAlpha(Vector2 start, Vector2 end, Vector2 point)
+        private static GGame.Math.Fix64 GetAlpha(Vector2 start, Vector2 end, Vector2 point)
         {
             return (point - start).LengthSquared() / (end - start).LengthSquared();
         }
@@ -408,9 +408,9 @@ namespace VelcroPhysics.Tools.Cutting
         /// Returns the coefficient of a simplex.
         /// </summary>
         /// <remarks>Used by method <c>CalculateSimplicalChain()</c>.</remarks>
-        private static float CalculateSimplexCoefficient(Vector2 a, Vector2 b, Vector2 c)
+        private static GGame.Math.Fix64 CalculateSimplexCoefficient(Vector2 a, Vector2 b, Vector2 c)
         {
-            float isLeft = MathUtils.Area(ref a, ref b, ref c);
+            GGame.Math.Fix64 isLeft = MathUtils.Area(ref a, ref b, ref c);
             if (isLeft < 0f)
             {
                 return -1f;

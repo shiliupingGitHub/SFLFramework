@@ -8,17 +8,17 @@ namespace VelcroPhysics.Extensions.Controllers.Gravity
 {
     public class GravityController : Controller
     {
-        public GravityController(float strength)
+        public GravityController(GGame.Math.Fix64 strength)
             : base(ControllerType.GravityController)
         {
             Strength = strength;
-            MaxRadius = float.MaxValue;
+            MaxRadius = GGame.Math.Fix64.MaxValue;
             GravityType = GravityType.DistanceSquared;
             Points = new List<Vector2>();
             Bodies = new List<Body>();
         }
 
-        public GravityController(float strength, float maxRadius, float minRadius)
+        public GravityController(GGame.Math.Fix64 strength, GGame.Math.Fix64 maxRadius, GGame.Math.Fix64 minRadius)
             : base(ControllerType.GravityController)
         {
             MinRadius = minRadius;
@@ -29,14 +29,14 @@ namespace VelcroPhysics.Extensions.Controllers.Gravity
             Bodies = new List<Body>();
         }
 
-        public float MinRadius { get; set; }
-        public float MaxRadius { get; set; }
-        public float Strength { get; set; }
+        public GGame.Math.Fix64 MinRadius { get; set; }
+        public GGame.Math.Fix64 MaxRadius { get; set; }
+        public GGame.Math.Fix64 Strength { get; set; }
         public GravityType GravityType { get; set; }
         public List<Body> Bodies { get; set; }
         public List<Vector2> Points { get; set; }
 
-        public override void Update(float dt)
+        public override void Update(GGame.Math.Fix64 dt)
         {
             Vector2 f = Vector2.Zero;
 
@@ -51,7 +51,7 @@ namespace VelcroPhysics.Extensions.Controllers.Gravity
                         continue;
 
                     Vector2 d = controllerBody.Position - worldBody.Position;
-                    float r2 = d.LengthSquared();
+                    GGame.Math.Fix64 r2 = d.LengthSquared();
 
                     if (r2 <= Settings.Epsilon || r2 > MaxRadius * MaxRadius || r2 < MinRadius * MinRadius)
                         continue;
@@ -62,7 +62,7 @@ namespace VelcroPhysics.Extensions.Controllers.Gravity
                             f = Strength / r2 * worldBody.Mass * controllerBody.Mass * d;
                             break;
                         case GravityType.Linear:
-                            f = Strength / (float)Math.Sqrt(r2) * worldBody.Mass * controllerBody.Mass * d;
+                            f = Strength / GGame.Math.Fix64.Sqrt(r2) * worldBody.Mass * controllerBody.Mass * d;
                             break;
                     }
 
@@ -72,7 +72,7 @@ namespace VelcroPhysics.Extensions.Controllers.Gravity
                 foreach (Vector2 point in Points)
                 {
                     Vector2 d = point - worldBody.Position;
-                    float r2 = d.LengthSquared();
+                    GGame.Math.Fix64 r2 = d.LengthSquared();
 
                     if (r2 <= Settings.Epsilon || r2 > MaxRadius * MaxRadius || r2 < MinRadius * MinRadius)
                         continue;
@@ -83,7 +83,7 @@ namespace VelcroPhysics.Extensions.Controllers.Gravity
                             f = Strength / r2 * worldBody.Mass * d;
                             break;
                         case GravityType.Linear:
-                            f = Strength / (float)Math.Sqrt(r2) * worldBody.Mass * d;
+                            f = Strength / GGame.Math.Fix64.Sqrt(r2) * worldBody.Mass * d;
                             break;
                     }
 

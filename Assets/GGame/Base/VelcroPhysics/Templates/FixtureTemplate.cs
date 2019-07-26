@@ -13,7 +13,7 @@ namespace VelcroPhysics.Templates
         /// <summary>
         /// The density, usually in kg/m^2.
         /// </summary>
-        public float Density { get; set; }
+        public GGame.Math.Fix64 Density { get; set; }
 
         /// <summary>
         /// Contact filtering data.
@@ -23,7 +23,7 @@ namespace VelcroPhysics.Templates
         /// <summary>
         /// The friction coefficient, usually in the range [0,1].
         /// </summary>
-        public float Friction { get; set; }
+        public GGame.Math.Fix64 Friction { get; set; }
 
         /// <summary>
         /// A sensor shape collects contact information but never generates a collision response.
@@ -33,7 +33,7 @@ namespace VelcroPhysics.Templates
         /// <summary>
         /// The restitution (elasticity) usually in the range [0,1].
         /// </summary>
-        public float Restitution { get; set; }
+        public GGame.Math.Fix64 Restitution { get; set; }
 
         /// <summary>
         /// The shape, this must be set. The shape will be cloned, so you can create the shape on the stack.

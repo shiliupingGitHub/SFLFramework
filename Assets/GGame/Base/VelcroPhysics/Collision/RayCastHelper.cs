@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Shared;
 using VelcroPhysics.Utilities;
@@ -31,15 +32,15 @@ namespace VelcroPhysics.Collision.RayCast
             // q = p1 + t * d
             // dot(normal, q - v1) = 0
             // dot(normal, p1 - v1) + t * dot(normal, d) = 0
-            float numerator = Vector2.Dot(normal, v1 - p1);
-            float denominator = Vector2.Dot(normal, d);
+            GGame.Math.Fix64 numerator = Vector2.Dot(normal, v1 - p1);
+            GGame.Math.Fix64 denominator = Vector2.Dot(normal, d);
 
             if (denominator == 0.0f)
             {
                 return false;
             }
 
-            float t = numerator / denominator;
+            GGame.Math.Fix64 t = numerator / denominator;
             if (t < 0.0f || input.MaxFraction < t)
             {
                 return false;
@@ -50,13 +51,13 @@ namespace VelcroPhysics.Collision.RayCast
             // q = v1 + s * r
             // s = dot(q - v1, r) / dot(r, r)
             Vector2 r = v2 - v1;
-            float rr = Vector2.Dot(r, r);
+            GGame.Math.Fix64 rr = Vector2.Dot(r, r);
             if (rr == 0.0f)
             {
                 return false;
             }
 
-            float s = Vector2.Dot(q - v1, r) / rr;
+            GGame.Math.Fix64 s = Vector2.Dot(q - v1, r) / rr;
             if (s < 0.0f || 1.0f < s)
             {
                 return false;
@@ -74,7 +75,7 @@ namespace VelcroPhysics.Collision.RayCast
             return true;
         }
 
-        public static bool RayCastCircle(ref Vector2 pos, float radius, ref RayCastInput input, ref Transform transform, out RayCastOutput output)
+        public static bool RayCastCircle(ref Vector2 pos, GGame.Math.Fix64 radius, ref RayCastInput input, ref Transform transform, out RayCastOutput output)
         {
             // Collision Detection in Interactive 3D Environments by Gino van den Bergen
             // From Section 3.1.2
@@ -85,13 +86,13 @@ namespace VelcroPhysics.Collision.RayCast
 
             Vector2 position = transform.p + MathUtils.Mul(transform.q, pos);
             Vector2 s = input.Point1 - position;
-            float b = Vector2.Dot(s, s) - radius * radius;
+            GGame.Math.Fix64 b = Vector2.Dot(s, s) - radius * radius;
 
             // Solve quadratic equation.
             Vector2 r = input.Point2 - input.Point1;
-            float c = Vector2.Dot(s, r);
-            float rr = Vector2.Dot(r, r);
-            float sigma = c * c - rr * b;
+            GGame.Math.Fix64 c = Vector2.Dot(s, r);
+            GGame.Math.Fix64 rr = Vector2.Dot(r, r);
+            GGame.Math.Fix64 sigma = c * c - rr * b;
 
             // Check for negative discriminant and short segment.
             if (sigma < 0.0f || rr < Settings.Epsilon)
@@ -100,7 +101,7 @@ namespace VelcroPhysics.Collision.RayCast
             }
 
             // Find the point of intersection of the line with the circle.
-            float a = -(c + (float)Math.Sqrt(sigma));
+            GGame.Math.Fix64 a = -(c + (GGame.Math.Fix64)Fix64.Sqrt(sigma));
 
             // Is the intersection point on the segment?
             if (0.0f <= a && a <= input.MaxFraction * rr)
@@ -124,7 +125,7 @@ namespace VelcroPhysics.Collision.RayCast
             Vector2 p2 = MathUtils.MulT(transform.q, input.Point2 - transform.p);
             Vector2 d = p2 - p1;
 
-            float lower = 0.0f, upper = input.MaxFraction;
+            GGame.Math.Fix64 lower = 0.0f, upper = input.MaxFraction;
 
             int index = -1;
 
@@ -133,8 +134,8 @@ namespace VelcroPhysics.Collision.RayCast
                 // p = p1 + a * d
                 // dot(normal, p - v) = 0
                 // dot(normal, p1 - v) + a * dot(normal, d) = 0
-                float numerator = Vector2.Dot(normals[i], vertices[i] - p1);
-                float denominator = Vector2.Dot(normals[i], d);
+                GGame.Math.Fix64 numerator = Vector2.Dot(normals[i], vertices[i] - p1);
+                GGame.Math.Fix64 denominator = Vector2.Dot(normals[i], d);
 
                 if (denominator == 0.0f)
                 {

@@ -23,20 +23,20 @@ namespace VelcroPhysics.Shared
         public AABB(Vector2 min, Vector2 max)
             : this(ref min, ref max) { }
 
-        public AABB(Vector2 center, float width, float height)
+        public AABB(Vector2 center, GGame.Math.Fix64 width, GGame.Math.Fix64 height)
             : this(center - new Vector2(width / 2, height / 2), center + new Vector2(width / 2, height / 2))
         {
         }
 
         public AABB(ref Vector2 min, ref Vector2 max)
         {
-            LowerBound = new Vector2(Math.Min(min.X, max.X), Math.Min(min.Y, max.Y));
-            UpperBound = new Vector2(Math.Max(min.X, max.X), Math.Max(min.Y, max.Y));
+            LowerBound = new Vector2(Math.Min((float)min.X, (float)max.X), Math.Min((float)min.Y, (float)max.Y));
+            UpperBound = new Vector2(Math.Max((float)min.X, (float)max.X), Math.Max((float)min.Y, (float)max.Y));
         }
 
-        public float Width => UpperBound.X - LowerBound.X;
+        public GGame.Math.Fix64 Width => UpperBound.X - LowerBound.X;
 
-        public float Height => UpperBound.Y - LowerBound.Y;
+        public GGame.Math.Fix64 Height => UpperBound.Y - LowerBound.Y;
 
         /// <summary>
         /// Get the center of the AABB.
@@ -51,12 +51,12 @@ namespace VelcroPhysics.Shared
         /// <summary>
         /// Get the perimeter length
         /// </summary>
-        public float Perimeter
+        public GGame.Math.Fix64 Perimeter
         {
             get
             {
-                float wx = UpperBound.X - LowerBound.X;
-                float wy = UpperBound.Y - LowerBound.Y;
+                GGame.Math.Fix64 wx = UpperBound.X - LowerBound.X;
+                GGame.Math.Fix64 wy = UpperBound.Y - LowerBound.Y;
                 return 2.0f * (wx + wy);
             }
         }
@@ -157,9 +157,10 @@ namespace VelcroPhysics.Shared
         /// </returns>
         public bool Contains(ref Vector2 point)
         {
-            //using epsilon to try and guard against float rounding errors.
-            return (point.X > (LowerBound.X + float.Epsilon) && point.X < (UpperBound.X - float.Epsilon) &&
-                    (point.Y > (LowerBound.Y + float.Epsilon) && point.Y < (UpperBound.Y - float.Epsilon)));
+
+            //using epsilon to try and guard against GGame.Math.Fix64 rounding errors.
+            return (point.X > (LowerBound.X + GGame.Math.Fix64.Epsilon) && point.X < (UpperBound.X - GGame.Math.Fix64.Epsilon) &&
+                    (point.Y > (LowerBound.Y + GGame.Math.Fix64.Epsilon) && point.Y < (UpperBound.Y - GGame.Math.Fix64.Epsilon)));
         }
 
         /// <summary>
@@ -188,8 +189,8 @@ namespace VelcroPhysics.Shared
 
             output = new RayCastOutput();
 
-            float tmin = -Settings.MaxFloat;
-            float tmax = Settings.MaxFloat;
+            GGame.Math.Fix64 tmin = -Settings.MaxFloat;
+            GGame.Math.Fix64 tmax = Settings.MaxFloat;
 
             Vector2 p = input.Point1;
             Vector2 d = input.Point2 - input.Point1;
@@ -199,10 +200,10 @@ namespace VelcroPhysics.Shared
 
             for (int i = 0; i < 2; ++i)
             {
-                float absD_i = i == 0 ? absD.X : absD.Y;
-                float lowerBound_i = i == 0 ? LowerBound.X : LowerBound.Y;
-                float upperBound_i = i == 0 ? UpperBound.X : UpperBound.Y;
-                float p_i = i == 0 ? p.X : p.Y;
+                GGame.Math.Fix64 absD_i = i == 0 ? absD.X : absD.Y;
+                GGame.Math.Fix64 lowerBound_i = i == 0 ? LowerBound.X : LowerBound.Y;
+                GGame.Math.Fix64 upperBound_i = i == 0 ? UpperBound.X : UpperBound.Y;
+                GGame.Math.Fix64 p_i = i == 0 ? p.X : p.Y;
 
                 if (absD_i < Settings.Epsilon)
                 {
@@ -214,14 +215,14 @@ namespace VelcroPhysics.Shared
                 }
                 else
                 {
-                    float d_i = i == 0 ? d.X : d.Y;
+                    GGame.Math.Fix64 d_i = i == 0 ? d.X : d.Y;
 
-                    float inv_d = 1.0f / d_i;
-                    float t1 = (lowerBound_i - p_i) * inv_d;
-                    float t2 = (upperBound_i - p_i) * inv_d;
+                    GGame.Math.Fix64 inv_d = 1.0f / d_i;
+                    GGame.Math.Fix64 t1 = (lowerBound_i - p_i) * inv_d;
+                    GGame.Math.Fix64 t2 = (upperBound_i - p_i) * inv_d;
 
                     // Sign of the normal vector.
-                    float s = -1.0f;
+                    GGame.Math.Fix64 s = -1.0f;
 
                     if (t1 > t2)
                     {
@@ -245,7 +246,7 @@ namespace VelcroPhysics.Shared
                     }
 
                     // Pull the max down
-                    tmax = Math.Min(tmax, t2);
+                    tmax = Math.Min((float)tmax, (float)t2);
 
                     if (tmin > tmax)
                     {

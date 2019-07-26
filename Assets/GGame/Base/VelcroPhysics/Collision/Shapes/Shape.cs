@@ -21,6 +21,7 @@
 */
 
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Collision.RayCast;
 using VelcroPhysics.Shared;
@@ -34,9 +35,9 @@ namespace VelcroPhysics.Collision.Shapes
     /// </summary>
     public abstract class Shape
     {
-        internal float _2radius;
-        internal float _density;
-        internal float _radius;
+        internal GGame.Math.Fix64 _2radius;
+        internal GGame.Math.Fix64 _density;
+        internal GGame.Math.Fix64 _radius;
 
         /// <summary>
         /// Contains the properties of the shape such as:
@@ -47,7 +48,7 @@ namespace VelcroPhysics.Collision.Shapes
         /// </summary>
         public MassData MassData;
 
-        protected Shape(ShapeType type, float radius = 0, float density = 0)
+        protected Shape(ShapeType type, GGame.Math.Fix64 radius = new Fix64(), GGame.Math.Fix64 density = new Fix64())
         {
             Debug.Assert(radius >= 0);
             Debug.Assert(density >= 0);
@@ -75,7 +76,7 @@ namespace VelcroPhysics.Collision.Shapes
         /// Changing the density causes a recalculation of shape properties.
         /// </summary>
         /// <value>The density.</value>
-        public float Density
+        public GGame.Math.Fix64 Density
         {
             get { return _density; }
             set
@@ -91,7 +92,7 @@ namespace VelcroPhysics.Collision.Shapes
         /// Radius of the Shape
         /// Changing the radius causes a recalculation of shape properties.
         /// </summary>
-        public float Radius
+        public GGame.Math.Fix64 Radius
         {
             get { return _radius; }
             set

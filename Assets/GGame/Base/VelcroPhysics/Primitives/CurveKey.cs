@@ -41,10 +41,10 @@ namespace Microsoft.Xna.Framework
         #region Private Fields
 
         private CurveContinuity continuity;
-        private float position;
-        private float tangentIn;
-        private float tangentOut;
-        private float value;
+        private GGame.Math.Fix64 position;
+        private GGame.Math.Fix64 tangentIn;
+        private GGame.Math.Fix64 tangentOut;
+        private GGame.Math.Fix64 value;
 
         #endregion Private Fields
 
@@ -56,24 +56,24 @@ namespace Microsoft.Xna.Framework
             set { continuity = value; }
         }
 
-        public float Position
+        public GGame.Math.Fix64 Position
         {
             get { return position; }
         }
 
-        public float TangentIn
+        public GGame.Math.Fix64 TangentIn
         {
             get { return tangentIn; }
             set { tangentIn = value; }
         }
 
-        public float TangentOut
+        public GGame.Math.Fix64 TangentOut
         {
             get { return tangentOut; }
             set { tangentOut = value; }
         }
 
-        public float Value
+        public GGame.Math.Fix64 Value
         {
             get { return value; }
             set { this.value = value; }
@@ -83,17 +83,17 @@ namespace Microsoft.Xna.Framework
 
         #region Constructors
 
-        public CurveKey(float position, float value)
+        public CurveKey(GGame.Math.Fix64 position, GGame.Math.Fix64 value)
             : this(position, value, 0, 0, CurveContinuity.Smooth)
         {
         }
 
-        public CurveKey(float position, float value, float tangentIn, float tangentOut)
+        public CurveKey(GGame.Math.Fix64 position, GGame.Math.Fix64 value, GGame.Math.Fix64 tangentIn, GGame.Math.Fix64 tangentOut)
             : this(position, value, tangentIn, tangentOut, CurveContinuity.Smooth)
         {
         }
 
-        public CurveKey(float position, float value, float tangentIn, float tangentOut, CurveContinuity continuity)
+        public CurveKey(GGame.Math.Fix64 position, GGame.Math.Fix64 value, GGame.Math.Fix64 tangentIn, GGame.Math.Fix64 tangentOut, CurveContinuity continuity)
         {
             this.position = position;
             this.value = value;

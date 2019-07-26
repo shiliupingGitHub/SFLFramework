@@ -22,6 +22,6 @@ namespace VelcroPhysics.Extensions.Controllers.ControllerBase
             return base.IsActiveOn(body);
         }
 
-        public abstract void Update(float dt);
+        public abstract void Update(GGame.Math.Fix64 dt);
     }
 }

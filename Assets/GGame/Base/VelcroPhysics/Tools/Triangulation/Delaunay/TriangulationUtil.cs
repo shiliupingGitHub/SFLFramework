@@ -37,7 +37,7 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay
 
     internal class TriangulationUtil
     {
-        public static double EPSILON = 1e-12;
+        public static GGame.Math.Fix64 EPSILON = 1e-12f;
 
         /// <summary>
         /// Requirements:
@@ -66,40 +66,40 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay
         public static bool SmartIncircle(TriangulationPoint pa, TriangulationPoint pb, TriangulationPoint pc,
                                          TriangulationPoint pd)
         {
-            double pdx = pd.X;
-            double pdy = pd.Y;
-            double adx = pa.X - pdx;
-            double ady = pa.Y - pdy;
-            double bdx = pb.X - pdx;
-            double bdy = pb.Y - pdy;
+            GGame.Math.Fix64 pdx = pd.X;
+            GGame.Math.Fix64 pdy = pd.Y;
+            GGame.Math.Fix64 adx = pa.X - pdx;
+            GGame.Math.Fix64 ady = pa.Y - pdy;
+            GGame.Math.Fix64 bdx = pb.X - pdx;
+            GGame.Math.Fix64 bdy = pb.Y - pdy;
 
-            double adxbdy = adx * bdy;
-            double bdxady = bdx * ady;
-            double oabd = adxbdy - bdxady;
+            GGame.Math.Fix64 adxbdy = adx * bdy;
+            GGame.Math.Fix64 bdxady = bdx * ady;
+            GGame.Math.Fix64 oabd = adxbdy - bdxady;
 
             //        oabd = orient2d(pa,pb,pd);
             if (oabd <= 0)
                 return false;
 
-            double cdx = pc.X - pdx;
-            double cdy = pc.Y - pdy;
+            GGame.Math.Fix64 cdx = pc.X - pdx;
+            GGame.Math.Fix64 cdy = pc.Y - pdy;
 
-            double cdxady = cdx * ady;
-            double adxcdy = adx * cdy;
-            double ocad = cdxady - adxcdy;
+            GGame.Math.Fix64 cdxady = cdx * ady;
+            GGame.Math.Fix64 adxcdy = adx * cdy;
+            GGame.Math.Fix64 ocad = cdxady - adxcdy;
 
             //      ocad = orient2d(pc,pa,pd);
             if (ocad <= 0)
                 return false;
 
-            double bdxcdy = bdx * cdy;
-            double cdxbdy = cdx * bdy;
+            GGame.Math.Fix64 bdxcdy = bdx * cdy;
+            GGame.Math.Fix64 cdxbdy = cdx * bdy;
 
-            double alift = adx * adx + ady * ady;
-            double blift = bdx * bdx + bdy * bdy;
-            double clift = cdx * cdx + cdy * cdy;
+            GGame.Math.Fix64 alift = adx * adx + ady * ady;
+            GGame.Math.Fix64 blift = bdx * bdx + bdy * bdy;
+            GGame.Math.Fix64 clift = cdx * cdx + cdy * cdy;
 
-            double det = alift * (bdxcdy - cdxbdy) + blift * ocad + clift * oabd;
+            GGame.Math.Fix64 det = alift * (bdxcdy - cdxbdy) + blift * ocad + clift * oabd;
 
             return det > 0;
         }
@@ -107,28 +107,28 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay
         public static bool InScanArea(TriangulationPoint pa, TriangulationPoint pb, TriangulationPoint pc,
                                       TriangulationPoint pd)
         {
-            double pdx = pd.X;
-            double pdy = pd.Y;
-            double adx = pa.X - pdx;
-            double ady = pa.Y - pdy;
-            double bdx = pb.X - pdx;
-            double bdy = pb.Y - pdy;
+            GGame.Math.Fix64 pdx = pd.X;
+            GGame.Math.Fix64 pdy = pd.Y;
+            GGame.Math.Fix64 adx = pa.X - pdx;
+            GGame.Math.Fix64 ady = pa.Y - pdy;
+            GGame.Math.Fix64 bdx = pb.X - pdx;
+            GGame.Math.Fix64 bdy = pb.Y - pdy;
 
-            double adxbdy = adx*bdy;
-            double bdxady = bdx*ady;
-            double oabd = adxbdy - bdxady;
+            GGame.Math.Fix64 adxbdy = adx*bdy;
+            GGame.Math.Fix64 bdxady = bdx*ady;
+            GGame.Math.Fix64 oabd = adxbdy - bdxady;
             //        oabd = orient2d(pa,pb,pd);
             if (oabd <= 0)
             {
                 return false;
             }
 
-            double cdx = pc.X - pdx;
-            double cdy = pc.Y - pdy;
+            GGame.Math.Fix64 cdx = pc.X - pdx;
+            GGame.Math.Fix64 cdy = pc.Y - pdy;
 
-            double cdxady = cdx*ady;
-            double adxcdy = adx*cdy;
-            double ocad = cdxady - adxcdy;
+            GGame.Math.Fix64 cdxady = cdx*ady;
+            GGame.Math.Fix64 adxcdy = adx*cdy;
+            GGame.Math.Fix64 ocad = cdxady - adxcdy;
             //      ocad = orient2d(pc,pa,pd);
             if (ocad <= 0)
             {
@@ -140,13 +140,13 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay
 
         public static bool InScanArea(TriangulationPoint pa, TriangulationPoint pb, TriangulationPoint pc, TriangulationPoint pd)
         {
-            double oadb = (pa.X - pb.X) * (pd.Y - pb.Y) - (pd.X - pb.X) * (pa.Y - pb.Y);
+            GGame.Math.Fix64 oadb = (pa.X - pb.X) * (pd.Y - pb.Y) - (pd.X - pb.X) * (pa.Y - pb.Y);
             if (oadb >= -EPSILON)
             {
                 return false;
             }
 
-            double oadc = (pa.X - pc.X) * (pd.Y - pc.Y) - (pd.X - pc.X) * (pa.Y - pc.Y);
+            GGame.Math.Fix64 oadc = (pa.X - pc.X) * (pd.Y - pc.Y) - (pd.X - pc.X) * (pa.Y - pc.Y);
             if (oadc <= EPSILON)
             {
                 return false;
@@ -162,9 +162,9 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay
         /// =  (x1-x3)*(y2-y3) - (y1-y3)*(x2-x3)
         public static Orientation Orient2d(TriangulationPoint pa, TriangulationPoint pb, TriangulationPoint pc)
         {
-            double detleft = (pa.X - pc.X) * (pb.Y - pc.Y);
-            double detright = (pa.Y - pc.Y) * (pb.X - pc.X);
-            double val = detleft - detright;
+            GGame.Math.Fix64 detleft = (pa.X - pc.X) * (pb.Y - pc.Y);
+            GGame.Math.Fix64 detright = (pa.Y - pc.Y) * (pb.X - pc.X);
+            GGame.Math.Fix64 val = detleft - detright;
             if (val > -EPSILON && val < EPSILON)
             {
                 return Orientation.Collinear;

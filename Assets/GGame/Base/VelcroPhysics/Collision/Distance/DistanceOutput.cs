@@ -7,7 +7,7 @@ namespace VelcroPhysics.Collision.Distance
     /// </summary>
     public struct DistanceOutput
     {
-        public float Distance;
+        public GGame.Math.Fix64 Distance;
 
         /// <summary>
         /// Number of GJK iterations used

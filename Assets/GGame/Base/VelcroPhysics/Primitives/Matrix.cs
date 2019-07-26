@@ -1,10 +1,13 @@
+
+
+using GGame.Math;
 #if !XNA && !WINDOWS_PHONE && !XBOX && !ANDROID && !MONOGAME
 
 #region License
 
 /*
 MIT License
-Copyright © 2006 The Mono.Xna Team
+Copyright ï¿½ 2006 The Mono.Xna Team
 
 All rights reserved.
 
@@ -39,22 +42,22 @@ namespace Microsoft.Xna.Framework
     {
         #region Public Fields
 
-        public float M11;
-        public float M12;
-        public float M13;
-        public float M14;
-        public float M21;
-        public float M22;
-        public float M23;
-        public float M24;
-        public float M31;
-        public float M32;
-        public float M33;
-        public float M34;
-        public float M41;
-        public float M42;
-        public float M43;
-        public float M44;
+        public GGame.Math.Fix64 M11;
+        public GGame.Math.Fix64 M12;
+        public GGame.Math.Fix64 M13;
+        public GGame.Math.Fix64 M14;
+        public GGame.Math.Fix64 M21;
+        public GGame.Math.Fix64 M22;
+        public GGame.Math.Fix64 M23;
+        public GGame.Math.Fix64 M24;
+        public GGame.Math.Fix64 M31;
+        public GGame.Math.Fix64 M32;
+        public GGame.Math.Fix64 M33;
+        public GGame.Math.Fix64 M34;
+        public GGame.Math.Fix64 M41;
+        public GGame.Math.Fix64 M42;
+        public GGame.Math.Fix64 M43;
+        public GGame.Math.Fix64 M44;
 
         #endregion Public Fields
 
@@ -203,8 +206,8 @@ namespace Microsoft.Xna.Framework
         /// <param name="m44">
         /// A <see cref="System.Single"/>
         /// </param>
-        public Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24,
-                      float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
+        public Matrix(GGame.Math.Fix64 m11, GGame.Math.Fix64 m12, GGame.Math.Fix64 m13, GGame.Math.Fix64 m14, GGame.Math.Fix64 m21, GGame.Math.Fix64 m22, GGame.Math.Fix64 m23, GGame.Math.Fix64 m24,
+                      GGame.Math.Fix64 m31, GGame.Math.Fix64 m32, GGame.Math.Fix64 m33, GGame.Math.Fix64 m34, GGame.Math.Fix64 m41, GGame.Math.Fix64 m42, GGame.Math.Fix64 m43, GGame.Math.Fix64 m44)
         {
             M11 = m11;
             M12 = m12;
@@ -359,13 +362,13 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix CreateFromAxisAngle(Vector3 axis, float angle)
+        public static Matrix CreateFromAxisAngle(Vector3 axis, GGame.Math.Fix64 angle)
         {
             throw new NotImplementedException();
         }
 
 
-        public static void CreateFromAxisAngle(ref Vector3 axis, float angle, out Matrix result)
+        public static void CreateFromAxisAngle(ref Vector3 axis, GGame.Math.Fix64 angle, out Matrix result)
         {
             throw new NotImplementedException();
         }
@@ -401,7 +404,7 @@ namespace Microsoft.Xna.Framework
             result.M43 = -Vector3.Dot(vz, cameraPosition);
         }
 
-        public static Matrix CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane)
+        public static Matrix CreateOrthographic(GGame.Math.Fix64 width, GGame.Math.Fix64 height, GGame.Math.Fix64 zNearPlane, GGame.Math.Fix64 zFarPlane)
         {
             Matrix ret;
             CreateOrthographic(width, height, zNearPlane, zFarPlane, out ret);
@@ -409,7 +412,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane,
+        public static void CreateOrthographic(GGame.Math.Fix64 width, GGame.Math.Fix64 height, GGame.Math.Fix64 zNearPlane, GGame.Math.Fix64 zFarPlane,
                                               out Matrix result)
         {
             result.M11 = 2 / width;
@@ -431,8 +434,8 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix CreateOrthographicOffCenter(float left, float right, float bottom, float top,
-                                                         float zNearPlane, float zFarPlane)
+        public static Matrix CreateOrthographicOffCenter(GGame.Math.Fix64 left, GGame.Math.Fix64 right, GGame.Math.Fix64 bottom, GGame.Math.Fix64 top,
+                                                         GGame.Math.Fix64 zNearPlane, GGame.Math.Fix64 zFarPlane)
         {
             Matrix ret;
             CreateOrthographicOffCenter(left, right, bottom, top, zNearPlane, zFarPlane, out ret);
@@ -440,8 +443,8 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreateOrthographicOffCenter(float left, float right, float bottom, float top,
-                                                       float zNearPlane, float zFarPlane, out Matrix result)
+        public static void CreateOrthographicOffCenter(GGame.Math.Fix64 left, GGame.Math.Fix64 right, GGame.Math.Fix64 bottom, GGame.Math.Fix64 top,
+                                                       GGame.Math.Fix64 zNearPlane, GGame.Math.Fix64 zFarPlane, out Matrix result)
         {
             result.M11 = 2 / (right - left);
             result.M12 = 0;
@@ -462,21 +465,21 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix CreatePerspective(float width, float height, float zNearPlane, float zFarPlane)
+        public static Matrix CreatePerspective(GGame.Math.Fix64 width, GGame.Math.Fix64 height, GGame.Math.Fix64 zNearPlane, GGame.Math.Fix64 zFarPlane)
         {
             throw new NotImplementedException();
         }
 
 
-        public static void CreatePerspective(float width, float height, float zNearPlane, float zFarPlane,
+        public static void CreatePerspective(GGame.Math.Fix64 width, GGame.Math.Fix64 height, GGame.Math.Fix64 zNearPlane, GGame.Math.Fix64 zFarPlane,
                                              out Matrix result)
         {
             throw new NotImplementedException();
         }
 
 
-        public static Matrix CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance,
-                                                          float farPlaneDistance)
+        public static Matrix CreatePerspectiveFieldOfView(GGame.Math.Fix64 fieldOfView, GGame.Math.Fix64 aspectRatio, GGame.Math.Fix64 nearPlaneDistance,
+                                                          GGame.Math.Fix64 farPlaneDistance)
         {
             Matrix ret;
             CreatePerspectiveFieldOfView(fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance, out ret);
@@ -484,8 +487,8 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance,
-                                                        float farPlaneDistance, out Matrix result)
+        public static void CreatePerspectiveFieldOfView(GGame.Math.Fix64 fieldOfView, GGame.Math.Fix64 aspectRatio, GGame.Math.Fix64 nearPlaneDistance,
+                                                        GGame.Math.Fix64 farPlaneDistance, out Matrix result)
         {
             // http://msdn.microsoft.com/en-us/library/bb205351(v=VS.85).aspx
             // http://msdn.microsoft.com/en-us/library/bb195665.aspx
@@ -508,8 +511,8 @@ namespace Microsoft.Xna.Framework
                 throw new ArgumentOutOfRangeException("nearPlaneDistance",
                                                       "Near plane distance is larger than Far plane distance. Near plane distance must be smaller than Far plane distance.");
 
-            float yscale = (float)1 / (float)Math.Tan(fieldOfView / 2);
-            float xscale = yscale / aspectRatio;
+            GGame.Math.Fix64 yscale = (GGame.Math.Fix64)1 / (GGame.Math.Fix64)Fix64.Tan(fieldOfView / 2);
+            GGame.Math.Fix64 xscale = yscale / aspectRatio;
 
             result.M11 = xscale;
             result.M22 = yscale;
@@ -519,26 +522,26 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix CreatePerspectiveOffCenter(float left, float right, float bottom, float top,
-                                                        float zNearPlane, float zFarPlane)
+        public static Matrix CreatePerspectiveOffCenter(GGame.Math.Fix64 left, GGame.Math.Fix64 right, GGame.Math.Fix64 bottom, GGame.Math.Fix64 top,
+                                                        GGame.Math.Fix64 zNearPlane, GGame.Math.Fix64 zFarPlane)
         {
             throw new NotImplementedException();
         }
 
 
-        public static void CreatePerspectiveOffCenter(float left, float right, float bottom, float top,
-                                                      float nearPlaneDistance, float farPlaneDistance, out Matrix result)
+        public static void CreatePerspectiveOffCenter(GGame.Math.Fix64 left, GGame.Math.Fix64 right, GGame.Math.Fix64 bottom, GGame.Math.Fix64 top,
+                                                      GGame.Math.Fix64 nearPlaneDistance, GGame.Math.Fix64 farPlaneDistance, out Matrix result)
         {
             throw new NotImplementedException();
         }
 
 
-        public static Matrix CreateRotationX(float radians)
+        public static Matrix CreateRotationX(GGame.Math.Fix64 radians)
         {
             Matrix returnMatrix = Identity;
 
-            returnMatrix.M22 = (float)Math.Cos(radians);
-            returnMatrix.M23 = (float)Math.Sin(radians);
+            returnMatrix.M22 = (GGame.Math.Fix64)Fix64.Cos(radians);
+            returnMatrix.M23 = (GGame.Math.Fix64)Fix64.Sin(radians);
             returnMatrix.M32 = -returnMatrix.M23;
             returnMatrix.M33 = returnMatrix.M22;
 
@@ -546,23 +549,23 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreateRotationX(float radians, out Matrix result)
+        public static void CreateRotationX(GGame.Math.Fix64 radians, out Matrix result)
         {
             result = Identity;
 
-            result.M22 = (float)Math.Cos(radians);
-            result.M23 = (float)Math.Sin(radians);
+            result.M22 = (GGame.Math.Fix64)Fix64.Cos(radians);
+            result.M23 = (GGame.Math.Fix64)Fix64.Sin(radians);
             result.M32 = -result.M23;
             result.M33 = result.M22;
         }
 
 
-        public static Matrix CreateRotationY(float radians)
+        public static Matrix CreateRotationY(GGame.Math.Fix64 radians)
         {
             Matrix returnMatrix = Identity;
 
-            returnMatrix.M11 = (float)Math.Cos(radians);
-            returnMatrix.M13 = (float)Math.Sin(radians);
+            returnMatrix.M11 = (GGame.Math.Fix64)Fix64.Cos(radians);
+            returnMatrix.M13 = (GGame.Math.Fix64)Fix64.Sin(radians);
             returnMatrix.M31 = -returnMatrix.M13;
             returnMatrix.M33 = returnMatrix.M11;
 
@@ -570,23 +573,23 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreateRotationY(float radians, out Matrix result)
+        public static void CreateRotationY(GGame.Math.Fix64 radians, out Matrix result)
         {
             result = Identity;
 
-            result.M11 = (float)Math.Cos(radians);
-            result.M13 = (float)Math.Sin(radians);
+            result.M11 = (GGame.Math.Fix64)Fix64.Cos(radians);
+            result.M13 = (GGame.Math.Fix64)Fix64.Sin(radians);
             result.M31 = -result.M13;
             result.M33 = result.M11;
         }
 
 
-        public static Matrix CreateRotationZ(float radians)
+        public static Matrix CreateRotationZ(GGame.Math.Fix64 radians)
         {
             Matrix returnMatrix = Identity;
 
-            returnMatrix.M11 = (float)Math.Cos(radians);
-            returnMatrix.M12 = (float)Math.Sin(radians);
+            returnMatrix.M11 = (GGame.Math.Fix64)Fix64.Cos(radians);
+            returnMatrix.M12 = (GGame.Math.Fix64)Fix64.Sin(radians);
             returnMatrix.M21 = -returnMatrix.M12;
             returnMatrix.M22 = returnMatrix.M11;
 
@@ -594,18 +597,18 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreateRotationZ(float radians, out Matrix result)
+        public static void CreateRotationZ(GGame.Math.Fix64 radians, out Matrix result)
         {
             result = Identity;
 
-            result.M11 = (float)Math.Cos(radians);
-            result.M12 = (float)Math.Sin(radians);
+            result.M11 = (GGame.Math.Fix64)Fix64.Cos(radians);
+            result.M12 = (GGame.Math.Fix64)Fix64.Sin(radians);
             result.M21 = -result.M12;
             result.M22 = result.M11;
         }
 
 
-        public static Matrix CreateScale(float scale)
+        public static Matrix CreateScale(GGame.Math.Fix64 scale)
         {
             Matrix returnMatrix = Identity;
 
@@ -617,7 +620,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreateScale(float scale, out Matrix result)
+        public static void CreateScale(GGame.Math.Fix64 scale, out Matrix result)
         {
             result = Identity;
 
@@ -627,7 +630,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix CreateScale(float xScale, float yScale, float zScale)
+        public static Matrix CreateScale(GGame.Math.Fix64 xScale, GGame.Math.Fix64 yScale, GGame.Math.Fix64 zScale)
         {
             Matrix returnMatrix = Identity;
 
@@ -639,7 +642,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreateScale(float xScale, float yScale, float zScale, out Matrix result)
+        public static void CreateScale(GGame.Math.Fix64 xScale, GGame.Math.Fix64 yScale, GGame.Math.Fix64 zScale, out Matrix result)
         {
             result = Identity;
 
@@ -671,7 +674,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix CreateTranslation(float xPosition, float yPosition, float zPosition)
+        public static Matrix CreateTranslation(GGame.Math.Fix64 xPosition, GGame.Math.Fix64 yPosition, GGame.Math.Fix64 zPosition)
         {
             Matrix returnMatrix = Identity;
 
@@ -683,7 +686,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void CreateTranslation(float xPosition, float yPosition, float zPosition, out Matrix result)
+        public static void CreateTranslation(GGame.Math.Fix64 xPosition, GGame.Math.Fix64 yPosition, GGame.Math.Fix64 zPosition, out Matrix result)
         {
             result = Identity;
 
@@ -729,7 +732,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix Divide(Matrix matrix1, float divider)
+        public static Matrix Divide(Matrix matrix1, GGame.Math.Fix64 divider)
         {
             Matrix ret;
             Divide(ref matrix1, divider, out ret);
@@ -737,9 +740,9 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void Divide(ref Matrix matrix1, float divider, out Matrix result)
+        public static void Divide(ref Matrix matrix1, GGame.Math.Fix64 divider, out Matrix result)
         {
-            float inverseDivider = 1f / divider;
+            GGame.Math.Fix64 inverseDivider = 1f / divider;
             Multiply(ref matrix1, inverseDivider, out result);
         }
 
@@ -759,22 +762,22 @@ namespace Microsoft.Xna.Framework
             // 2. Create the adjugate matrix, which satisfies: A * adj(A) = det(A) * I
             // 3. Divide adjugate matrix with the determinant to find the inverse
 
-            float det1 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
-            float det2 = matrix.M11 * matrix.M23 - matrix.M13 * matrix.M21;
-            float det3 = matrix.M11 * matrix.M24 - matrix.M14 * matrix.M21;
-            float det4 = matrix.M12 * matrix.M23 - matrix.M13 * matrix.M22;
-            float det5 = matrix.M12 * matrix.M24 - matrix.M14 * matrix.M22;
-            float det6 = matrix.M13 * matrix.M24 - matrix.M14 * matrix.M23;
-            float det7 = matrix.M31 * matrix.M42 - matrix.M32 * matrix.M41;
-            float det8 = matrix.M31 * matrix.M43 - matrix.M33 * matrix.M41;
-            float det9 = matrix.M31 * matrix.M44 - matrix.M34 * matrix.M41;
-            float det10 = matrix.M32 * matrix.M43 - matrix.M33 * matrix.M42;
-            float det11 = matrix.M32 * matrix.M44 - matrix.M34 * matrix.M42;
-            float det12 = matrix.M33 * matrix.M44 - matrix.M34 * matrix.M43;
+            GGame.Math.Fix64 det1 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
+            GGame.Math.Fix64 det2 = matrix.M11 * matrix.M23 - matrix.M13 * matrix.M21;
+            GGame.Math.Fix64 det3 = matrix.M11 * matrix.M24 - matrix.M14 * matrix.M21;
+            GGame.Math.Fix64 det4 = matrix.M12 * matrix.M23 - matrix.M13 * matrix.M22;
+            GGame.Math.Fix64 det5 = matrix.M12 * matrix.M24 - matrix.M14 * matrix.M22;
+            GGame.Math.Fix64 det6 = matrix.M13 * matrix.M24 - matrix.M14 * matrix.M23;
+            GGame.Math.Fix64 det7 = matrix.M31 * matrix.M42 - matrix.M32 * matrix.M41;
+            GGame.Math.Fix64 det8 = matrix.M31 * matrix.M43 - matrix.M33 * matrix.M41;
+            GGame.Math.Fix64 det9 = matrix.M31 * matrix.M44 - matrix.M34 * matrix.M41;
+            GGame.Math.Fix64 det10 = matrix.M32 * matrix.M43 - matrix.M33 * matrix.M42;
+            GGame.Math.Fix64 det11 = matrix.M32 * matrix.M44 - matrix.M34 * matrix.M42;
+            GGame.Math.Fix64 det12 = matrix.M33 * matrix.M44 - matrix.M34 * matrix.M43;
 
-            float detMatrix = (float)(det1 * det12 - det2 * det11 + det3 * det10 + det4 * det9 - det5 * det8 + det6 * det7);
+            GGame.Math.Fix64 detMatrix = (GGame.Math.Fix64)(det1 * det12 - det2 * det11 + det3 * det10 + det4 * det9 - det5 * det8 + det6 * det7);
 
-            float invDetMatrix = 1f / detMatrix;
+            GGame.Math.Fix64 invDetMatrix = 1f / detMatrix;
 
             Matrix ret; // Allow for matrix and result to point to the same structure
 
@@ -799,13 +802,13 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix Lerp(Matrix matrix1, Matrix matrix2, float amount)
+        public static Matrix Lerp(Matrix matrix1, Matrix matrix2, GGame.Math.Fix64 amount)
         {
             throw new NotImplementedException();
         }
 
 
-        public static void Lerp(ref Matrix matrix1, ref Matrix matrix2, float amount, out Matrix result)
+        public static void Lerp(ref Matrix matrix1, ref Matrix matrix2, GGame.Math.Fix64 amount, out Matrix result)
         {
             throw new NotImplementedException();
         }
@@ -858,7 +861,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Matrix Multiply(Matrix matrix1, float factor)
+        public static Matrix Multiply(Matrix matrix1, GGame.Math.Fix64 factor)
         {
             matrix1.M11 *= factor;
             matrix1.M12 *= factor;
@@ -880,7 +883,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static void Multiply(ref Matrix matrix1, float factor, out Matrix result)
+        public static void Multiply(ref Matrix matrix1, GGame.Math.Fix64 factor, out Matrix result)
         {
             result.M11 = matrix1.M11 * factor;
             result.M12 = matrix1.M12 * factor;
@@ -989,9 +992,9 @@ namespace Microsoft.Xna.Framework
 
         #region Public Methods
 
-        public float Determinant()
+        public GGame.Math.Fix64 Determinant()
         {
-            float minor1, minor2, minor3, minor4, minor5, minor6;
+            GGame.Math.Fix64 minor1, minor2, minor3, minor4, minor5, minor6;
 
             minor1 = M31 * M42 - M32 * M41;
             minor2 = M31 * M43 - M33 * M41;
@@ -1028,7 +1031,7 @@ namespace Microsoft.Xna.Framework
             return ret;
         }
 
-        public static Matrix operator /(Matrix matrix1, float divider)
+        public static Matrix operator /(Matrix matrix1, GGame.Math.Fix64 divider)
         {
             Matrix ret;
             Divide(ref matrix1, divider, out ret);
@@ -1059,13 +1062,13 @@ namespace Microsoft.Xna.Framework
             return returnMatrix;
         }
 
-        public static Matrix operator *(Matrix matrix, float scaleFactor)
+        public static Matrix operator *(Matrix matrix, GGame.Math.Fix64 scaleFactor)
         {
             Multiply(ref matrix, scaleFactor, out matrix);
             return matrix;
         }
 
-        public static Matrix operator *(float scaleFactor, Matrix matrix)
+        public static Matrix operator *(GGame.Math.Fix64 scaleFactor, Matrix matrix)
         {
             Matrix target;
             target.M11 = matrix.M11 * scaleFactor;

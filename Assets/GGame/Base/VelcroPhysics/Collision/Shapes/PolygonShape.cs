@@ -43,7 +43,7 @@ namespace VelcroPhysics.Collision.Shapes
         /// </summary>
         /// <param name="vertices">The vertices.</param>
         /// <param name="density">The density.</param>
-        public PolygonShape(Vertices vertices, float density) : base(ShapeType.Polygon, Settings.PolygonRadius, density)
+        public PolygonShape(Vertices vertices, GGame.Math.Fix64 density) : base(ShapeType.Polygon, Settings.PolygonRadius, density)
         {
             Vertices = vertices; //This assignment will call ComputeProperties()
         }
@@ -52,7 +52,7 @@ namespace VelcroPhysics.Collision.Shapes
         /// Create a new PolygonShape with the specified density.
         /// </summary>
         /// <param name="density">The density.</param>
-        public PolygonShape(float density) : base(ShapeType.Polygon, Settings.PolygonRadius, density) { }
+        public PolygonShape(GGame.Math.Fix64 density) : base(ShapeType.Polygon, Settings.PolygonRadius, density) { }
 
         internal PolygonShape() : base(ShapeType.Polygon, Settings.PolygonRadius) { }
 
@@ -143,8 +143,8 @@ namespace VelcroPhysics.Collision.Shapes
 
             //Velcro optimization: Consolidated the calculate centroid and mass code to a single method.
             Vector2 center = Vector2.Zero;
-            float area = 0.0f;
-            float I = 0.0f;
+            GGame.Math.Fix64 area = 0.0f;
+            GGame.Math.Fix64 I = 0.0f;
 
             //Velcro: We change the reference point to be inside the polygon
 
@@ -159,7 +159,7 @@ namespace VelcroPhysics.Collision.Shapes
             }
             s *= 1.0f / Vertices.Count;
 
-            const float k_inv3 = 1.0f / 3.0f;
+             GGame.Math.Fix64 k_inv3 = 1.0f / 3.0f;
 
             for (int i = 0; i < Vertices.Count; ++i)
             {
@@ -167,19 +167,19 @@ namespace VelcroPhysics.Collision.Shapes
                 Vector2 e1 = Vertices[i] - s;
                 Vector2 e2 = i + 1 < Vertices.Count ? Vertices[i + 1] - s : Vertices[0] - s;
 
-                float D = MathUtils.Cross(e1, e2);
+                GGame.Math.Fix64 D = MathUtils.Cross(e1, e2);
 
-                float triangleArea = 0.5f * D;
+                GGame.Math.Fix64 triangleArea = 0.5f * D;
                 area += triangleArea;
 
                 // Area weighted centroid
                 center += triangleArea * k_inv3 * (e1 + e2);
 
-                float ex1 = e1.X, ey1 = e1.Y;
-                float ex2 = e2.X, ey2 = e2.Y;
+                GGame.Math.Fix64 ex1 = e1.X, ey1 = e1.Y;
+                GGame.Math.Fix64 ex2 = e2.X, ey2 = e2.Y;
 
-                float intx2 = ex1 * ex1 + ex2 * ex1 + ex2 * ex2;
-                float inty2 = ey1 * ey1 + ey2 * ey1 + ey2 * ey2;
+                GGame.Math.Fix64 intx2 = ex1 * ex1 + ex2 * ex1 + ex2 * ex2;
+                GGame.Math.Fix64 inty2 = ey1 * ey1 + ey2 * ey1 + ey2 * ey2;
 
                 I += (0.25f * k_inv3 * D) * (intx2 + inty2);
             }

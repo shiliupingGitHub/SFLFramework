@@ -11,7 +11,7 @@ namespace VelcroPhysics.Collision.Shapes
         /// <summary>
         /// The area of the shape
         /// </summary>
-        public float Area { get; set; }
+        public GGame.Math.Fix64 Area { get; set; }
 
         /// <summary>
         /// The position of the shape's centroid relative to the shape's origin.
@@ -21,12 +21,12 @@ namespace VelcroPhysics.Collision.Shapes
         /// <summary>
         /// The rotational inertia of the shape about the local origin.
         /// </summary>
-        public float Inertia { get; set; }
+        public GGame.Math.Fix64 Inertia { get; set; }
 
         /// <summary>
         /// The mass of the shape, usually in kilograms.
         /// </summary>
-        public float Mass { get; set; }
+        public GGame.Math.Fix64 Mass { get; set; }
 
         /// <summary>
         /// The equal operator

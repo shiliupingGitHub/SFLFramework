@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Shared;
 
@@ -17,7 +18,7 @@ namespace VelcroPhysics.Tools.PathGenerator
     /// </summary>
     public class Path
     {
-        private float _deltaT;
+        private GGame.Math.Fix64 _deltaT;
 
         /// <summary>
         /// All the points that makes up the curve
@@ -117,7 +118,7 @@ namespace VelcroPhysics.Tools.PathGenerator
         /// Rotate the control points by the defined value in radians.
         /// </summary>
         /// <param name="value">The amount to rotate by in radians.</param>
-        public void Rotate(float value)
+        public void Rotate(GGame.Math.Fix64 value)
         {
             Matrix rotationMatrix;
             Matrix.CreateRotationZ(value, out rotationMatrix);
@@ -151,9 +152,9 @@ namespace VelcroPhysics.Tools.PathGenerator
         {
             Vertices verts = new Vertices();
 
-            float timeStep = 1f / divisions;
+            GGame.Math.Fix64 timeStep = 1f / divisions;
 
-            for (float i = 0; i < 1f; i += timeStep)
+            for (GGame.Math.Fix64 i = 0; i < 1f; i += timeStep)
             {
                 verts.Add(GetPosition(i));
             }
@@ -161,7 +162,7 @@ namespace VelcroPhysics.Tools.PathGenerator
             return verts;
         }
 
-        public Vector2 GetPosition(float time)
+        public Vector2 GetPosition(GGame.Math.Fix64 time)
         {
             Vector2 temp;
 
@@ -191,7 +192,7 @@ namespace VelcroPhysics.Tools.PathGenerator
                 else if (p3 >= ControlPoints.Count - 1) p3 = p3 - (ControlPoints.Count - 1);
 
                 // relative time
-                float lt = (time - _deltaT * p) / _deltaT;
+                GGame.Math.Fix64 lt = (time - _deltaT * p) / _deltaT;
 
                 temp = Vector2.CatmullRom(ControlPoints[p0], ControlPoints[p1], ControlPoints[p2], ControlPoints[p3], lt);
 
@@ -216,7 +217,7 @@ namespace VelcroPhysics.Tools.PathGenerator
                 else if (p3 >= ControlPoints.Count - 1) p3 = ControlPoints.Count - 1;
 
                 // relative time
-                float lt = (time - _deltaT * p) / _deltaT;
+                GGame.Math.Fix64 lt = (time - _deltaT * p) / _deltaT;
 
                 temp = Vector2.CatmullRom(ControlPoints[p0], ControlPoints[p1], ControlPoints[p2], ControlPoints[p3], lt);
             }
@@ -229,9 +230,9 @@ namespace VelcroPhysics.Tools.PathGenerator
         /// </summary>
         /// <param name="time">The time</param>
         /// <returns>The normal.</returns>
-        public Vector2 GetPositionNormal(float time)
+        public Vector2 GetPositionNormal(GGame.Math.Fix64 time)
         {
-            float offsetTime = time + 0.0001f;
+            GGame.Math.Fix64 offsetTime = time + 0.0001f;
 
             Vector2 a = GetPosition(time);
             Vector2 b = GetPosition(offsetTime);
@@ -269,10 +270,10 @@ output = new Vector2();
             _deltaT = 1f / (ControlPoints.Count - 1);
         }
 
-        public float GetLength()
+        public GGame.Math.Fix64 GetLength()
         {
             List<Vector2> verts = GetVertices(ControlPoints.Count * 25);
-            float length = 0;
+            GGame.Math.Fix64 length = 0;
 
             for (int i = 1; i < verts.Count; i++)
             {
@@ -289,10 +290,10 @@ output = new Vector2();
         {
             List<Vector3> verts = new List<Vector3>();
 
-            float length = GetLength();
+            GGame.Math.Fix64 length = GetLength();
 
-            float deltaLength = length / divisions + 0.001f;
-            float t = 0.000f;
+            GGame.Math.Fix64 deltaLength = length / divisions + 0.001f;
+            GGame.Math.Fix64 t = 0.000f;
 
             // we always start at the first control point
             Vector2 start = ControlPoints[0];
@@ -314,7 +315,7 @@ output = new Vector2();
             for (int i = 1; i < divisions; i++)
             {
                 Vector2 normal = GetPositionNormal(t);
-                float angle = (float)Math.Atan2(normal.Y, normal.X);
+                GGame.Math.Fix64 angle = (GGame.Math.Fix64)Fix64.Atan2(normal.Y, normal.X);
 
                 verts.Add(new Vector3(end, angle));
 

@@ -22,6 +22,7 @@
 
 using System;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Dynamics.Solver;
 using VelcroPhysics.Shared;
@@ -52,22 +53,22 @@ namespace VelcroPhysics.Dynamics.Joints
     public class DistanceJoint : Joint
     {
         // Solver shared
-        private float _bias;
+        private GGame.Math.Fix64 _bias;
 
-        private float _gamma;
-        private float _impulse;
+        private GGame.Math.Fix64 _gamma;
+        private GGame.Math.Fix64 _impulse;
 
         // Solver temp
         private int _indexA;
 
         private int _indexB;
-        private float _invIA;
-        private float _invIB;
-        private float _invMassA;
-        private float _invMassB;
+        private GGame.Math.Fix64 _invIA;
+        private GGame.Math.Fix64 _invIB;
+        private GGame.Math.Fix64 _invMassA;
+        private GGame.Math.Fix64 _invMassB;
         private Vector2 _localCenterA;
         private Vector2 _localCenterB;
-        private float _mass;
+        private GGame.Math.Fix64 _mass;
         private Vector2 _rA;
         private Vector2 _rB;
         private Vector2 _u;
@@ -135,25 +136,25 @@ namespace VelcroPhysics.Dynamics.Joints
         /// The natural length between the anchor points.
         /// Manipulating the length can lead to non-physical behavior when the frequency is zero.
         /// </summary>
-        public float Length { get; set; }
+        public GGame.Math.Fix64 Length { get; set; }
 
         /// <summary>
         /// The mass-spring-damper frequency in Hertz. A value of 0
         /// disables softness.
         /// </summary>
-        public float Frequency { get; set; }
+        public GGame.Math.Fix64 Frequency { get; set; }
 
         /// <summary>
         /// The damping ratio. 0 = no damping, 1 = critical damping.
         /// </summary>
-        public float DampingRatio { get; set; }
+        public GGame.Math.Fix64 DampingRatio { get; set; }
 
         /// <summary>
         /// Get the reaction force given the inverse time step. Unit is N.
         /// </summary>
         /// <param name="invDt"></param>
         /// <returns></returns>
-        public override Vector2 GetReactionForce(float invDt)
+        public override Vector2 GetReactionForce(GGame.Math.Fix64 invDt)
         {
             Vector2 F = (invDt * _impulse) * _u;
             return F;
@@ -165,7 +166,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// </summary>
         /// <param name="invDt"></param>
         /// <returns></returns>
-        public override float GetReactionTorque(float invDt)
+        public override GGame.Math.Fix64 GetReactionTorque(GGame.Math.Fix64 invDt)
         {
             return 0.0f;
         }
@@ -182,14 +183,14 @@ namespace VelcroPhysics.Dynamics.Joints
             _invIB = BodyB._invI;
 
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
 
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -198,7 +199,7 @@ namespace VelcroPhysics.Dynamics.Joints
             _u = cB + _rB - cA - _rA;
 
             // Handle singularity.
-            float length = _u.Length();
+            GGame.Math.Fix64 length = _u.Length();
             if (length > Settings.LinearSlop)
             {
                 _u *= 1.0f / length;
@@ -208,28 +209,28 @@ namespace VelcroPhysics.Dynamics.Joints
                 _u = Vector2.Zero;
             }
 
-            float crAu = MathUtils.Cross(_rA, _u);
-            float crBu = MathUtils.Cross(_rB, _u);
-            float invMass = _invMassA + _invIA * crAu * crAu + _invMassB + _invIB * crBu * crBu;
+            GGame.Math.Fix64 crAu = MathUtils.Cross(_rA, _u);
+            GGame.Math.Fix64 crBu = MathUtils.Cross(_rB, _u);
+            GGame.Math.Fix64 invMass = _invMassA + _invIA * crAu * crAu + _invMassB + _invIB * crBu * crBu;
 
             // Compute the effective mass matrix.
             _mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
 
             if (Frequency > 0.0f)
             {
-                float C = length - Length;
+                GGame.Math.Fix64 C = length - Length;
 
                 // Frequency
-                float omega = 2.0f * Settings.Pi * Frequency;
+                GGame.Math.Fix64 omega = 2.0f * Settings.Pi * Frequency;
 
                 // Damping coefficient
-                float d = 2.0f * _mass * DampingRatio * omega;
+                GGame.Math.Fix64 d = 2.0f * _mass * DampingRatio * omega;
 
                 // Spring stiffness
-                float k = _mass * omega * omega;
+                GGame.Math.Fix64 k = _mass * omega * omega;
 
                 // magic formulas
-                float h = data.Step.dt;
+                GGame.Math.Fix64 h = data.Step.dt;
                 _gamma = h * (d + h * k);
                 _gamma = _gamma != 0.0f ? 1.0f / _gamma : 0.0f;
                 _bias = C * h * k * _gamma;
@@ -268,16 +269,16 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override void SolveVelocityConstraints(ref SolverData data)
         {
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             // Cdot = dot(u, v + cross(w, r))
             Vector2 vpA = vA + MathUtils.Cross(wA, _rA);
             Vector2 vpB = vB + MathUtils.Cross(wB, _rB);
-            float Cdot = Vector2.Dot(_u, vpB - vpA);
+            GGame.Math.Fix64 Cdot = Vector2.Dot(_u, vpB - vpA);
 
-            float impulse = -_mass * (Cdot + _bias + _gamma * _impulse);
+            GGame.Math.Fix64 impulse = -_mass * (Cdot + _bias + _gamma * _impulse);
             _impulse += impulse;
 
             Vector2 P = impulse * _u;
@@ -301,9 +302,9 @@ namespace VelcroPhysics.Dynamics.Joints
             }
 
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -311,12 +312,12 @@ namespace VelcroPhysics.Dynamics.Joints
             Vector2 rB = MathUtils.Mul(qB, LocalAnchorB - _localCenterB);
             Vector2 u = cB + rB - cA - rA;
 
-            float length = u.Length();
+            GGame.Math.Fix64 length = u.Length();
             u.Normalize();
-            float C = length - Length;
+            GGame.Math.Fix64 C = length - Length;
             C = MathUtils.Clamp(C, -Settings.MaxLinearCorrection, Settings.MaxLinearCorrection);
 
-            float impulse = -_mass * C;
+            GGame.Math.Fix64 impulse = -_mass * C;
             Vector2 P = impulse * u;
 
             cA -= _invMassA * P;
@@ -329,7 +330,7 @@ namespace VelcroPhysics.Dynamics.Joints
             data.Positions[_indexB].C = cB;
             data.Positions[_indexB].A = aB;
 
-            return Math.Abs(C) < Settings.LinearSlop;
+            return Fix64.Abs(C) < Settings.LinearSlop;
         }
     }
 }

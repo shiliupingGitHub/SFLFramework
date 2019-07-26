@@ -42,17 +42,17 @@ namespace VelcroPhysics.Dynamics
     public class Body
     {
         private BodyType _type;
-        private float _inertia;
-        private float _mass;
+        private GGame.Math.Fix64 _inertia;
+        private GGame.Math.Fix64 _mass;
 
         internal BodyFlags _flags;
-        internal float _invI;
-        internal float _invMass;
+        internal GGame.Math.Fix64 _invI;
+        internal GGame.Math.Fix64 _invMass;
         internal Vector2 _force;
         internal Vector2 _linearVelocity;
-        internal float _angularVelocity;
+        internal GGame.Math.Fix64 _angularVelocity;
         internal Sweep _sweep; // the swept motion for CCD
-        internal float _torque;
+        internal GGame.Math.Fix64 _torque;
         internal World _world;
         public Transform _xf; // the body origin transform
 
@@ -113,15 +113,15 @@ namespace VelcroPhysics.Dynamics
         /// </summary>
         public int BodyId { get; internal set; }
 
-        public float SleepTime { get; set; }
+        public GGame.Math.Fix64 SleepTime { get; set; }
 
         public int IslandIndex { get; set; }
 
         /// <summary>
         /// Scale the gravity applied to this body.
-        /// Defaults to 1. A value of 2 means double the gravity is applied to this body.
+        /// Defaults to 1. A value of 2 means GGame.Math.Fix64 the gravity is applied to this body.
         /// </summary>
-        public float GravityScale { get; set; }
+        public GGame.Math.Fix64 GravityScale { get; set; }
 
         /// <summary>
         /// Set the user data. Use this to store your application specific data.
@@ -133,7 +133,7 @@ namespace VelcroPhysics.Dynamics
         /// Gets the total number revolutions the body has made.
         /// </summary>
         /// <value>The revolutions.</value>
-        public float Revolutions => Rotation / (float)Math.PI;
+        public GGame.Math.Fix64 Revolutions => Rotation / (GGame.Math.Fix64)Math.PI;
 
         /// <summary>
         /// Gets or sets the body type.
@@ -199,7 +199,7 @@ namespace VelcroPhysics.Dynamics
             get { return _linearVelocity; }
             set
             {
-                Debug.Assert(!float.IsNaN(value.X) && !float.IsNaN(value.Y));
+                Debug.Assert(!float.IsNaN((float)value.X) && !float.IsNaN((float)value.Y));
 
                 if (_type == BodyType.Static)
                     return;
@@ -215,12 +215,12 @@ namespace VelcroPhysics.Dynamics
         /// Gets or sets the angular velocity. Radians/second.
         /// </summary>
         /// <value>The angular velocity.</value>
-        public float AngularVelocity
+        public GGame.Math.Fix64 AngularVelocity
         {
             get { return _angularVelocity; }
             set
             {
-                Debug.Assert(!float.IsNaN(value));
+                Debug.Assert(!GGame.Math.Fix64.IsNaN(value));
 
                 if (_type == BodyType.Static)
                     return;
@@ -236,13 +236,13 @@ namespace VelcroPhysics.Dynamics
         /// Gets or sets the linear damping.
         /// </summary>
         /// <value>The linear damping.</value>
-        public float LinearDamping { get; set; }
+        public GGame.Math.Fix64 LinearDamping { get; set; }
 
         /// <summary>
         /// Gets or sets the angular damping.
         /// </summary>
         /// <value>The angular damping.</value>
-        public float AngularDamping { get; set; }
+        public GGame.Math.Fix64 AngularDamping { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this body should be included in the CCD solver.
@@ -419,7 +419,7 @@ namespace VelcroPhysics.Dynamics
             get { return _xf.p; }
             set
             {
-                Debug.Assert(!float.IsNaN(value.X) && !float.IsNaN(value.Y));
+                Debug.Assert(!GGame.Math.Fix64.IsNaN(value.X) && !GGame.Math.Fix64.IsNaN(value.Y));
 
                 SetTransform(ref value, Rotation);
             }
@@ -429,12 +429,12 @@ namespace VelcroPhysics.Dynamics
         /// Get the angle in radians.
         /// </summary>
         /// <returns>Return the current world rotation angle in radians.</returns>
-        public float Rotation
+        public GGame.Math.Fix64 Rotation
         {
             get { return _sweep.A; }
             set
             {
-                Debug.Assert(!float.IsNaN(value));
+                Debug.Assert(!GGame.Math.Fix64.IsNaN(value));
 
                 SetTransform(ref _xf.p, value);
             }
@@ -500,12 +500,12 @@ namespace VelcroPhysics.Dynamics
         /// Gets or sets the mass. Usually in kilograms (kg).
         /// </summary>
         /// <value>The mass.</value>
-        public float Mass
+        public GGame.Math.Fix64 Mass
         {
             get { return _mass; }
             set
             {
-                Debug.Assert(!float.IsNaN(value));
+                Debug.Assert(!GGame.Math.Fix64.IsNaN(value));
 
                 if (_type != BodyType.Dynamic)
                     return;
@@ -524,12 +524,12 @@ namespace VelcroPhysics.Dynamics
         /// Get or set the rotational inertia of the body about the local origin. usually in kg-m^2.
         /// </summary>
         /// <value>The inertia.</value>
-        public float Inertia
+        public GGame.Math.Fix64 Inertia
         {
             get { return _inertia + _mass * Vector2.Dot(_sweep.LocalCenter, _sweep.LocalCenter); }
             set
             {
-                Debug.Assert(!float.IsNaN(value));
+                Debug.Assert(!GGame.Math.Fix64.IsNaN(value));
 
                 if (_type != BodyType.Dynamic)
                     return;
@@ -544,7 +544,7 @@ namespace VelcroPhysics.Dynamics
             }
         }
 
-        public float Restitution
+        public GGame.Math.Fix64 Restitution
         {
             set
             {
@@ -556,7 +556,7 @@ namespace VelcroPhysics.Dynamics
             }
         }
 
-        public float Friction
+        public GGame.Math.Fix64 Friction
         {
             set
             {
@@ -740,7 +740,7 @@ namespace VelcroPhysics.Dynamics
         /// </summary>
         /// <param name="position">The world position of the body's local origin.</param>
         /// <param name="rotation">The world rotation in radians.</param>
-        public void SetTransform(ref Vector2 position, float rotation)
+        public void SetTransform(ref Vector2 position, GGame.Math.Fix64 rotation)
         {
             SetTransformIgnoreContacts(ref position, rotation);
 
@@ -755,7 +755,7 @@ namespace VelcroPhysics.Dynamics
         /// </summary>
         /// <param name="position">The world position of the body's local origin.</param>
         /// <param name="rotation">The world rotation in radians.</param>
-        public void SetTransform(Vector2 position, float rotation)
+        public void SetTransform(Vector2 position, GGame.Math.Fix64 rotation)
         {
             SetTransform(ref position, rotation);
         }
@@ -765,7 +765,7 @@ namespace VelcroPhysics.Dynamics
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="angle">The angle.</param>
-        public void SetTransformIgnoreContacts(ref Vector2 position, float angle)
+        public void SetTransformIgnoreContacts(ref Vector2 position, GGame.Math.Fix64 angle)
         {
             _xf.q.Set(angle);
             _xf.p = position;
@@ -831,10 +831,10 @@ namespace VelcroPhysics.Dynamics
         /// <param name="point">The world position of the point of application.</param>
         public void ApplyForce(ref Vector2 force, ref Vector2 point)
         {
-            Debug.Assert(!float.IsNaN(force.X));
-            Debug.Assert(!float.IsNaN(force.Y));
-            Debug.Assert(!float.IsNaN(point.X));
-            Debug.Assert(!float.IsNaN(point.Y));
+            Debug.Assert(!GGame.Math.Fix64.IsNaN(force.X));
+            Debug.Assert(!GGame.Math.Fix64.IsNaN(force.Y));
+            Debug.Assert(!GGame.Math.Fix64.IsNaN(point.X));
+            Debug.Assert(!GGame.Math.Fix64.IsNaN(point.Y));
 
             if (_type != BodyType.Dynamic)
                 return;
@@ -852,9 +852,9 @@ namespace VelcroPhysics.Dynamics
         /// without affecting the linear velocity of the center of mass.
         /// </summary>
         /// <param name="torque">The torque about the z-axis (out of the screen), usually in N-m.</param>
-        public void ApplyTorque(float torque)
+        public void ApplyTorque(GGame.Math.Fix64 torque)
         {
-            Debug.Assert(!float.IsNaN(torque));
+            Debug.Assert(!GGame.Math.Fix64.IsNaN(torque));
 
             if (BodyType != BodyType.Dynamic)
                 return;
@@ -931,7 +931,7 @@ namespace VelcroPhysics.Dynamics
         /// Apply an angular impulse.
         /// </summary>
         /// <param name="impulse">The angular impulse in units of kg*m*m/s.</param>
-        public void ApplyAngularImpulse(float impulse)
+        public void ApplyAngularImpulse(GGame.Math.Fix64 impulse)
         {
             if (_type != BodyType.Dynamic)
                 return;
@@ -1197,7 +1197,7 @@ namespace VelcroPhysics.Dynamics
             return true;
         }
 
-        internal void Advance(float alpha)
+        internal void Advance(GGame.Math.Fix64 alpha)
         {
             // Advance to the new safe time. This doesn't sync the broad-phase.
             _sweep.Advance(alpha);

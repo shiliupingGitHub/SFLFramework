@@ -38,7 +38,7 @@ namespace VelcroPhysics.Collision.Shapes
         /// </summary>
         /// <param name="radius">The radius of the circle.</param>
         /// <param name="density">The density of the circle.</param>
-        public CircleShape(float radius, float density) : base(ShapeType.Circle, radius, density)
+        public CircleShape(GGame.Math.Fix64 radius, GGame.Math.Fix64 density) : base(ShapeType.Circle, radius, density)
         {
             ComputeProperties();
         }
@@ -84,7 +84,7 @@ namespace VelcroPhysics.Collision.Shapes
         private void ComputeMass()
         {
             //Velcro: We calculate area for later consumption
-            float area = Settings.Pi * _2radius;
+            GGame.Math.Fix64 area = Settings.Pi * _2radius;
             MassData.Area = area;
             MassData.Mass = Density * area;
         }

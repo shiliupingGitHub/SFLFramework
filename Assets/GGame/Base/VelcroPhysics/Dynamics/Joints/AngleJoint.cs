@@ -5,6 +5,7 @@
 
 using System;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Dynamics.Solver;
 
@@ -15,10 +16,10 @@ namespace VelcroPhysics.Dynamics.Joints
     /// </summary>
     public class AngleJoint : Joint
     {
-        private float _bias;
-        private float _jointError;
-        private float _massFactor;
-        private float _targetAngle;
+        private GGame.Math.Fix64 _bias;
+        private GGame.Math.Fix64 _jointError;
+        private GGame.Math.Fix64 _massFactor;
+        private GGame.Math.Fix64 _targetAngle;
 
         internal AngleJoint()
         {
@@ -35,7 +36,7 @@ namespace VelcroPhysics.Dynamics.Joints
         {
             JointType = JointType.Angle;
             BiasFactor = .2f;
-            MaxImpulse = float.MaxValue;
+            MaxImpulse = GGame.Math.Fix64.MaxValue;
         }
 
         public override Vector2 WorldAnchorA
@@ -53,7 +54,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// The desired angle between BodyA and BodyB
         /// </summary>
-        public float TargetAngle
+        public GGame.Math.Fix64 TargetAngle
         {
             get { return _targetAngle; }
             set
@@ -70,28 +71,28 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Gets or sets the bias factor.
         /// Defaults to 0.2
         /// </summary>
-        public float BiasFactor { get; set; }
+        public GGame.Math.Fix64 BiasFactor { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum impulse
-        /// Defaults to float.MaxValue
+        /// Defaults to GGame.Math.Fix64.MaxValue
         /// </summary>
-        public float MaxImpulse { get; set; }
+        public GGame.Math.Fix64 MaxImpulse { get; set; }
 
         /// <summary>
         /// Gets or sets the softness of the joint
         /// Defaults to 0
         /// </summary>
-        public float Softness { get; set; }
+        public GGame.Math.Fix64 Softness { get; set; }
 
-        public override Vector2 GetReactionForce(float invDt)
+        public override Vector2 GetReactionForce(GGame.Math.Fix64 invDt)
         {
             //TODO
             //return _inv_dt * _impulse;
             return Vector2.Zero;
         }
 
-        public override float GetReactionTorque(float invDt)
+        public override GGame.Math.Fix64 GetReactionTorque(GGame.Math.Fix64 invDt)
         {
             return 0;
         }
@@ -101,8 +102,8 @@ namespace VelcroPhysics.Dynamics.Joints
             int indexA = BodyA.IslandIndex;
             int indexB = BodyB.IslandIndex;
 
-            float aW = data.Positions[indexA].A;
-            float bW = data.Positions[indexB].A;
+            GGame.Math.Fix64 aW = data.Positions[indexA].A;
+            GGame.Math.Fix64 bW = data.Positions[indexB].A;
 
             _jointError = (bW - aW - TargetAngle);
             _bias = -BiasFactor * data.Step.inv_dt * _jointError;
@@ -114,10 +115,10 @@ namespace VelcroPhysics.Dynamics.Joints
             int indexA = BodyA.IslandIndex;
             int indexB = BodyB.IslandIndex;
 
-            float p = (_bias - data.Velocities[indexB].W + data.Velocities[indexA].W) * _massFactor;
+            GGame.Math.Fix64 p = (_bias - data.Velocities[indexB].W + data.Velocities[indexA].W) * _massFactor;
 
-            data.Velocities[indexA].W -= BodyA._invI * Math.Sign(p) * Math.Min(Math.Abs(p), MaxImpulse);
-            data.Velocities[indexB].W += BodyB._invI * Math.Sign(p) * Math.Min(Math.Abs(p), MaxImpulse);
+            data.Velocities[indexA].W -= BodyA._invI * Fix64.Sign(p) * Math.Min((float)Fix64.Abs(p), (float)MaxImpulse);
+            data.Velocities[indexB].W += BodyB._invI * Fix64.Sign(p) * Math.Min((float)Fix64.Abs(p), (float)MaxImpulse);
         }
 
         internal override bool SolvePositionConstraints(ref SolverData data)

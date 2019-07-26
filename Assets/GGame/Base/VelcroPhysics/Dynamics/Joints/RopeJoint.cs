@@ -46,20 +46,20 @@ namespace VelcroPhysics.Dynamics.Joints
     public class RopeJoint : Joint
     {
         // Solver shared
-        private float _impulse;
+        private GGame.Math.Fix64 _impulse;
 
         // Solver temp
         private int _indexA;
 
         private int _indexB;
-        private float _invIA;
-        private float _invIB;
-        private float _invMassA;
-        private float _invMassB;
-        private float _length;
+        private GGame.Math.Fix64 _invIA;
+        private GGame.Math.Fix64 _invIB;
+        private GGame.Math.Fix64 _invMassA;
+        private GGame.Math.Fix64 _invMassB;
+        private GGame.Math.Fix64 _length;
         private Vector2 _localCenterA;
         private Vector2 _localCenterB;
-        private float _mass;
+        private GGame.Math.Fix64 _mass;
         private Vector2 _rA, _rB;
         private Vector2 _u;
 
@@ -123,19 +123,19 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Get or set the maximum length of the rope.
         /// By default, it is the distance between the two anchor points.
         /// </summary>
-        public float MaxLength { get; set; }
+        public GGame.Math.Fix64 MaxLength { get; set; }
 
         /// <summary>
         /// Gets the state of the joint.
         /// </summary>
         public LimitState State { get; private set; }
 
-        public override Vector2 GetReactionForce(float invDt)
+        public override Vector2 GetReactionForce(GGame.Math.Fix64 invDt)
         {
             return (invDt * _impulse) * _u;
         }
 
-        public override float GetReactionTorque(float invDt)
+        public override GGame.Math.Fix64 GetReactionTorque(GGame.Math.Fix64 invDt)
         {
             return 0;
         }
@@ -152,14 +152,14 @@ namespace VelcroPhysics.Dynamics.Joints
             _invIB = BodyB._invI;
 
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
 
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -169,7 +169,7 @@ namespace VelcroPhysics.Dynamics.Joints
 
             _length = _u.Length();
 
-            float C = _length - MaxLength;
+            GGame.Math.Fix64 C = _length - MaxLength;
             if (C > 0.0f)
             {
                 State = LimitState.AtUpper;
@@ -192,9 +192,9 @@ namespace VelcroPhysics.Dynamics.Joints
             }
 
             // Compute effective mass.
-            float crA = MathUtils.Cross(_rA, _u);
-            float crB = MathUtils.Cross(_rB, _u);
-            float invMass = _invMassA + _invIA * crA * crA + _invMassB + _invIB * crB * crB;
+            GGame.Math.Fix64 crA = MathUtils.Cross(_rA, _u);
+            GGame.Math.Fix64 crB = MathUtils.Cross(_rB, _u);
+            GGame.Math.Fix64 invMass = _invMassA + _invIA * crA * crA + _invMassB + _invIB * crB * crB;
 
             _mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
 
@@ -223,15 +223,15 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override void SolveVelocityConstraints(ref SolverData data)
         {
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             // Cdot = dot(u, v + cross(w, r))
             Vector2 vpA = vA + MathUtils.Cross(wA, _rA);
             Vector2 vpB = vB + MathUtils.Cross(wB, _rB);
-            float C = _length - MaxLength;
-            float Cdot = Vector2.Dot(_u, vpB - vpA);
+            GGame.Math.Fix64 C = _length - MaxLength;
+            GGame.Math.Fix64 Cdot = Vector2.Dot(_u, vpB - vpA);
 
             // Predictive constraint.
             if (C < 0.0f)
@@ -239,9 +239,9 @@ namespace VelcroPhysics.Dynamics.Joints
                 Cdot += data.Step.inv_dt * C;
             }
 
-            float impulse = -_mass * Cdot;
-            float oldImpulse = _impulse;
-            _impulse = Math.Min(0.0f, _impulse + impulse);
+            GGame.Math.Fix64 impulse = -_mass * Cdot;
+            GGame.Math.Fix64 oldImpulse = _impulse;
+            _impulse = Math.Min(0.0f, (float)(_impulse + impulse));
             impulse = _impulse - oldImpulse;
 
             Vector2 P = impulse * _u;
@@ -259,9 +259,9 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override bool SolvePositionConstraints(ref SolverData data)
         {
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -269,13 +269,13 @@ namespace VelcroPhysics.Dynamics.Joints
             Vector2 rB = MathUtils.Mul(qB, LocalAnchorB - _localCenterB);
             Vector2 u = cB + rB - cA - rA;
 
-            float length = u.Length();
+            GGame.Math.Fix64 length = u.Length();
             u.Normalize();
-            float C = length - MaxLength;
+            GGame.Math.Fix64 C = length - MaxLength;
 
             C = MathUtils.Clamp(C, 0.0f, Settings.MaxLinearCorrection);
 
-            float impulse = -_mass * C;
+            GGame.Math.Fix64 impulse = -_mass * C;
             Vector2 P = impulse * u;
 
             cA -= _invMassA * P;

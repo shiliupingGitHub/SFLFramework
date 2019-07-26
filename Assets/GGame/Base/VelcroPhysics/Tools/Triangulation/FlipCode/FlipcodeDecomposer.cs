@@ -106,13 +106,13 @@ namespace VelcroPhysics.Tools.Triangulation.FlipCode
         private static bool InsideTriangle(ref Vector2 a, ref Vector2 b, ref Vector2 c, ref Vector2 p)
         {
             //A cross bp
-            float abp = (c.X - b.X) * (p.Y - b.Y) - (c.Y - b.Y) * (p.X - b.X);
+            GGame.Math.Fix64 abp = (c.X - b.X) * (p.Y - b.Y) - (c.Y - b.Y) * (p.X - b.X);
 
             //A cross ap
-            float aap = (b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X);
+            GGame.Math.Fix64 aap = (b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X);
 
             //b cross cp
-            float bcp = (a.X - c.X) * (p.Y - c.Y) - (a.Y - c.Y) * (p.X - c.X);
+            GGame.Math.Fix64 bcp = (a.X - c.X) * (p.Y - c.Y) - (a.Y - c.Y) * (p.X - c.X);
 
             return ((abp >= 0.0f) && (bcp >= 0.0f) && (aap >= 0.0f));
         }

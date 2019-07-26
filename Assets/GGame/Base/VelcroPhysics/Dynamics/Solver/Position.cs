@@ -6,6 +6,6 @@ namespace VelcroPhysics.Dynamics.Solver
     public struct Position
     {
         public Vector2 C;
-        public float A;
+        public GGame.Math.Fix64 A;
     }
 }

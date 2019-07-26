@@ -81,7 +81,7 @@ namespace VelcroPhysics.Collision.ContactSystem
         internal ContactEdge _nodeA = new ContactEdge();
         internal ContactEdge _nodeB = new ContactEdge();
 
-        internal float _toi;
+        internal GGame.Math.Fix64 _toi;
         internal int _toiCount;
         private ContactType _type;
 
@@ -99,13 +99,13 @@ namespace VelcroPhysics.Collision.ContactSystem
             Reset(fA, indexA, fB, indexB);
         }
 
-        public float Friction { get; set; }
-        public float Restitution { get; set; }
+        public GGame.Math.Fix64 Friction { get; set; }
+        public GGame.Math.Fix64 Restitution { get; set; }
 
         /// <summary>
         /// Get or set the desired tangent speed for a conveyor belt behavior. In meters per second.
         /// </summary>
-        public float TangentSpeed { get; set; }
+        public GGame.Math.Fix64 TangentSpeed { get; set; }
 
 
         /// <summary>

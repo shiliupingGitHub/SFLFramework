@@ -14,19 +14,19 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The damping ratio. 0 = no damping, 1 = critical damping.
         /// </summary>
-        public float DampingRatio { get; set; }
+        public GGame.Math.Fix64 DampingRatio { get; set; }
 
         /// <summary>
         /// The response speed.
         /// </summary>
-        public float FrequencyHz { get; set; }
+        public GGame.Math.Fix64 FrequencyHz { get; set; }
 
         /// <summary>
         /// The maximum constraint force that can be exerted
         /// to move the candidate body. Usually you will express
         /// as some multiple of the weight (multiplier * mass * gravity).
         /// </summary>
-        public float MaxForce { get; set; }
+        public GGame.Math.Fix64 MaxForce { get; set; }
 
         /// <summary>
         /// The initial world target point. This is assumed

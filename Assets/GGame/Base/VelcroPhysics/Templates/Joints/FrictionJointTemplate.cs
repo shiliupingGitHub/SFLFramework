@@ -20,11 +20,11 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The maximum friction force in N.
         /// </summary>
-        public float MaxForce { get; set; }
+        public GGame.Math.Fix64 MaxForce { get; set; }
 
         /// <summary>
         /// The maximum friction torque in N-m.
         /// </summary>
-        public float MaxTorque { get; set; }
+        public GGame.Math.Fix64 MaxTorque { get; set; }
     }
 }

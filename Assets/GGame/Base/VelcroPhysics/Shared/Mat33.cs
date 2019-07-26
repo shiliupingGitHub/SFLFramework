@@ -41,7 +41,7 @@ namespace VelcroPhysics.Shared
         /// <returns></returns>
         public Vector3 Solve33(Vector3 b)
         {
-            float det = Vector3.Dot(ex, Vector3.Cross(ey, ez));
+            GGame.Math.Fix64 det = Vector3.Dot(ex, Vector3.Cross(ey, ez));
             if (det != 0.0f)
             {
                 det = 1.0f / det;
@@ -59,8 +59,8 @@ namespace VelcroPhysics.Shared
         /// <returns></returns>
         public Vector2 Solve22(Vector2 b)
         {
-            float a11 = ex.X, a12 = ey.X, a21 = ex.Y, a22 = ey.Y;
-            float det = a11 * a22 - a12 * a21;
+            GGame.Math.Fix64 a11 = ex.X, a12 = ey.X, a21 = ex.Y, a22 = ey.Y;
+            GGame.Math.Fix64 det = a11 * a22 - a12 * a21;
 
             if (det != 0.0f)
             {
@@ -74,8 +74,8 @@ namespace VelcroPhysics.Shared
         /// Returns the zero matrix if singular.
         public void GetInverse22(ref Mat33 M)
         {
-            float a = ex.X, b = ey.X, c = ex.Y, d = ey.Y;
-            float det = a * d - b * c;
+            GGame.Math.Fix64 a = ex.X, b = ey.X, c = ex.Y, d = ey.Y;
+            GGame.Math.Fix64 det = a * d - b * c;
             if (det != 0.0f)
             {
                 det = 1.0f / det;
@@ -96,15 +96,15 @@ namespace VelcroPhysics.Shared
         /// Returns the zero matrix if singular.
         public void GetSymInverse33(ref Mat33 M)
         {
-            float det = MathUtils.Dot(ex, MathUtils.Cross((Vector3)ey, ez));
+            GGame.Math.Fix64 det = MathUtils.Dot(ex, MathUtils.Cross((Vector3)ey, ez));
             if (det != 0.0f)
             {
                 det = 1.0f / det;
             }
 
-            float a11 = ex.X, a12 = ey.X, a13 = ez.X;
-            float a22 = ey.Y, a23 = ez.Y;
-            float a33 = ez.Z;
+            GGame.Math.Fix64 a11 = ex.X, a12 = ey.X, a13 = ez.X;
+            GGame.Math.Fix64 a22 = ey.Y, a23 = ez.Y;
+            GGame.Math.Fix64 a33 = ez.Z;
 
             M.ex.X = det * (a22 * a33 - a23 * a23);
             M.ex.Y = det * (a13 * a23 - a12 * a33);

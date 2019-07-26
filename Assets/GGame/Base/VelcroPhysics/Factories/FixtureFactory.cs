@@ -33,7 +33,7 @@ namespace VelcroPhysics.Factories
             return body.CreateFixture(shape, userData);
         }
 
-        public static Fixture AttachRectangle(float width, float height, float density, Vector2 offset, Body body, object userData = null)
+        public static Fixture AttachRectangle(GGame.Math.Fix64 width, GGame.Math.Fix64 height, GGame.Math.Fix64 density, Vector2 offset, Body body, object userData = null)
         {
             Vertices rectangleVertices = PolygonUtils.CreateRectangle(width / 2, height / 2);
             rectangleVertices.Translate(ref offset);
@@ -41,7 +41,7 @@ namespace VelcroPhysics.Factories
             return body.CreateFixture(rectangleShape, userData);
         }
 
-        public static Fixture AttachCircle(float radius, float density, Body body, object userData = null)
+        public static Fixture AttachCircle(GGame.Math.Fix64 radius, GGame.Math.Fix64 density, Body body, object userData = null)
         {
             if (radius <= 0)
                 throw new ArgumentOutOfRangeException(nameof(radius), "Radius must be more than 0 meters");
@@ -50,7 +50,7 @@ namespace VelcroPhysics.Factories
             return body.CreateFixture(circleShape, userData);
         }
 
-        public static Fixture AttachCircle(float radius, float density, Body body, Vector2 offset, object userData = null)
+        public static Fixture AttachCircle(GGame.Math.Fix64 radius, GGame.Math.Fix64 density, Body body, Vector2 offset, object userData = null)
         {
             if (radius <= 0)
                 throw new ArgumentOutOfRangeException(nameof(radius), "Radius must be more than 0 meters");
@@ -60,7 +60,7 @@ namespace VelcroPhysics.Factories
             return body.CreateFixture(circleShape, userData);
         }
 
-        public static Fixture AttachPolygon(Vertices vertices, float density, Body body, object userData = null)
+        public static Fixture AttachPolygon(Vertices vertices, GGame.Math.Fix64 density, Body body, object userData = null)
         {
             if (vertices.Count <= 1)
                 throw new ArgumentOutOfRangeException(nameof(vertices), "Too few points to be a polygon");
@@ -69,7 +69,7 @@ namespace VelcroPhysics.Factories
             return body.CreateFixture(polygon, userData);
         }
 
-        public static Fixture AttachEllipse(float xRadius, float yRadius, int edges, float density, Body body, object userData = null)
+        public static Fixture AttachEllipse(GGame.Math.Fix64 xRadius, GGame.Math.Fix64 yRadius, int edges, GGame.Math.Fix64 density, Body body, object userData = null)
         {
             if (xRadius <= 0)
                 throw new ArgumentOutOfRangeException(nameof(xRadius), "X-radius must be more than 0");
@@ -82,7 +82,7 @@ namespace VelcroPhysics.Factories
             return body.CreateFixture(polygonShape, userData);
         }
 
-        public static List<Fixture> AttachCompoundPolygon(List<Vertices> list, float density, Body body, object userData = null)
+        public static List<Fixture> AttachCompoundPolygon(List<Vertices> list, GGame.Math.Fix64 density, Body body, object userData = null)
         {
             List<Fixture> res = new List<Fixture>(list.Count);
 
@@ -104,14 +104,14 @@ namespace VelcroPhysics.Factories
             return res;
         }
 
-        public static Fixture AttachLineArc(float radians, int sides, float radius, bool closed, Body body)
+        public static Fixture AttachLineArc(GGame.Math.Fix64 radians, int sides, GGame.Math.Fix64 radius, bool closed, Body body)
         {
             Vertices arc = PolygonUtils.CreateArc(radians, sides, radius);
             arc.Rotate((MathHelper.Pi - radians) / 2);
             return closed ? AttachLoopShape(arc, body) : AttachChainShape(arc, body);
         }
 
-        public static List<Fixture> AttachSolidArc(float density, float radians, int sides, float radius, Body body)
+        public static List<Fixture> AttachSolidArc(GGame.Math.Fix64 density, GGame.Math.Fix64 radians, int sides, GGame.Math.Fix64 radius, Body body)
         {
             Vertices arc = PolygonUtils.CreateArc(radians, sides, radius);
             arc.Rotate((MathHelper.Pi - radians) / 2);
@@ -119,7 +119,7 @@ namespace VelcroPhysics.Factories
             //Close the arc
             arc.Add(arc[0]);
 
-            List<Vertices> triangles = Triangulate.ConvexPartition(arc, TriangulationAlgorithm.Earclip);
+            List<Vertices> triangles = Triangulate.ConvexPartition(arc, TriangulationAlgorithm.Earclip, true, 0.001f);
 
             return AttachCompoundPolygon(triangles, density, body);
         }

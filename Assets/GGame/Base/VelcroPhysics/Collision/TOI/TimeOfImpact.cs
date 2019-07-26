@@ -22,6 +22,7 @@
 
 using System;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Collision.Distance;
 using VelcroPhysics.Collision.Narrowphase;
@@ -69,14 +70,14 @@ namespace VelcroPhysics.Collision.TOI
             sweepA.Normalize();
             sweepB.Normalize();
 
-            float tMax = input.TMax;
+            GGame.Math.Fix64 tMax = input.TMax;
 
-            float totalRadius = input.ProxyA.Radius + input.ProxyB.Radius;
-            float target = Math.Max(Settings.LinearSlop, totalRadius - 3.0f * Settings.LinearSlop);
-            const float tolerance = 0.25f * Settings.LinearSlop;
+            GGame.Math.Fix64 totalRadius = input.ProxyA.Radius + input.ProxyB.Radius;
+            GGame.Math.Fix64 target = Math.Max((float)Settings.LinearSlop,(float) (totalRadius - 3.0f * Settings.LinearSlop));
+             GGame.Math.Fix64 tolerance = 0.25f * Settings.LinearSlop;
             Debug.Assert(target > tolerance);
 
-            float t1 = 0.0f;
+            GGame.Math.Fix64 t1 = 0.0f;
             const int k_maxIterations = 20;
             int iter = 0;
 
@@ -124,13 +125,13 @@ namespace VelcroPhysics.Collision.TOI
                 // Compute the TOI on the separating axis. We do this by successively
                 // resolving the deepest point. This loop is bounded by the number of vertices.
                 bool done = false;
-                float t2 = tMax;
+                GGame.Math.Fix64 t2 = tMax;
                 int pushBackIter = 0;
                 for (;;)
                 {
                     // Find the deepest point at t2. Store the witness point indices.
                     int indexA, indexB;
-                    float s2 = SeparationFunction.FindMinSeparation(out indexA, out indexB, t2, input.ProxyA, ref sweepA, input.ProxyB, ref sweepB, ref axis, ref localPoint, type);
+                    GGame.Math.Fix64 s2 = SeparationFunction.FindMinSeparation(out indexA, out indexB, t2, input.ProxyA, ref sweepA, input.ProxyB, ref sweepB, ref axis, ref localPoint, type);
 
                     // Is the final configuration separated?
                     if (s2 > target + tolerance)
@@ -151,7 +152,7 @@ namespace VelcroPhysics.Collision.TOI
                     }
 
                     // Compute the initial separation of the witness points.
-                    float s1 = SeparationFunction.Evaluate(indexA, indexB, t1, input.ProxyA, ref sweepA, input.ProxyB, ref sweepB, ref axis, ref localPoint, type);
+                    GGame.Math.Fix64 s1 = SeparationFunction.Evaluate(indexA, indexB, t1, input.ProxyA, ref sweepA, input.ProxyB, ref sweepB, ref axis, ref localPoint, type);
 
                     // Check for initial overlap. This might happen if the root finder
                     // runs out of iterations.
@@ -175,11 +176,11 @@ namespace VelcroPhysics.Collision.TOI
 
                     // Compute 1D root of: f(x) - target = 0
                     int rootIterCount = 0;
-                    float a1 = t1, a2 = t2;
+                    GGame.Math.Fix64 a1 = t1, a2 = t2;
                     for (;;)
                     {
                         // Use a mix of the secant rule and bisection.
-                        float t;
+                        GGame.Math.Fix64 t;
                         if ((rootIterCount & 1) != 0)
                         {
                             // Secant rule to improve convergence.
@@ -196,9 +197,9 @@ namespace VelcroPhysics.Collision.TOI
                         if (Settings.EnableDiagnostics) //Velcro: We only gather diagnostics when enabled
                             ++TOIRootIters;
 
-                        float s = SeparationFunction.Evaluate(indexA, indexB, t, input.ProxyA, ref sweepA, input.ProxyB, ref sweepB, ref axis, ref localPoint, type);
+                        GGame.Math.Fix64 s = SeparationFunction.Evaluate(indexA, indexB, t, input.ProxyA, ref sweepA, input.ProxyB, ref sweepB, ref axis, ref localPoint, type);
 
-                        if (Math.Abs(s - target) < tolerance)
+                        if (Fix64.Abs(s - target) < tolerance)
                         {
                             // t2 holds a tentative value for t1
                             t2 = t;

@@ -29,10 +29,10 @@ namespace VelcroPhysics.Collision.Narrowphase
             Vector2 e = B - A;
 
             // Barycentric coordinates
-            float u = Vector2.Dot(e, B - Q);
-            float v = Vector2.Dot(e, Q - A);
+            GGame.Math.Fix64 u = Vector2.Dot(e, B - Q);
+            GGame.Math.Fix64 v = Vector2.Dot(e, Q - A);
 
-            float radius = edgeA.Radius + circleB.Radius;
+            GGame.Math.Fix64 radius = edgeA.Radius + circleB.Radius;
 
             ContactFeature cf;
             cf.IndexB = 0;
@@ -43,7 +43,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             {
                 Vector2 P1 = A;
                 Vector2 d1 = Q - P1;
-                float dd1 = Vector2.Dot(d1, d1);
+                GGame.Math.Fix64 dd1 = Vector2.Dot(d1, d1);
                 if (dd1 > radius * radius)
                 {
                     return;
@@ -55,7 +55,7 @@ namespace VelcroPhysics.Collision.Narrowphase
                     Vector2 A1 = edgeA.Vertex0;
                     Vector2 B1 = A;
                     Vector2 e1 = B1 - A1;
-                    float u1 = Vector2.Dot(e1, B1 - Q);
+                    GGame.Math.Fix64 u1 = Vector2.Dot(e1, B1 - Q);
 
                     // Is the circle in Region AB of the previous edge?
                     if (u1 > 0.0f)
@@ -81,7 +81,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             {
                 Vector2 P2 = B;
                 Vector2 d2 = Q - P2;
-                float dd2 = Vector2.Dot(d2, d2);
+                GGame.Math.Fix64 dd2 = Vector2.Dot(d2, d2);
                 if (dd2 > radius * radius)
                 {
                     return;
@@ -93,7 +93,7 @@ namespace VelcroPhysics.Collision.Narrowphase
                     Vector2 B2 = edgeA.Vertex3;
                     Vector2 A2 = B;
                     Vector2 e2 = B2 - A2;
-                    float v2 = Vector2.Dot(e2, Q - A2);
+                    GGame.Math.Fix64 v2 = Vector2.Dot(e2, Q - A2);
 
                     // Is the circle in Region AB of the next edge?
                     if (v2 > 0.0f)
@@ -115,11 +115,11 @@ namespace VelcroPhysics.Collision.Narrowphase
             }
 
             // Region AB
-            float den = Vector2.Dot(e, e);
+            GGame.Math.Fix64 den = Vector2.Dot(e, e);
             Debug.Assert(den > 0.0f);
             Vector2 P = (1.0f / den) * (u * A + v * B);
             Vector2 d = Q - P;
-            float dd = Vector2.Dot(d, d);
+            GGame.Math.Fix64 dd = Vector2.Dot(d, d);
             if (dd > radius * radius)
             {
                 return;

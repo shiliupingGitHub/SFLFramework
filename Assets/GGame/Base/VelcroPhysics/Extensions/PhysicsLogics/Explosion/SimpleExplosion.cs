@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Dynamics;
 using VelcroPhysics.Extensions.PhysicsLogics.PhysicsLogicBase;
@@ -22,7 +23,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
         /// This is the power used in the power function. A value of 1 means the force
         /// applied to bodies in the explosion is linear. A value of 2 means it is exponential.
         /// </summary>
-        public float Power { get; set; }
+        public GGame.Math.Fix64 Power { get; set; }
 
         /// <summary>
         /// Activate the explosion at the specified position.
@@ -32,7 +33,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
         /// <param name="force">The force applied</param>
         /// <param name="maxForce">A maximum amount of force. When force gets over this value, it will be equal to maxForce</param>
         /// <returns>A list of bodies and the amount of force that was applied to them.</returns>
-        public Dictionary<Body, Vector2> Activate(Vector2 pos, float radius, float force, float maxForce = float.MaxValue)
+        public Dictionary<Body, Vector2> Activate(Vector2 pos, GGame.Math.Fix64 radius, GGame.Math.Fix64 force, GGame.Math.Fix64 maxForce)
         {
             HashSet<Body> affectedBodies = new HashSet<Body>();
 
@@ -55,7 +56,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
             return ApplyImpulse(pos, radius, force, maxForce, affectedBodies);
         }
 
-        private Dictionary<Body, Vector2> ApplyImpulse(Vector2 pos, float radius, float force, float maxForce, HashSet<Body> overlappingBodies)
+        private Dictionary<Body, Vector2> ApplyImpulse(Vector2 pos, GGame.Math.Fix64 radius, GGame.Math.Fix64 force, GGame.Math.Fix64 maxForce, HashSet<Body> overlappingBodies)
         {
             Dictionary<Body, Vector2> forces = new Dictionary<Body, Vector2>(overlappingBodies.Count);
 
@@ -63,11 +64,11 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
             {
                 if (IsActiveOn(overlappingBody))
                 {
-                    float distance = Vector2.Distance(pos, overlappingBody.Position);
-                    float forcePercent = GetPercent(distance, radius);
+                    GGame.Math.Fix64 distance = Vector2.Distance(pos, overlappingBody.Position);
+                    GGame.Math.Fix64 forcePercent = GetPercent(distance, radius);
 
                     Vector2 forceVector = pos - overlappingBody.Position;
-                    forceVector *= 1f / (float)Math.Sqrt(forceVector.X * forceVector.X + forceVector.Y * forceVector.Y);
+                    forceVector *= 1f / (GGame.Math.Fix64)Fix64.Sqrt(forceVector.X * forceVector.X + forceVector.Y * forceVector.Y);
                     forceVector *= MathHelper.Min(force * forcePercent, maxForce);
                     forceVector *= -1;
 
@@ -79,12 +80,12 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
             return forces;
         }
 
-        private float GetPercent(float distance, float radius)
+        private GGame.Math.Fix64 GetPercent(GGame.Math.Fix64 distance, GGame.Math.Fix64 radius)
         {
             //(1-(distance/radius))^power-1
-            float percent = (float)Math.Pow(1 - ((distance - radius) / radius), Power) - 1;
+            GGame.Math.Fix64 percent = (GGame.Math.Fix64)Math.Pow((float)(1 - ((distance - radius) / radius)), (float)Power) - 1;
 
-            if (float.IsNaN(percent))
+            if (GGame.Math.Fix64.IsNaN(percent))
                 return 0f;
 
             return MathHelper.Clamp(percent, 0f, 1f);

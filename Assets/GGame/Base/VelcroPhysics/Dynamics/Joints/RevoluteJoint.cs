@@ -21,6 +21,7 @@
 */
 
 using System;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Dynamics.Solver;
 using VelcroPhysics.Shared;
@@ -49,23 +50,23 @@ namespace VelcroPhysics.Dynamics.Joints
         private int _indexA;
 
         private int _indexB;
-        private float _invIA;
-        private float _invIB;
-        private float _invMassA;
-        private float _invMassB;
+        private GGame.Math.Fix64 _invIA;
+        private GGame.Math.Fix64 _invIB;
+        private GGame.Math.Fix64 _invMassA;
+        private GGame.Math.Fix64 _invMassB;
         private LimitState _limitState;
         private Vector2 _localCenterA;
         private Vector2 _localCenterB;
-        private float _lowerAngle;
+        private GGame.Math.Fix64 _lowerAngle;
         private Mat33 _mass; // effective mass for point-to-point constraint.
-        private float _maxMotorTorque;
-        private float _motorImpulse;
-        private float _motorMass; // effective mass for motor/limit angular constraint.
-        private float _motorSpeed;
+        private GGame.Math.Fix64 _maxMotorTorque;
+        private GGame.Math.Fix64 _motorImpulse;
+        private GGame.Math.Fix64 _motorMass; // effective mass for motor/limit angular constraint.
+        private GGame.Math.Fix64 _motorSpeed;
         private Vector2 _rA;
         private Vector2 _rB;
-        private float _referenceAngle;
-        private float _upperAngle;
+        private GGame.Math.Fix64 _referenceAngle;
+        private GGame.Math.Fix64 _upperAngle;
 
         internal RevoluteJoint()
         {
@@ -137,7 +138,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// The referance angle computed as BodyB angle minus BodyA angle.
         /// </summary>
-        public float ReferenceAngle
+        public GGame.Math.Fix64 ReferenceAngle
         {
             get { return _referenceAngle; }
             set
@@ -150,7 +151,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// Get the current joint angle in radians.
         /// </summary>
-        public float JointAngle
+        public GGame.Math.Fix64 JointAngle
         {
             get { return BodyB._sweep.A - BodyA._sweep.A - ReferenceAngle; }
         }
@@ -158,7 +159,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// Get the current joint angle speed in radians per second.
         /// </summary>
-        public float JointSpeed
+        public GGame.Math.Fix64 JointSpeed
         {
             get { return BodyB._angularVelocity - BodyA._angularVelocity; }
         }
@@ -184,7 +185,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// Get the lower joint limit in radians.
         /// </summary>
-        public float LowerLimit
+        public GGame.Math.Fix64 LowerLimit
         {
             get { return _lowerAngle; }
             set
@@ -201,7 +202,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// Get the upper joint limit in radians.
         /// </summary>
-        public float UpperLimit
+        public GGame.Math.Fix64 UpperLimit
         {
             get { return _upperAngle; }
             set
@@ -235,7 +236,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// Get or set the motor speed in radians per second.
         /// </summary>
-        public float MotorSpeed
+        public GGame.Math.Fix64 MotorSpeed
         {
             set
             {
@@ -251,7 +252,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// Get or set the maximum motor torque, usually in N-m.
         /// </summary>
-        public float MaxMotorTorque
+        public GGame.Math.Fix64 MaxMotorTorque
         {
             set
             {
@@ -267,7 +268,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// Get or set the current motor impulse, usually in N-m.
         /// </summary>
-        public float MotorImpulse
+        public GGame.Math.Fix64 MotorImpulse
         {
             get { return _motorImpulse; }
             set
@@ -285,7 +286,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// </summary>
         /// <param name="lower">The lower limit</param>
         /// <param name="upper">The upper limit</param>
-        public void SetLimits(float lower, float upper)
+        public void SetLimits(GGame.Math.Fix64 lower, GGame.Math.Fix64 upper)
         {
             if (lower == _lowerAngle && upper == _upperAngle)
                 return;
@@ -300,18 +301,18 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Gets the motor torque in N-m.
         /// </summary>
         /// <param name="invDt">The inverse delta time</param>
-        public float GetMotorTorque(float invDt)
+        public GGame.Math.Fix64 GetMotorTorque(GGame.Math.Fix64 invDt)
         {
             return invDt * _motorImpulse;
         }
 
-        public override Vector2 GetReactionForce(float invDt)
+        public override Vector2 GetReactionForce(GGame.Math.Fix64 invDt)
         {
             Vector2 p = new Vector2(_impulse.X, _impulse.Y);
             return invDt * p;
         }
 
-        public override float GetReactionTorque(float invDt)
+        public override GGame.Math.Fix64 GetReactionTorque(GGame.Math.Fix64 invDt)
         {
             return invDt * _impulse.Z;
         }
@@ -327,13 +328,13 @@ namespace VelcroPhysics.Dynamics.Joints
             _invIA = BodyA._invI;
             _invIB = BodyB._invI;
 
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
 
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -349,8 +350,8 @@ namespace VelcroPhysics.Dynamics.Joints
             //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
             //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIA, iB = _invIB;
+            GGame.Math.Fix64 mA = _invMassA, mB = _invMassB;
+            GGame.Math.Fix64 iA = _invIA, iB = _invIB;
 
             bool fixedRotation = (iA + iB == 0.0f);
 
@@ -377,8 +378,8 @@ namespace VelcroPhysics.Dynamics.Joints
 
             if (_enableLimit && fixedRotation == false)
             {
-                float jointAngle = aB - aA - ReferenceAngle;
-                if (Math.Abs(_upperAngle - _lowerAngle) < 2.0f * Settings.AngularSlop)
+                GGame.Math.Fix64 jointAngle = aB - aA - ReferenceAngle;
+                if (Fix64.Abs(_upperAngle - _lowerAngle) < 2.0f * Settings.AngularSlop)
                 {
                     _limitState = LimitState.Equal;
                 }
@@ -438,22 +439,22 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override void SolveVelocityConstraints(ref SolverData data)
         {
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIA, iB = _invIB;
+            GGame.Math.Fix64 mA = _invMassA, mB = _invMassB;
+            GGame.Math.Fix64 iA = _invIA, iB = _invIB;
 
             bool fixedRotation = (iA + iB == 0.0f);
 
             // Solve motor constraint.
             if (_enableMotor && _limitState != LimitState.Equal && fixedRotation == false)
             {
-                float Cdot = wB - wA - _motorSpeed;
-                float impulse = _motorMass * (-Cdot);
-                float oldImpulse = _motorImpulse;
-                float maxImpulse = data.Step.dt * _maxMotorTorque;
+                GGame.Math.Fix64 Cdot = wB - wA - _motorSpeed;
+                GGame.Math.Fix64 impulse = _motorMass * (-Cdot);
+                GGame.Math.Fix64 oldImpulse = _motorImpulse;
+                GGame.Math.Fix64 maxImpulse = data.Step.dt * _maxMotorTorque;
                 _motorImpulse = MathUtils.Clamp(_motorImpulse + impulse, -maxImpulse, maxImpulse);
                 impulse = _motorImpulse - oldImpulse;
 
@@ -465,7 +466,7 @@ namespace VelcroPhysics.Dynamics.Joints
             if (_enableLimit && _limitState != LimitState.Inactive && fixedRotation == false)
             {
                 Vector2 Cdot1 = vB + MathUtils.Cross(wB, _rB) - vA - MathUtils.Cross(wA, _rA);
-                float Cdot2 = wB - wA;
+                GGame.Math.Fix64 Cdot2 = wB - wA;
                 Vector3 Cdot = new Vector3(Cdot1.X, Cdot1.Y, Cdot2);
 
                 Vector3 impulse = -_mass.Solve33(Cdot);
@@ -476,7 +477,7 @@ namespace VelcroPhysics.Dynamics.Joints
                 }
                 else if (_limitState == LimitState.AtLower)
                 {
-                    float newImpulse = _impulse.Z + impulse.Z;
+                    GGame.Math.Fix64 newImpulse = _impulse.Z + impulse.Z;
                     if (newImpulse < 0.0f)
                     {
                         Vector2 rhs = -Cdot1 + _impulse.Z * new Vector2(_mass.ez.X, _mass.ez.Y);
@@ -495,7 +496,7 @@ namespace VelcroPhysics.Dynamics.Joints
                 }
                 else if (_limitState == LimitState.AtUpper)
                 {
-                    float newImpulse = _impulse.Z + impulse.Z;
+                    GGame.Math.Fix64 newImpulse = _impulse.Z + impulse.Z;
                     if (newImpulse > 0.0f)
                     {
                         Vector2 rhs = -Cdot1 + _impulse.Z * new Vector2(_mass.ez.X, _mass.ez.Y);
@@ -546,33 +547,33 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override bool SolvePositionConstraints(ref SolverData data)
         {
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
-            float angularError = 0.0f;
-            float positionError;
+            GGame.Math.Fix64 angularError = 0.0f;
+            GGame.Math.Fix64 positionError;
 
             bool fixedRotation = (_invIA + _invIB == 0.0f);
 
             // Solve angular limit constraint.
             if (_enableLimit && _limitState != LimitState.Inactive && fixedRotation == false)
             {
-                float angle = aB - aA - ReferenceAngle;
-                float limitImpulse = 0.0f;
+                GGame.Math.Fix64 angle = aB - aA - ReferenceAngle;
+                GGame.Math.Fix64 limitImpulse = 0.0f;
 
                 if (_limitState == LimitState.Equal)
                 {
                     // Prevent large angular corrections
-                    float C = MathUtils.Clamp(angle - _lowerAngle, -Settings.MaxAngularCorrection, Settings.MaxAngularCorrection);
+                    GGame.Math.Fix64 C = MathUtils.Clamp(angle - _lowerAngle, -Settings.MaxAngularCorrection, Settings.MaxAngularCorrection);
                     limitImpulse = -_motorMass * C;
-                    angularError = Math.Abs(C);
+                    angularError = Fix64.Abs(C);
                 }
                 else if (_limitState == LimitState.AtLower)
                 {
-                    float C = angle - _lowerAngle;
+                    GGame.Math.Fix64 C = angle - _lowerAngle;
                     angularError = -C;
 
                     // Prevent large angular corrections and allow some slop.
@@ -581,7 +582,7 @@ namespace VelcroPhysics.Dynamics.Joints
                 }
                 else if (_limitState == LimitState.AtUpper)
                 {
-                    float C = angle - _upperAngle;
+                    GGame.Math.Fix64 C = angle - _upperAngle;
                     angularError = C;
 
                     // Prevent large angular corrections and allow some slop.
@@ -603,8 +604,8 @@ namespace VelcroPhysics.Dynamics.Joints
                 Vector2 C = cB + rB - cA - rA;
                 positionError = C.Length();
 
-                float mA = _invMassA, mB = _invMassB;
-                float iA = _invIA, iB = _invIB;
+                GGame.Math.Fix64 mA = _invMassA, mB = _invMassB;
+                GGame.Math.Fix64 iA = _invIA, iB = _invIB;
 
                 Mat22 K = new Mat22();
                 K.ex.X = mA + mB + iA * rA.Y * rA.Y + iB * rB.Y * rB.Y;

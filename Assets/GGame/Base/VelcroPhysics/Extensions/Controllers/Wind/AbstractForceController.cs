@@ -1,4 +1,5 @@
 ﻿using System;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Dynamics;
 using VelcroPhysics.Extensions.Controllers.ControllerBase;
@@ -72,7 +73,7 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// Provided for reuse to provide Variation functionality in
         /// inheriting classes
         /// </summary>
-        protected Random Randomize;
+        protected SRandom Randomize;
 
         /// <summary>
         /// Curve used by Curve Mode as an animated multiplier for the force
@@ -99,7 +100,7 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
             Triggered = false;
             StrengthCurve = new Curve();
             Variation = 0.0f;
-            Randomize = new Random(1234);
+            Randomize = new SRandom(1234);
             DecayMode = DecayModes.None;
             DecayCurve = new Curve();
             DecayStart = 0.0f;
@@ -136,7 +137,7 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// <summary>
         /// Global Strength of the force to be applied
         /// </summary>
-        public float Strength { get; set; }
+        public GGame.Math.Fix64 Strength { get; set; }
 
         /// <summary>
         /// Position of the Force. Can be ignored (left at (0,0) for forces
@@ -148,14 +149,14 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// Maximum speed of the bodies. Bodies that are travelling faster are
         /// supposed to be ignored
         /// </summary>
-        public float MaximumSpeed { get; set; }
+        public GGame.Math.Fix64 MaximumSpeed { get; set; }
 
         /// <summary>
         /// Maximum Force to be applied. As opposed to Maximum Speed this is
         /// independent of the velocity of
         /// the affected body
         /// </summary>
-        public float MaximumForce { get; set; }
+        public GGame.Math.Fix64 MaximumForce { get; set; }
 
         /// <summary>
         /// Timing Mode of the force instance
@@ -166,12 +167,12 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// Time of the current impulse. Incremented in update till
         /// ImpulseLength is reached
         /// </summary>
-        public float ImpulseTime { get; private set; }
+        public GGame.Math.Fix64 ImpulseTime { get; private set; }
 
         /// <summary>
         /// Length of a triggered impulse. Used in both Triggered and Curve Mode
         /// </summary>
-        public float ImpulseLength { get; set; }
+        public GGame.Math.Fix64 ImpulseLength { get; set; }
 
         /// <summary>
         /// Indicating if we are currently during an Impulse
@@ -183,7 +184,7 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// Variation of the force applied to each body affected
         /// !! Must be used in inheriting classes properly !!
         /// </summary>
-        public float Variation { get; set; }
+        public GGame.Math.Fix64 Variation { get; set; }
 
         /// <summary>
         /// See DecayModes
@@ -193,12 +194,12 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// <summary>
         /// Start of the distance based Decay. To set a non decaying area
         /// </summary>
-        public float DecayStart { get; set; }
+        public GGame.Math.Fix64 DecayStart { get; set; }
 
         /// <summary>
         /// Maximum distance a force should be applied
         /// </summary>
-        public float DecayEnd { get; set; }
+        public GGame.Math.Fix64 DecayEnd { get; set; }
 
         /// <summary>
         /// Calculate the Decay for a given body. Meant to ease force
@@ -210,10 +211,10 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// A multiplier to multiply the force with to add decay
         /// support in inheriting classes
         /// </returns>
-        protected float GetDecayMultiplier(Body body)
+        protected GGame.Math.Fix64 GetDecayMultiplier(Body body)
         {
             //TODO: Consider ForceType in distance calculation!
-            float distance = (body.Position - Position).Length();
+            GGame.Math.Fix64 distance = (body.Position - Position).Length();
             switch (DecayMode)
             {
                 case DecayModes.None:
@@ -268,7 +269,7 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// Depending on the TimingMode perform timing logic and call ApplyForce()
         /// </summary>
         /// <param name="dt"></param>
-        public override void Update(float dt)
+        public override void Update(GGame.Math.Fix64 dt)
         {
             switch (TimingMode)
             {
@@ -321,6 +322,6 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="strength">The strength</param>
-        public abstract void ApplyForce(float dt, float strength);
+        public abstract void ApplyForce(GGame.Math.Fix64 dt, GGame.Math.Fix64 strength);
     }
 }

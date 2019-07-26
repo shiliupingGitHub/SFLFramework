@@ -8,7 +8,7 @@ namespace VelcroPhysics.Dynamics.Solver
 {
     public static class PositionSolverManifold
     {
-        public static void Initialize(ContactPositionConstraint pc, Transform xfA, Transform xfB, int index, out Vector2 normal, out Vector2 point, out float separation)
+        public static void Initialize(ContactPositionConstraint pc, Transform xfA, Transform xfB, int index, out Vector2 normal, out Vector2 point, out GGame.Math.Fix64 separation)
         {
             Debug.Assert(pc.PointCount > 0);
 

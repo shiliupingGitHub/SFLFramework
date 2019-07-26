@@ -60,14 +60,14 @@ namespace VelcroPhysics.Tools.PathGenerator
         /// <param name="body">The body.</param>
         /// <param name="density">The density.</param>
         /// <param name="subdivisions">The subdivisions.</param>
-        public static void ConvertPathToPolygon(Path path, Body body, float density, int subdivisions)
+        public static void ConvertPathToPolygon(Path path, Body body, GGame.Math.Fix64 density, int subdivisions)
         {
             if (!path.Closed)
                 throw new Exception("The path must be closed to convert to a polygon.");
 
             List<Vector2> verts = path.GetVertices(subdivisions);
 
-            List<Vertices> decomposedVerts = Triangulate.ConvexPartition(new Vertices(verts), TriangulationAlgorithm.Bayazit);
+            List<Vertices> decomposedVerts = Triangulate.ConvexPartition(new Vertices(verts), TriangulationAlgorithm.Bayazit, true, 0.001f);
 
             foreach (Vertices item in decomposedVerts)
             {
@@ -137,7 +137,7 @@ namespace VelcroPhysics.Tools.PathGenerator
         /// <param name="time">The time.</param>
         /// <param name="strength">The strength.</param>
         /// <param name="timeStep">The time step.</param>
-        public static void MoveBodyOnPath(Path path, Body body, float time, float strength, float timeStep)
+        public static void MoveBodyOnPath(Path path, Body body, GGame.Math.Fix64 time, GGame.Math.Fix64 strength, GGame.Math.Fix64 timeStep)
         {
             Vector2 destination = path.GetPosition(time);
             Vector2 positionDelta = body.Position - destination;

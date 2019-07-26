@@ -94,9 +94,9 @@ namespace VelcroPhysics.Tools.Triangulation.Seidel
             return verts;
         }
 
-        private Point LineIntersect(Edge edge, float x)
+        private Point LineIntersect(Edge edge, GGame.Math.Fix64 x)
         {
-            float y = edge.Slope * x + edge.B;
+            GGame.Math.Fix64 y = edge.Slope * x + edge.B;
             return new Point(x, y);
         }
 

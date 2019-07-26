@@ -13,11 +13,11 @@ namespace VelcroPhysics.Collision.Narrowphase
         /// point count, impulses, etc. The radii must come from the Shapes
         /// that generated the manifold.
         /// </summary>
-        public static void Initialize(ref Manifold manifold, ref Transform xfA, float radiusA, ref Transform xfB, float radiusB, out Vector2 normal, out FixedArray2<Vector2> points, out FixedArray2<float> separations)
+        public static void Initialize(ref Manifold manifold, ref Transform xfA, GGame.Math.Fix64 radiusA, ref Transform xfB, GGame.Math.Fix64 radiusB, out Vector2 normal, out FixedArray2<Vector2> points, out FixedArray2<GGame.Math.Fix64> separations)
         {
             normal = Vector2.Zero;
             points = new FixedArray2<Vector2>();
-            separations = new FixedArray2<float>();
+            separations = new FixedArray2<GGame.Math.Fix64>();
 
             if (manifold.PointCount == 0)
             {

@@ -33,9 +33,9 @@ namespace VelcroPhysics.Tools.Triangulation.Seidel
         /// Decompose the polygon into several smaller non-concave polygons.
         /// </summary>
         /// <param name="vertices">The polygon to decompose.</param>
-        /// <param name="sheer">The sheer to use if you get bad results, try using a higher value.</param>
+        /// <param name="sheer">The sheer to use if you get bad results, try using a higher value  默认值 0.001.</param>
         /// <returns>A list of triangles</returns>
-        public static List<Vertices> ConvexPartition(Vertices vertices, float sheer = 0.001f)
+        public static List<Vertices> ConvexPartition(Vertices vertices, GGame.Math.Fix64 sheer )
         {
             Debug.Assert(vertices.Count > 3);
 
@@ -69,9 +69,9 @@ namespace VelcroPhysics.Tools.Triangulation.Seidel
         /// Decompose the polygon into several smaller non-concave polygons.
         /// </summary>
         /// <param name="vertices">The polygon to decompose.</param>
-        /// <param name="sheer">The sheer to use if you get bad results, try using a higher value.</param>
+        /// <param name="sheer">The sheer to use if you get bad results, try using a higher value.  默认值 0.001</param>
         /// <returns>A list of trapezoids</returns>
-        public static List<Vertices> ConvexPartitionTrapezoid(Vertices vertices, float sheer = 0.001f)
+        public static List<Vertices> ConvexPartitionTrapezoid(Vertices vertices, GGame.Math.Fix64 sheer )
         {
             List<Point> compatList = new List<Point>(vertices.Count);
 

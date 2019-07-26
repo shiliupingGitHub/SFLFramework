@@ -43,26 +43,26 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The lower angle for the joint limit (radians).
         /// </summary>
-        public float LowerAngle { get; set; }
+        public GGame.Math.Fix64 LowerAngle { get; set; }
 
         /// <summary>
         /// The maximum motor torque used to achieve the desired motor speed. Usually in N-m.
         /// </summary>
-        public float MaxMotorTorque { get; set; }
+        public GGame.Math.Fix64 MaxMotorTorque { get; set; }
 
         /// <summary>
         /// The desired motor speed. Usually in radians per second.
         /// </summary>
-        public float MotorSpeed { get; set; }
+        public GGame.Math.Fix64 MotorSpeed { get; set; }
 
         /// <summary>
         /// The bodyB angle minus bodyA angle in the reference state (radians).
         /// </summary>
-        public float ReferenceAngle { get; set; }
+        public GGame.Math.Fix64 ReferenceAngle { get; set; }
 
         /// <summary>
         /// The upper angle for the joint limit (radians).
         /// </summary>
-        public float UpperAngle { get; set; }
+        public GGame.Math.Fix64 UpperAngle { get; set; }
     }
 }

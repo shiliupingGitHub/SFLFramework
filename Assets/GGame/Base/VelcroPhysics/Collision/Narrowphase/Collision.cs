@@ -115,7 +115,7 @@ namespace VelcroPhysics.Collision.Narrowphase
         /// <param name="offset">The offset.</param>
         /// <param name="vertexIndexA">The vertex index A.</param>
         /// <returns></returns>
-        internal static int ClipSegmentToLine(out FixedArray2<ClipVertex> vOut, ref FixedArray2<ClipVertex> vIn, Vector2 normal, float offset, int vertexIndexA)
+        internal static int ClipSegmentToLine(out FixedArray2<ClipVertex> vOut, ref FixedArray2<ClipVertex> vIn, Vector2 normal, GGame.Math.Fix64 offset, int vertexIndexA)
         {
             vOut = new FixedArray2<ClipVertex>();
 
@@ -123,8 +123,8 @@ namespace VelcroPhysics.Collision.Narrowphase
             int numOut = 0;
 
             // Calculate the distance of end points to the line
-            float distance0 = Vector2.Dot(normal, vIn.Value0.V) - offset;
-            float distance1 = Vector2.Dot(normal, vIn.Value1.V) - offset;
+            GGame.Math.Fix64 distance0 = Vector2.Dot(normal, vIn.Value0.V) - offset;
+            GGame.Math.Fix64 distance1 = Vector2.Dot(normal, vIn.Value1.V) - offset;
 
             // If the points are behind the plane
             if (distance0 <= 0.0f) vOut[numOut++] = vIn.Value0;
@@ -134,7 +134,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             if (distance0 * distance1 < 0.0f)
             {
                 // Find intersection point of edge and plane
-                float interp = distance0 / (distance0 - distance1);
+                GGame.Math.Fix64 interp = distance0 / (distance0 - distance1);
 
                 ClipVertex cv = vOut[numOut];
                 cv.V = vIn.Value0.V + interp * (vIn.Value1.V - vIn.Value0.V);

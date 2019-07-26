@@ -19,9 +19,9 @@ namespace VelcroPhysics.Tools.TextureTools
         private List<Body>[,] _bodyMap;
 
         private AABB _dirtyArea;
-        private float _localHeight;
+        private GGame.Math.Fix64 _localHeight;
 
-        private float _localWidth;
+        private GGame.Math.Fix64 _localWidth;
 
         /// <summary>
         /// Point cloud defining the terrain.
@@ -51,7 +51,7 @@ namespace VelcroPhysics.Tools.TextureTools
         /// <summary>
         /// Height of terrain in world units.
         /// </summary>
-        public float Height;
+        public GGame.Math.Fix64 Height;
 
         /// <summary>
         /// Number of iterations to perform in the Marching Squares algorithm.
@@ -72,7 +72,7 @@ namespace VelcroPhysics.Tools.TextureTools
         /// <summary>
         /// Width of terrain in world units.
         /// </summary>
-        public float Width;
+        public GGame.Math.Fix64 Width;
 
         /// <summary>
         /// World to manage terrain in.
@@ -99,7 +99,7 @@ namespace VelcroPhysics.Tools.TextureTools
         /// <param name="position">The position (center) of the terrain.</param>
         /// <param name="width">The width of the terrain.</param>
         /// <param name="height">The height of the terrain.</param>
-        public Terrain(World world, Vector2 position, float width, float height)
+        public Terrain(World world, Vector2 position, GGame.Math.Fix64 width, GGame.Math.Fix64 height)
         {
             World = world;
             Width = width;
@@ -134,7 +134,7 @@ namespace VelcroPhysics.Tools.TextureTools
             _bodyMap = new List<Body>[_xnum, _ynum];
 
             // make sure to mark the dirty area to an infinitely small box
-            _dirtyArea = new AABB(new Vector2(float.MaxValue, float.MaxValue), new Vector2(float.MinValue, float.MinValue));
+            _dirtyArea = new AABB(new Vector2(GGame.Math.Fix64.MaxValue, GGame.Math.Fix64.MaxValue), new Vector2(GGame.Math.Fix64.MinValue, GGame.Math.Fix64.MinValue));
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace VelcroPhysics.Tools.TextureTools
 
             RemoveOldData(xStart, xEnd, yStart, yEnd);
 
-            _dirtyArea = new AABB(new Vector2(float.MaxValue, float.MaxValue), new Vector2(float.MinValue, float.MinValue));
+            _dirtyArea = new AABB(new Vector2(GGame.Math.Fix64.MaxValue, GGame.Math.Fix64.MaxValue), new Vector2(GGame.Math.Fix64.MinValue, GGame.Math.Fix64.MinValue));
         }
 
         private void RemoveOldData(int xStart, int xEnd, int yStart, int yEnd)
@@ -242,8 +242,8 @@ namespace VelcroPhysics.Tools.TextureTools
 
         private void GenerateTerrain(int gx, int gy)
         {
-            float ax = gx * CellSize;
-            float ay = gy * CellSize;
+            GGame.Math.Fix64 ax = gx * CellSize;
+            GGame.Math.Fix64 ay = gy * CellSize;
 
             List<Vertices> polys = MarchingSquares.DetectSquares(new AABB(new Vector2(ax, ay), new Vector2(ax + CellSize, ay + CellSize)), SubCellSize, SubCellSize, _terrainMap, Iterations, true);
             if (polys.Count == 0)
@@ -262,7 +262,7 @@ namespace VelcroPhysics.Tools.TextureTools
                 item.Translate(ref _topLeft);
                 Vertices simplified = SimplifyTools.CollinearSimplify(item);
 
-                List<Vertices> decompPolys = Triangulate.ConvexPartition(simplified, Decomposer);
+                List<Vertices> decompPolys = Triangulate.ConvexPartition(simplified, Decomposer, true, 0.001f);
 
                 foreach (Vertices poly in decompPolys)
                 {

@@ -11,7 +11,7 @@ namespace VelcroPhysics.Collision.Distance
     /// </summary>
     public struct DistanceProxy
     {
-        internal readonly float Radius;
+        internal readonly GGame.Math.Fix64 Radius;
         internal readonly Vector2[] Vertices;
 
         public DistanceProxy(Shape shape, int index)
@@ -77,10 +77,10 @@ namespace VelcroPhysics.Collision.Distance
         public int GetSupport(Vector2 direction)
         {
             int bestIndex = 0;
-            float bestValue = Vector2.Dot(Vertices[0], direction);
+            GGame.Math.Fix64 bestValue = Vector2.Dot(Vertices[0], direction);
             for (int i = 1; i < Vertices.Length; ++i)
             {
-                float value = Vector2.Dot(Vertices[i], direction);
+                GGame.Math.Fix64 value = Vector2.Dot(Vertices[i], direction);
                 if (value > bestValue)
                 {
                     bestIndex = i;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Collision.Shapes;
 using VelcroPhysics.Dynamics;
@@ -15,7 +16,7 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
 
         private Vector2 _gravity;
         private Vector2 _normal;
-        private float _offset;
+        private GGame.Math.Fix64 _offset;
         private Dictionary<int, Body> _uniqueBodies = new Dictionary<int, Body>();
 
         /// <summary>
@@ -23,19 +24,19 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
         /// fluid, like honey, lower values to
         /// simulate water-like fluids.
         /// </summary>
-        public float AngularDragCoefficient;
+        public GGame.Math.Fix64 AngularDragCoefficient;
 
         /// <summary>
         /// Density of the fluid. Higher values will make things more buoyant, lower values will cause things to sink.
         /// </summary>
-        public float Density;
+        public GGame.Math.Fix64 Density;
 
         /// <summary>
         /// Controls the linear drag that the fluid exerts on the bodies within it.  Use higher values will simulate thick fluid,
         /// like honey, lower values to
         /// simulate water-like fluids.
         /// </summary>
-        public float LinearDragCoefficient;
+        public GGame.Math.Fix64 LinearDragCoefficient;
 
         /// <summary>
         /// Acts like waterflow. Defaults to 0,0.
@@ -50,7 +51,7 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
         /// <param name="linearDragCoefficient">Linear drag coefficient of the fluid</param>
         /// <param name="rotationalDragCoefficient">Rotational drag coefficient of the fluid</param>
         /// <param name="gravity">The direction gravity acts. Buoyancy force will act in opposite direction of gravity.</param>
-        public BuoyancyController(AABB container, float density, float linearDragCoefficient, float rotationalDragCoefficient, Vector2 gravity)
+        public BuoyancyController(AABB container, GGame.Math.Fix64 density, GGame.Math.Fix64 linearDragCoefficient, GGame.Math.Fix64 rotationalDragCoefficient, Vector2 gravity)
             : base(ControllerType.BuoyancyController)
         {
             Container = container;
@@ -71,7 +72,7 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
             }
         }
 
-        public override void Update(float dt)
+        public override void Update(GGame.Math.Fix64 dt)
         {
             _uniqueBodies.Clear();
             World.QueryAABB(fixture =>
@@ -91,8 +92,8 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
 
                 Vector2 areac = Vector2.Zero;
                 Vector2 massc = Vector2.Zero;
-                float area = 0;
-                float mass = 0;
+                GGame.Math.Fix64 area = 0;
+                GGame.Math.Fix64 mass = 0;
 
                 for (int j = 0; j < body.FixtureList.Count; j++)
                 {
@@ -104,7 +105,7 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
                     Shape shape = fixture.Shape;
 
                     Vector2 sc;
-                    float sarea = ComputeSubmergedArea(shape, ref _normal, _offset, ref body._xf, out sc);
+                    GGame.Math.Fix64 sarea = ComputeSubmergedArea(shape, ref _normal, _offset, ref body._xf, out sc);
                     area += sarea;
                     areac.X += sarea * sc.X;
                     areac.Y += sarea * sc.Y;
@@ -136,7 +137,7 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
             }
         }
 
-        private float ComputeSubmergedArea(Shape shape, ref Vector2 normal, float offset, ref Transform xf, out Vector2 sc)
+        private GGame.Math.Fix64 ComputeSubmergedArea(Shape shape, ref Vector2 normal, GGame.Math.Fix64 offset, ref Transform xf, out Vector2 sc)
         {
             switch (shape.ShapeType)
             {
@@ -147,7 +148,7 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
                         sc = Vector2.Zero;
 
                         Vector2 p = MathUtils.Mul(ref xf, circleShape.Position);
-                        float l = -(Vector2.Dot(normal, p) - offset);
+                        GGame.Math.Fix64 l = -(Vector2.Dot(normal, p) - offset);
                         if (l < -circleShape.Radius + Settings.Epsilon)
                         {
                             //Completely dry
@@ -161,9 +162,11 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
                         }
 
                         //Magic
-                        float l2 = l * l;
-                        float area = circleShape._2radius * (float)((Math.Asin(l / circleShape.Radius) + Settings.Pi / 2) + l * Math.Sqrt(circleShape._2radius - l2));
-                        float com = -2.0f / 3.0f * (float)Math.Pow(circleShape._2radius - l2, 1.5f) / area;
+                        GGame.Math.Fix64 l2 = l * l;
+                        GGame.Math.Fix64 area =
+                            circleShape._2radius * (Fix64.Asin(l / circleShape.Radius) + Settings.Pi / 2) +
+                            l * Fix64.Sqrt(circleShape._2radius - l2);
+                        GGame.Math.Fix64 com = -2.0f / 3.0f * (GGame.Math.Fix64)Fix64.Pow(circleShape._2radius - l2, 2) / area;
 
                         sc.X = p.X + normal.X * com;
                         sc.Y = p.Y + normal.Y * com;
@@ -181,9 +184,9 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
 
                         //Transform plane into shape co-ordinates
                         Vector2 normalL = MathUtils.MulT(xf.q, normal);
-                        float offsetL = offset - Vector2.Dot(normal, xf.p);
+                        GGame.Math.Fix64 offsetL = offset - Vector2.Dot(normal, xf.p);
 
-                        float[] depths = new float[Settings.MaxPolygonVertices];
+                        GGame.Math.Fix64[] depths = new GGame.Math.Fix64[Settings.MaxPolygonVertices];
                         int diveCount = 0;
                         int intoIndex = -1;
                         int outoIndex = -1;
@@ -242,18 +245,18 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
                         int intoIndex2 = (intoIndex + 1) % polygonShape.Vertices.Count;
                         int outoIndex2 = (outoIndex + 1) % polygonShape.Vertices.Count;
 
-                        float intoLambda = (0 - depths[intoIndex]) / (depths[intoIndex2] - depths[intoIndex]);
-                        float outoLambda = (0 - depths[outoIndex]) / (depths[outoIndex2] - depths[outoIndex]);
+                        GGame.Math.Fix64 intoLambda = (0 - depths[intoIndex]) / (depths[intoIndex2] - depths[intoIndex]);
+                        GGame.Math.Fix64 outoLambda = (0 - depths[outoIndex]) / (depths[outoIndex2] - depths[outoIndex]);
 
                         Vector2 intoVec = new Vector2(polygonShape.Vertices[intoIndex].X * (1 - intoLambda) + polygonShape.Vertices[intoIndex2].X * intoLambda, polygonShape.Vertices[intoIndex].Y * (1 - intoLambda) + polygonShape.Vertices[intoIndex2].Y * intoLambda);
                         Vector2 outoVec = new Vector2(polygonShape.Vertices[outoIndex].X * (1 - outoLambda) + polygonShape.Vertices[outoIndex2].X * outoLambda, polygonShape.Vertices[outoIndex].Y * (1 - outoLambda) + polygonShape.Vertices[outoIndex2].Y * outoLambda);
 
                         //Initialize accumulator
-                        float area = 0;
+                        GGame.Math.Fix64 area = 0;
                         Vector2 center = new Vector2(0, 0);
                         Vector2 p2 = polygonShape.Vertices[intoIndex2];
 
-                        const float k_inv3 = 1.0f / 3.0f;
+                         GGame.Math.Fix64 k_inv3 = 1.0f / 3.0f;
 
                         //An awkward loop from intoIndex2+1 to outIndex2
                         i = intoIndex2;
@@ -271,9 +274,9 @@ namespace VelcroPhysics.Extensions.Controllers.Buoyancy
                                 Vector2 e1 = p2 - intoVec;
                                 Vector2 e2 = p3 - intoVec;
 
-                                float D = MathUtils.Cross(e1, e2);
+                                GGame.Math.Fix64 D = MathUtils.Cross(e1, e2);
 
-                                float triangleArea = 0.5f * D;
+                                GGame.Math.Fix64 triangleArea = 0.5f * D;
 
                                 area += triangleArea;
 

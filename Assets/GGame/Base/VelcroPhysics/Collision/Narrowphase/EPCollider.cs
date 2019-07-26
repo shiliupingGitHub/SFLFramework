@@ -42,8 +42,8 @@ namespace VelcroPhysics.Collision.Narrowphase
             Vector2 edge1 = v2 - v1;
             edge1.Normalize();
             Vector2 normal1 = new Vector2(edge1.Y, -edge1.X);
-            float offset1 = Vector2.Dot(normal1, centroidB - v1);
-            float offset0 = 0.0f, offset2 = 0.0f;
+            GGame.Math.Fix64 offset1 = Vector2.Dot(normal1, centroidB - v1);
+            GGame.Math.Fix64 offset0 = 0.0f, offset2 = 0.0f;
             bool convex1 = false, convex2 = false;
 
             // Is there a preceding edge?
@@ -231,7 +231,7 @@ namespace VelcroPhysics.Collision.Narrowphase
                 normals[i] = MathUtils.Mul(xf.q, polygonB.Normals[i]);
             }
 
-            float radius = polygonB.Radius + edgeA.Radius;
+            GGame.Math.Fix64 radius = polygonB.Radius + edgeA.Radius;
 
             manifold.PointCount = 0;
 
@@ -243,7 +243,7 @@ namespace VelcroPhysics.Collision.Narrowphase
 
             for (int i = 0; i < count; ++i)
             {
-                float s = Vector2.Dot(normal, vertices[i] - v1);
+                GGame.Math.Fix64 s = Vector2.Dot(normal, vertices[i] - v1);
                 if (s < edgeAxis.Separation)
                 {
                     edgeAxis.Separation = s;
@@ -273,9 +273,9 @@ namespace VelcroPhysics.Collision.Narrowphase
             {
                 Vector2 n = -normals[i];
 
-                float s1 = Vector2.Dot(n, vertices[i] - v1);
-                float s2 = Vector2.Dot(n, vertices[i] - v2);
-                float s = Math.Min(s1, s2);
+                GGame.Math.Fix64 s1 = Vector2.Dot(n, vertices[i] - v1);
+                GGame.Math.Fix64 s2 = Vector2.Dot(n, vertices[i] - v2);
+                GGame.Math.Fix64 s = Math.Min((float)s1, (float)s2);
 
                 if (s > radius)
                 {
@@ -316,8 +316,8 @@ namespace VelcroPhysics.Collision.Narrowphase
             }
 
             // Use hysteresis for jitter reduction.
-            const float k_relativeTol = 0.98f;
-            const float k_absoluteTol = 0.001f;
+             GGame.Math.Fix64 k_relativeTol = 0.98f;
+             GGame.Math.Fix64 k_absoluteTol = 0.001f;
 
             EPAxis primaryAxis;
             if (polygonAxis.Type == EPAxisType.Unknown)
@@ -341,10 +341,10 @@ namespace VelcroPhysics.Collision.Narrowphase
 
                 // Search for the polygon normal that is most anti-parallel to the edge normal.
                 int bestIndex = 0;
-                float bestValue = Vector2.Dot(normal, normals[0]);
+                GGame.Math.Fix64 bestValue = Vector2.Dot(normal, normals[0]);
                 for (int i = 1; i < count; ++i)
                 {
-                    float value = Vector2.Dot(normal, normals[i]);
+                    GGame.Math.Fix64 value = Vector2.Dot(normal, normals[i]);
                     if (value < bestValue)
                     {
                         bestValue = value;
@@ -448,7 +448,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             int pointCount = 0;
             for (int i = 0; i < Settings.MaxManifoldPoints; ++i)
             {
-                float separation = Vector2.Dot(rf.Normal, clipPoints2[i].V - rf.v1);
+                GGame.Math.Fix64 separation = Vector2.Dot(rf.Normal, clipPoints2[i].V - rf.v1);
 
                 if (separation <= radius)
                 {

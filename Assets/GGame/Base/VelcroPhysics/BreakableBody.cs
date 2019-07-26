@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Collision.ContactSystem;
 using VelcroPhysics.Collision.Shapes;
@@ -14,7 +15,7 @@ namespace VelcroPhysics.Dynamics
     /// </summary>
     public class BreakableBody
     {
-        private float[] _angularVelocitiesCache = new float[8];
+        private GGame.Math.Fix64[] _angularVelocitiesCache = new GGame.Math.Fix64[8];
         private bool _break;
         private Vector2[] _velocitiesCache = new Vector2[8];
         private readonly World _world;
@@ -23,9 +24,9 @@ namespace VelcroPhysics.Dynamics
         /// The force needed to break the body apart.
         /// Default: 500
         /// </summary>
-        public float Strength { get; set; }
+        public GGame.Math.Fix64 Strength { get; set; }
 
-        public BreakableBody(World world, IEnumerable<Vertices> vertices, float density, Vector2 position = new Vector2(), float rotation = 0)
+        public BreakableBody(World world, IEnumerable<Vertices> vertices, GGame.Math.Fix64 density, Vector2 position = new Vector2(), GGame.Math.Fix64 rotation = new  GGame.Math.Fix64())
         {
             _world = world;
             _world.ContactManager.PostSolve += PostSolve;
@@ -41,7 +42,7 @@ namespace VelcroPhysics.Dynamics
             }
         }
 
-        public BreakableBody(World world, IEnumerable<Shape> shapes, Vector2 position = new Vector2(), float rotation = 0)
+        public BreakableBody(World world, IEnumerable<Shape> shapes, Vector2 position = new Vector2(), GGame.Math.Fix64 rotation = new Fix64())
         {
             _world = world;
             _world.ContactManager.PostSolve += PostSolve;
@@ -65,12 +66,12 @@ namespace VelcroPhysics.Dynamics
             {
                 if (Parts.Contains(contact.FixtureA) || Parts.Contains(contact.FixtureB))
                 {
-                    float maxImpulse = 0.0f;
+                    GGame.Math.Fix64 maxImpulse = 0.0f;
                     int count = contact.Manifold.PointCount;
 
                     for (int i = 0; i < count; ++i)
                     {
-                        maxImpulse = Math.Max(maxImpulse, impulse.Points[i].NormalImpulse);
+                        maxImpulse = Math.Max((float)maxImpulse, (float)impulse.Points[i].NormalImpulse);
                     }
 
                     if (maxImpulse > Strength)
@@ -98,7 +99,7 @@ namespace VelcroPhysics.Dynamics
                 if (Parts.Count > _angularVelocitiesCache.Length)
                 {
                     _velocitiesCache = new Vector2[Parts.Count];
-                    _angularVelocitiesCache = new float[Parts.Count];
+                    _angularVelocitiesCache = new GGame.Math.Fix64[Parts.Count];
                 }
 
                 //Cache the linear and angular velocities.

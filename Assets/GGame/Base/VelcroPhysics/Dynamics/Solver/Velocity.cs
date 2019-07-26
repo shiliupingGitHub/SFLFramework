@@ -6,6 +6,6 @@ namespace VelcroPhysics.Dynamics.Solver
     public struct Velocity
     {
         public Vector2 V;
-        public float W;
+        public GGame.Math.Fix64 W;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Utilities;
 
@@ -68,14 +69,14 @@ namespace VelcroPhysics.Shared
         /// If the area is less than 0, it indicates that the polygon is clockwise winded.
         /// </summary>
         /// <returns>The signed area</returns>
-        public float GetSignedArea()
+        public GGame.Math.Fix64 GetSignedArea()
         {
             //The simplest polygon which can exist in the Euclidean plane has 3 sides.
             if (Count < 3)
                 return 0;
 
             int i;
-            float area = 0;
+            GGame.Math.Fix64 area = 0;
 
             for (i = 0; i < Count; i++)
             {
@@ -95,9 +96,9 @@ namespace VelcroPhysics.Shared
         /// Gets the area.
         /// </summary>
         /// <returns></returns>
-        public float GetArea()
+        public GGame.Math.Fix64 GetArea()
         {
-            float area = GetSignedArea();
+            GGame.Math.Fix64 area = GetSignedArea();
             return (area < 0 ? -area : area);
         }
 
@@ -109,12 +110,12 @@ namespace VelcroPhysics.Shared
         {
             //The simplest polygon which can exist in the Euclidean plane has 3 sides.
             if (Count < 3)
-                return new Vector2(float.NaN, float.NaN);
+                return new Vector2(GGame.Math.Fix64.NaN, GGame.Math.Fix64.NaN);
 
             // Same algorithm is used by Box2D
             Vector2 c = Vector2.Zero;
-            float area = 0.0f;
-            const float inv3 = 1.0f / 3.0f;
+            GGame.Math.Fix64 area = 0.0f;
+             GGame.Math.Fix64 inv3 = 1.0f / 3.0f;
 
             for (int i = 0; i < Count; ++i)
             {
@@ -122,7 +123,7 @@ namespace VelcroPhysics.Shared
                 Vector2 current = this[i];
                 Vector2 next = (i + 1 < Count ? this[i + 1] : this[0]);
 
-                float triangleArea = 0.5f * (current.X * next.Y - current.Y * next.X);
+                GGame.Math.Fix64 triangleArea = 0.5f * (current.X * next.Y - current.Y * next.X);
                 area += triangleArea;
 
                 // Area weighted centroid
@@ -140,8 +141,8 @@ namespace VelcroPhysics.Shared
         public AABB GetAABB()
         {
             AABB aabb;
-            Vector2 lowerBound = new Vector2(float.MaxValue, float.MaxValue);
-            Vector2 upperBound = new Vector2(float.MinValue, float.MinValue);
+            Vector2 lowerBound = new Vector2(GGame.Math.Fix64.MaxValue, GGame.Math.Fix64.MaxValue);
+            Vector2 upperBound = new Vector2(GGame.Math.Fix64.MinValue, GGame.Math.Fix64.MinValue);
 
             for (int i = 0; i < Count; ++i)
             {
@@ -234,12 +235,12 @@ namespace VelcroPhysics.Shared
         /// will cause problems with collisions. Use Body.Rotation instead.
         /// </summary>
         /// <param name="value">The amount to rotate by in radians.</param>
-        public void Rotate(float value)
+        public void Rotate(GGame.Math.Fix64 value)
         {
             Debug.Assert(!AttachedToBody, "Rotating vertices that are used by a Body can result in unstable behavior.");
 
-            float num1 = (float)Math.Cos(value);
-            float num2 = (float)Math.Sin(value);
+            GGame.Math.Fix64 num1 = GGame.Math.Fix64.Cos(value);
+            GGame.Math.Fix64 num2 = GGame.Math.Fix64.Sin(value);
 
             for (int i = 0; i < Count; i++)
             {
@@ -290,7 +291,7 @@ namespace VelcroPhysics.Shared
 
                     Vector2 r = this[j] - this[i];
 
-                    float s = edge.X * r.Y - edge.Y * r.X;
+                    GGame.Math.Fix64 s = edge.X * r.Y - edge.Y * r.X;
 
                     if (s <= 0.0f)
                         return false;
@@ -368,7 +369,7 @@ namespace VelcroPhysics.Shared
             if (!IsSimple())
                 return PolygonError.NotSimple;
 
-            if (GetArea() <= float.Epsilon)
+            if (GetArea() <= GGame.Math.Fix64.Epsilon)
                 return PolygonError.AreaTooSmall;
 
             if (!IsConvex())
@@ -379,7 +380,7 @@ namespace VelcroPhysics.Shared
             {
                 int next = i + 1 < Count ? i + 1 : 0;
                 Vector2 edge = this[next] - this[i];
-                if (edge.LengthSquared() <= float.Epsilon * float.Epsilon)
+                if (edge.LengthSquared() <= GGame.Math.Fix64.Epsilon * GGame.Math.Fix64.Epsilon)
                 {
                     return PolygonError.SideTooSmall;
                 }
@@ -397,10 +398,10 @@ namespace VelcroPhysics.Shared
         /// <param name="axis">The axis.</param>
         /// <param name="min">The min.</param>
         /// <param name="max">The max.</param>
-        public void ProjectToAxis(ref Vector2 axis, out float min, out float max)
+        public void ProjectToAxis(ref Vector2 axis, out GGame.Math.Fix64 min, out GGame.Math.Fix64 max)
         {
             // To project a point on an axis use the dot product
-            float dotProduct = Vector2.Dot(axis, this[0]);
+            GGame.Math.Fix64 dotProduct = Vector2.Dot(axis, this[0]);
             min = dotProduct;
             max = dotProduct;
 
@@ -445,7 +446,7 @@ namespace VelcroPhysics.Shared
 
                 // Test if a point is directly on the edge
                 Vector2 edge = p2 - p1;
-                float area = MathUtils.Area(ref p1, ref p2, ref point);
+                GGame.Math.Fix64 area = MathUtils.Area(ref p1, ref p2, ref point);
                 if (area == 0f && Vector2.Dot(point - p1, edge) >= 0f && Vector2.Dot(point - p2, edge) <= 0f)
                 {
                     return 0;
@@ -477,7 +478,7 @@ namespace VelcroPhysics.Shared
         /// </summary>
         public bool PointInPolygonAngle(ref Vector2 point)
         {
-            double angle = 0;
+            GGame.Math.Fix64 angle = 0;
 
             // Iterate through polygon's edges
             for (int i = 0; i < Count; i++)
@@ -489,7 +490,7 @@ namespace VelcroPhysics.Shared
                 angle += MathUtils.VectorAngle(ref p1, ref p2);
             }
 
-            if (Math.Abs(angle) < Math.PI)
+            if (Fix64.Abs(angle) < Fix64.PI)
             {
                 return false;
             }

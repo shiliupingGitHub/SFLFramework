@@ -28,7 +28,7 @@ namespace VelcroPhysics.Collision.Broadphase
 
         void Query(Func<int, bool> callback, ref AABB aabb);
 
-        void RayCast(Func<RayCastInput, int, float> callback, ref RayCastInput input);
+        void RayCast(Func<RayCastInput, int, GGame.Math.Fix64> callback, ref RayCastInput input);
 
         void ShiftOrigin(Vector2 newOrigin);
     }

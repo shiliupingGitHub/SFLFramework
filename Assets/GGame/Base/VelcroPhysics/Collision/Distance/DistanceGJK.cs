@@ -73,7 +73,7 @@ namespace VelcroPhysics.Collision.Distance
             FixedArray3<int> saveB = new FixedArray3<int>();
 
             //Velcro: This code was not used anyway.
-            //float distanceSqr1 = Settings.MaxFloat;
+            //GGame.Math.Fix64 distanceSqr1 = Settings.MaxFloat;
 
             // Main iteration loop.
             int iter = 0;
@@ -174,8 +174,8 @@ namespace VelcroPhysics.Collision.Distance
             // Apply radii if requested.
             if (input.UseRadii)
             {
-                float rA = input.ProxyA.Radius;
-                float rB = input.ProxyB.Radius;
+                GGame.Math.Fix64 rA = input.ProxyA.Radius;
+                GGame.Math.Fix64 rB = input.ProxyB.Radius;
 
                 if (output.Distance > rA + rB && output.Distance > Settings.Epsilon)
                 {

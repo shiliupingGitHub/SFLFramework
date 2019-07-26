@@ -10,12 +10,12 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The bodyB angle minus bodyA angle in radians.
         /// </summary>
-        public float AngularOffset { get; set; }
+        public GGame.Math.Fix64 AngularOffset { get; set; }
 
         /// <summary>
         /// Position correction factor in the range [0,1].
         /// </summary>
-        public float CorrectionFactor { get; set; }
+        public GGame.Math.Fix64 CorrectionFactor { get; set; }
 
         /// <summary>
         /// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
@@ -25,12 +25,12 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The maximum motor force in N.
         /// </summary>
-        public float MaxForce { get; set; }
+        public GGame.Math.Fix64 MaxForce { get; set; }
 
         /// <summary>
         /// The maximum motor torque in N-m.
         /// </summary>
-        public float MaxTorque { get; set; }
+        public GGame.Math.Fix64 MaxTorque { get; set; }
 
         public override void SetDefaults()
         {

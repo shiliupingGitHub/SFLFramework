@@ -36,7 +36,7 @@ namespace VelcroPhysics.Shared
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="angle">The angle.</param>
-        public void Set(Vector2 position, float angle)
+        public void Set(Vector2 position, GGame.Math.Fix64 angle)
         {
             p = position;
             q.Set(angle);

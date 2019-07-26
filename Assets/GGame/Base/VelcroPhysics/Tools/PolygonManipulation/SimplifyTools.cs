@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Shared;
 using VelcroPhysics.Utilities;
@@ -18,7 +19,7 @@ namespace VelcroPhysics.Tools.PolygonManipulation
         /// <param name="vertices">The polygon that needs simplification.</param>
         /// <param name="collinearityTolerance">The collinearity tolerance.</param>
         /// <returns>A simplified polygon.</returns>
-        public static Vertices CollinearSimplify(Vertices vertices, float collinearityTolerance = 0)
+        public static Vertices CollinearSimplify(Vertices vertices, GGame.Math.Fix64 collinearityTolerance = new Fix64())
         {
             if (vertices.Count <= 3)
                 return vertices;
@@ -47,7 +48,7 @@ namespace VelcroPhysics.Tools.PolygonManipulation
         /// If you pass in 0, it will remove all collinear points.
         /// </summary>
         /// <returns>The simplified polygon</returns>
-        public static Vertices DouglasPeuckerSimplify(Vertices vertices, float distanceTolerance)
+        public static Vertices DouglasPeuckerSimplify(Vertices vertices, GGame.Math.Fix64 distanceTolerance)
         {
             if (vertices.Count <= 3)
                 return vertices;
@@ -70,7 +71,7 @@ namespace VelcroPhysics.Tools.PolygonManipulation
             return simplified;
         }
 
-        private static void SimplifySection(Vertices vertices, int i, int j, bool[] usePoint, float distanceTolerance)
+        private static void SimplifySection(Vertices vertices, int i, int j, bool[] usePoint, GGame.Math.Fix64 distanceTolerance)
         {
             if ((i + 1) == j)
                 return;
@@ -78,13 +79,13 @@ namespace VelcroPhysics.Tools.PolygonManipulation
             Vector2 a = vertices[i];
             Vector2 b = vertices[j];
 
-            double maxDistance = -1.0;
+            GGame.Math.Fix64 maxDistance = -1.0f;
             int maxIndex = i;
             for (int k = i + 1; k < j; k++)
             {
                 Vector2 point = vertices[k];
 
-                double distance = LineUtils.DistanceBetweenPointAndLineSegment(ref point, ref a, ref b);
+                GGame.Math.Fix64 distance = LineUtils.DistanceBetweenPointAndLineSegment(ref point, ref a, ref b);
 
                 if (distance > maxDistance)
                 {
@@ -112,7 +113,7 @@ namespace VelcroPhysics.Tools.PolygonManipulation
         /// </summary>
         /// <param name="vertices">The vertices.</param>
         /// <param name="tolerance">The tolerance.</param>
-        public static Vertices MergeParallelEdges(Vertices vertices, float tolerance)
+        public static Vertices MergeParallelEdges(Vertices vertices, GGame.Math.Fix64 tolerance)
         {
             //From Eric Jordan's convex decomposition library
 
@@ -129,12 +130,12 @@ namespace VelcroPhysics.Tools.PolygonManipulation
                 int middle = i;
                 int upper = i == vertices.Count - 1 ? 0 : i + 1;
 
-                float dx0 = vertices[middle].X - vertices[lower].X;
-                float dy0 = vertices[middle].Y - vertices[lower].Y;
-                float dx1 = vertices[upper].X - vertices[middle].X;
-                float dy1 = vertices[upper].Y - vertices[middle].Y;
-                float norm0 = (float)Math.Sqrt(dx0 * dx0 + dy0 * dy0);
-                float norm1 = (float)Math.Sqrt(dx1 * dx1 + dy1 * dy1);
+                GGame.Math.Fix64 dx0 = vertices[middle].X - vertices[lower].X;
+                GGame.Math.Fix64 dy0 = vertices[middle].Y - vertices[lower].Y;
+                GGame.Math.Fix64 dx1 = vertices[upper].X - vertices[middle].X;
+                GGame.Math.Fix64 dy1 = vertices[upper].Y - vertices[middle].Y;
+                GGame.Math.Fix64 norm0 = (GGame.Math.Fix64)Fix64.Sqrt(dx0 * dx0 + dy0 * dy0);
+                GGame.Math.Fix64 norm1 = (GGame.Math.Fix64)Fix64.Sqrt(dx1 * dx1 + dy1 * dy1);
 
                 if (!(norm0 > 0.0f && norm1 > 0.0f) && newNVertices > 3)
                 {
@@ -147,10 +148,10 @@ namespace VelcroPhysics.Tools.PolygonManipulation
                 dy0 /= norm0;
                 dx1 /= norm1;
                 dy1 /= norm1;
-                float cross = dx0 * dy1 - dx1 * dy0;
-                float dot = dx0 * dx1 + dy0 * dy1;
+                GGame.Math.Fix64 cross = dx0 * dy1 - dx1 * dy0;
+                GGame.Math.Fix64 dot = dx0 * dx1 + dy0 * dy1;
 
-                if (Math.Abs(cross) < tolerance && dot > 0 && newNVertices > 3)
+                if (Fix64.Abs(cross) < tolerance && dot > 0 && newNVertices > 3)
                 {
                     mergeMe[i] = true;
                     --newNVertices;
@@ -202,12 +203,12 @@ namespace VelcroPhysics.Tools.PolygonManipulation
         /// </summary>
         /// <param name="vertices">The vertices.</param>
         /// <param name="distance">The distance between points. Points closer than this will be removed.</param>
-        public static Vertices ReduceByDistance(Vertices vertices, float distance)
+        public static Vertices ReduceByDistance(Vertices vertices, GGame.Math.Fix64 distance)
         {
             if (vertices.Count <= 3)
                 return vertices;
 
-            float distance2 = distance * distance;
+            GGame.Math.Fix64 distance2 = distance * distance;
 
             Vertices simplified = new Vertices(vertices.Count);
 
@@ -260,7 +261,7 @@ namespace VelcroPhysics.Tools.PolygonManipulation
         /// <param name="vertices"></param>
         /// <param name="areaTolerance"></param>
         /// <returns></returns>
-        public static Vertices ReduceByArea(Vertices vertices, float areaTolerance)
+        public static Vertices ReduceByArea(Vertices vertices, GGame.Math.Fix64 areaTolerance)
         {
             //From physics2d.net
 
@@ -280,16 +281,16 @@ namespace VelcroPhysics.Tools.PolygonManipulation
             {
                 v3 = i == vertices.Count - 1 ? simplified[0] : vertices[i];
 
-                float old1;
+                GGame.Math.Fix64 old1;
                 MathUtils.Cross(ref v1, ref v2, out old1);
 
-                float old2;
+                GGame.Math.Fix64 old2;
                 MathUtils.Cross(ref v2, ref v3, out old2);
 
-                float new1;
+                GGame.Math.Fix64 new1;
                 MathUtils.Cross(ref v1, ref v3, out new1);
 
-                if (Math.Abs(new1 - (old1 + old2)) > areaTolerance)
+                if (Fix64.Abs(new1 - (old1 + old2)) > areaTolerance)
                 {
                     simplified.Add(v2);
                     v1 = v2;

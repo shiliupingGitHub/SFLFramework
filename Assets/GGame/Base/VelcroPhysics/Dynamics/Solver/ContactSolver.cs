@@ -77,8 +77,8 @@ namespace VelcroPhysics.Dynamics.Solver
                 Fixture fixtureB = contact.FixtureB;
                 Shape shapeA = fixtureA.Shape;
                 Shape shapeB = fixtureB.Shape;
-                float radiusA = shapeA.Radius;
-                float radiusB = shapeB.Radius;
+                GGame.Math.Fix64 radiusA = shapeA.Radius;
+                GGame.Math.Fix64 radiusB = shapeB.Radius;
                 Body bodyA = fixtureA.Body;
                 Body bodyB = fixtureB.Body;
                 Manifold manifold = contact.Manifold;
@@ -154,29 +154,29 @@ namespace VelcroPhysics.Dynamics.Solver
                 ContactVelocityConstraint vc = VelocityConstraints[i];
                 ContactPositionConstraint pc = _positionConstraints[i];
 
-                float radiusA = pc.RadiusA;
-                float radiusB = pc.RadiusB;
+                GGame.Math.Fix64 radiusA = pc.RadiusA;
+                GGame.Math.Fix64 radiusB = pc.RadiusB;
                 Manifold manifold = _contacts[vc.ContactIndex].Manifold;
 
                 int indexA = vc.IndexA;
                 int indexB = vc.IndexB;
 
-                float mA = vc.InvMassA;
-                float mB = vc.InvMassB;
-                float iA = vc.InvIA;
-                float iB = vc.InvIB;
+                GGame.Math.Fix64 mA = vc.InvMassA;
+                GGame.Math.Fix64 mB = vc.InvMassB;
+                GGame.Math.Fix64 iA = vc.InvIA;
+                GGame.Math.Fix64 iB = vc.InvIB;
                 Vector2 localCenterA = pc.LocalCenterA;
                 Vector2 localCenterB = pc.LocalCenterB;
 
                 Vector2 cA = _positions[indexA].C;
-                float aA = _positions[indexA].A;
+                GGame.Math.Fix64 aA = _positions[indexA].A;
                 Vector2 vA = _velocities[indexA].V;
-                float wA = _velocities[indexA].W;
+                GGame.Math.Fix64 wA = _velocities[indexA].W;
 
                 Vector2 cB = _positions[indexB].C;
-                float aB = _positions[indexB].A;
+                GGame.Math.Fix64 aB = _positions[indexB].A;
                 Vector2 vB = _velocities[indexB].V;
-                float wB = _velocities[indexB].W;
+                GGame.Math.Fix64 wB = _velocities[indexB].W;
 
                 Debug.Assert(manifold.PointCount > 0);
 
@@ -199,25 +199,25 @@ namespace VelcroPhysics.Dynamics.Solver
                     vcp.rA = points[j] - cA;
                     vcp.rB = points[j] - cB;
 
-                    float rnA = MathUtils.Cross(vcp.rA, vc.Normal);
-                    float rnB = MathUtils.Cross(vcp.rB, vc.Normal);
+                    GGame.Math.Fix64 rnA = MathUtils.Cross(vcp.rA, vc.Normal);
+                    GGame.Math.Fix64 rnB = MathUtils.Cross(vcp.rB, vc.Normal);
 
-                    float kNormal = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+                    GGame.Math.Fix64 kNormal = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
 
                     vcp.NormalMass = kNormal > 0.0f ? 1.0f / kNormal : 0.0f;
 
                     Vector2 tangent = MathUtils.Cross(vc.Normal, 1.0f);
 
-                    float rtA = MathUtils.Cross(vcp.rA, tangent);
-                    float rtB = MathUtils.Cross(vcp.rB, tangent);
+                    GGame.Math.Fix64 rtA = MathUtils.Cross(vcp.rA, tangent);
+                    GGame.Math.Fix64 rtB = MathUtils.Cross(vcp.rB, tangent);
 
-                    float kTangent = mA + mB + iA * rtA * rtA + iB * rtB * rtB;
+                    GGame.Math.Fix64 kTangent = mA + mB + iA * rtA * rtA + iB * rtB * rtB;
 
                     vcp.TangentMass = kTangent > 0.0f ? 1.0f / kTangent : 0.0f;
 
                     // Setup a velocity bias for restitution.
                     vcp.VelocityBias = 0.0f;
-                    float vRel = Vector2.Dot(vc.Normal, vB + MathUtils.Cross(wB, vcp.rB) - vA - MathUtils.Cross(wA, vcp.rA));
+                    GGame.Math.Fix64 vRel = Vector2.Dot(vc.Normal, vB + MathUtils.Cross(wB, vcp.rB) - vA - MathUtils.Cross(wA, vcp.rA));
                     if (vRel < -Settings.VelocityThreshold)
                     {
                         vcp.VelocityBias = -vc.Restitution * vRel;
@@ -230,17 +230,17 @@ namespace VelcroPhysics.Dynamics.Solver
                     VelocityConstraintPoint vcp1 = vc.Points[0];
                     VelocityConstraintPoint vcp2 = vc.Points[1];
 
-                    float rn1A = MathUtils.Cross(vcp1.rA, vc.Normal);
-                    float rn1B = MathUtils.Cross(vcp1.rB, vc.Normal);
-                    float rn2A = MathUtils.Cross(vcp2.rA, vc.Normal);
-                    float rn2B = MathUtils.Cross(vcp2.rB, vc.Normal);
+                    GGame.Math.Fix64 rn1A = MathUtils.Cross(vcp1.rA, vc.Normal);
+                    GGame.Math.Fix64 rn1B = MathUtils.Cross(vcp1.rB, vc.Normal);
+                    GGame.Math.Fix64 rn2A = MathUtils.Cross(vcp2.rA, vc.Normal);
+                    GGame.Math.Fix64 rn2B = MathUtils.Cross(vcp2.rB, vc.Normal);
 
-                    float k11 = mA + mB + iA * rn1A * rn1A + iB * rn1B * rn1B;
-                    float k22 = mA + mB + iA * rn2A * rn2A + iB * rn2B * rn2B;
-                    float k12 = mA + mB + iA * rn1A * rn2A + iB * rn1B * rn2B;
+                    GGame.Math.Fix64 k11 = mA + mB + iA * rn1A * rn1A + iB * rn1B * rn1B;
+                    GGame.Math.Fix64 k22 = mA + mB + iA * rn2A * rn2A + iB * rn2B * rn2B;
+                    GGame.Math.Fix64 k12 = mA + mB + iA * rn1A * rn2A + iB * rn1B * rn2B;
 
                     // Ensure a reasonable condition number.
-                    const float k_maxConditionNumber = 1000.0f;
+                     GGame.Math.Fix64 k_maxConditionNumber = 1000.0f;
                     if (k11 * k11 < k_maxConditionNumber * (k11 * k22 - k12 * k12))
                     {
                         // K is safe to invert.
@@ -267,16 +267,16 @@ namespace VelcroPhysics.Dynamics.Solver
 
                 int indexA = vc.IndexA;
                 int indexB = vc.IndexB;
-                float mA = vc.InvMassA;
-                float iA = vc.InvIA;
-                float mB = vc.InvMassB;
-                float iB = vc.InvIB;
+                GGame.Math.Fix64 mA = vc.InvMassA;
+                GGame.Math.Fix64 iA = vc.InvIA;
+                GGame.Math.Fix64 mB = vc.InvMassB;
+                GGame.Math.Fix64 iB = vc.InvIB;
                 int pointCount = vc.PointCount;
 
                 Vector2 vA = _velocities[indexA].V;
-                float wA = _velocities[indexA].W;
+                GGame.Math.Fix64 wA = _velocities[indexA].W;
                 Vector2 vB = _velocities[indexB].V;
-                float wB = _velocities[indexB].W;
+                GGame.Math.Fix64 wB = _velocities[indexB].W;
 
                 Vector2 normal = vc.Normal;
                 Vector2 tangent = MathUtils.Cross(normal, 1.0f);
@@ -306,20 +306,20 @@ namespace VelcroPhysics.Dynamics.Solver
 
                 int indexA = vc.IndexA;
                 int indexB = vc.IndexB;
-                float mA = vc.InvMassA;
-                float iA = vc.InvIA;
-                float mB = vc.InvMassB;
-                float iB = vc.InvIB;
+                GGame.Math.Fix64 mA = vc.InvMassA;
+                GGame.Math.Fix64 iA = vc.InvIA;
+                GGame.Math.Fix64 mB = vc.InvMassB;
+                GGame.Math.Fix64 iB = vc.InvIB;
                 int pointCount = vc.PointCount;
 
                 Vector2 vA = _velocities[indexA].V;
-                float wA = _velocities[indexA].W;
+                GGame.Math.Fix64 wA = _velocities[indexA].W;
                 Vector2 vB = _velocities[indexB].V;
-                float wB = _velocities[indexB].W;
+                GGame.Math.Fix64 wB = _velocities[indexB].W;
 
                 Vector2 normal = vc.Normal;
                 Vector2 tangent = MathUtils.Cross(normal, 1.0f);
-                float friction = vc.Friction;
+                GGame.Math.Fix64 friction = vc.Friction;
 
                 Debug.Assert(pointCount == 1 || pointCount == 2);
 
@@ -333,12 +333,12 @@ namespace VelcroPhysics.Dynamics.Solver
                     Vector2 dv = vB + MathUtils.Cross(wB, vcp.rB) - vA - MathUtils.Cross(wA, vcp.rA);
 
                     // Compute tangent force
-                    float vt = Vector2.Dot(dv, tangent) - vc.TangentSpeed;
-                    float lambda = vcp.TangentMass * (-vt);
+                    GGame.Math.Fix64 vt = Vector2.Dot(dv, tangent) - vc.TangentSpeed;
+                    GGame.Math.Fix64 lambda = vcp.TangentMass * (-vt);
 
                     // b2Clamp the accumulated force
-                    float maxFriction = friction * vcp.NormalImpulse;
-                    float newImpulse = MathUtils.Clamp(vcp.TangentImpulse + lambda, -maxFriction, maxFriction);
+                    GGame.Math.Fix64 maxFriction = friction * vcp.NormalImpulse;
+                    GGame.Math.Fix64 newImpulse = MathUtils.Clamp(vcp.TangentImpulse + lambda, -maxFriction, maxFriction);
                     lambda = newImpulse - vcp.TangentImpulse;
                     vcp.TangentImpulse = newImpulse;
 
@@ -363,11 +363,11 @@ namespace VelcroPhysics.Dynamics.Solver
                         Vector2 dv = vB + MathUtils.Cross(wB, vcp.rB) - vA - MathUtils.Cross(wA, vcp.rA);
 
                         // Compute normal impulse
-                        float vn = Vector2.Dot(dv, normal);
-                        float lambda = -vcp.NormalMass * (vn - vcp.VelocityBias);
+                        GGame.Math.Fix64 vn = Vector2.Dot(dv, normal);
+                        GGame.Math.Fix64 lambda = -vcp.NormalMass * (vn - vcp.VelocityBias);
 
                         // b2Clamp the accumulated impulse
-                        float newImpulse = Math.Max(vcp.NormalImpulse + lambda, 0.0f);
+                        GGame.Math.Fix64 newImpulse = Math.Max((float)(vcp.NormalImpulse + lambda), 0.0f);
                         lambda = newImpulse - vcp.NormalImpulse;
                         vcp.NormalImpulse = newImpulse;
 
@@ -426,14 +426,14 @@ namespace VelcroPhysics.Dynamics.Solver
                     Vector2 dv2 = vB + MathUtils.Cross(wB, cp2.rB) - vA - MathUtils.Cross(wA, cp2.rA);
 
                     // Compute normal velocity
-                    float vn1 = Vector2.Dot(dv1, normal);
-                    float vn2 = Vector2.Dot(dv2, normal);
+                    GGame.Math.Fix64 vn1 = Vector2.Dot(dv1, normal);
+                    GGame.Math.Fix64 vn2 = Vector2.Dot(dv2, normal);
 
                     Vector2 b = Vector2.Zero;
                     b.X = vn1 - cp1.VelocityBias;
                     b.Y = vn2 - cp2.VelocityBias;
 
-                    const float k_errorTol = 1e-3f;
+                     GGame.Math.Fix64 k_errorTol = 1e-3f;
 
                     // Compute b'
                     b -= MathUtils.Mul(ref vc.K, a);
@@ -478,8 +478,8 @@ namespace VelcroPhysics.Dynamics.Solver
                             vn1 = Vector2.Dot(dv1, normal);
                             vn2 = Vector2.Dot(dv2, normal);
 
-                            Debug.Assert(Math.Abs(vn1 - cp1.VelocityBias) < k_errorTol);
-                            Debug.Assert(Math.Abs(vn2 - cp2.VelocityBias) < k_errorTol);
+                            Debug.Assert(GGame.Math.Fix64.Abs(vn1 - cp1.VelocityBias) < k_errorTol);
+                            Debug.Assert(GGame.Math.Fix64.Abs(vn2 - cp2.VelocityBias) < k_errorTol);
 #endif
                             break;
                         }
@@ -520,7 +520,7 @@ namespace VelcroPhysics.Dynamics.Solver
                             // Compute normal velocity
                             vn1 = Vector2.Dot(dv1, normal);
 
-                            Debug.Assert(Math.Abs(vn1 - cp1.VelocityBias) < k_errorTol);
+                            Debug.Assert(GGame.Math.Fix64.Abs(vn1 - cp1.VelocityBias) < k_errorTol);
 #endif
                             break;
                         }
@@ -561,7 +561,7 @@ namespace VelcroPhysics.Dynamics.Solver
                             // Compute normal velocity
                             vn2 = Vector2.Dot(dv2, normal);
 
-                            Debug.Assert(Math.Abs(vn2 - cp2.VelocityBias) < k_errorTol);
+                            Debug.Assert(GGame.Math.Fix64.Abs(vn2 - cp2.VelocityBias) < k_errorTol);
 #endif
                             break;
                         }
@@ -630,7 +630,7 @@ namespace VelcroPhysics.Dynamics.Solver
 
         public bool SolvePositionConstraints()
         {
-            float minSeparation = 0.0f;
+            GGame.Math.Fix64 minSeparation = 0.0f;
 
             for (int i = 0; i < _count; ++i)
             {
@@ -639,18 +639,18 @@ namespace VelcroPhysics.Dynamics.Solver
                 int indexA = pc.IndexA;
                 int indexB = pc.IndexB;
                 Vector2 localCenterA = pc.LocalCenterA;
-                float mA = pc.InvMassA;
-                float iA = pc.InvIA;
+                GGame.Math.Fix64 mA = pc.InvMassA;
+                GGame.Math.Fix64 iA = pc.InvIA;
                 Vector2 localCenterB = pc.LocalCenterB;
-                float mB = pc.InvMassB;
-                float iB = pc.InvIB;
+                GGame.Math.Fix64 mB = pc.InvMassB;
+                GGame.Math.Fix64 iB = pc.InvIB;
                 int pointCount = pc.PointCount;
 
                 Vector2 cA = _positions[indexA].C;
-                float aA = _positions[indexA].A;
+                GGame.Math.Fix64 aA = _positions[indexA].A;
 
                 Vector2 cB = _positions[indexB].C;
-                float aB = _positions[indexB].A;
+                GGame.Math.Fix64 aB = _positions[indexB].A;
 
                 // Solve normal constraints
                 for (int j = 0; j < pointCount; ++j)
@@ -662,24 +662,24 @@ namespace VelcroPhysics.Dynamics.Solver
                     xfA.p = cA - MathUtils.Mul(xfA.q, localCenterA);
                     xfB.p = cB - MathUtils.Mul(xfB.q, localCenterB);
 
-                    PositionSolverManifold.Initialize(pc, xfA, xfB, j, out Vector2 normal, out Vector2 point, out float separation);
+                    PositionSolverManifold.Initialize(pc, xfA, xfB, j, out Vector2 normal, out Vector2 point, out GGame.Math.Fix64 separation);
 
                     Vector2 rA = point - cA;
                     Vector2 rB = point - cB;
 
                     // Track max constraint error.
-                    minSeparation = Math.Min(minSeparation, separation);
+                    minSeparation = Math.Min((float)minSeparation, (float)separation);
 
                     // Prevent large corrections and allow slop.
-                    float C = MathUtils.Clamp(Settings.Baumgarte * (separation + Settings.LinearSlop), -Settings.MaxLinearCorrection, 0.0f);
+                    GGame.Math.Fix64 C = MathUtils.Clamp(Settings.Baumgarte * (separation + Settings.LinearSlop), -Settings.MaxLinearCorrection, 0.0f);
 
                     // Compute the effective mass.
-                    float rnA = MathUtils.Cross(rA, normal);
-                    float rnB = MathUtils.Cross(rB, normal);
-                    float K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+                    GGame.Math.Fix64 rnA = MathUtils.Cross(rA, normal);
+                    GGame.Math.Fix64 rnB = MathUtils.Cross(rB, normal);
+                    GGame.Math.Fix64 K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
 
                     // Compute normal impulse
-                    float impulse = K > 0.0f ? -C / K : 0.0f;
+                    GGame.Math.Fix64 impulse = K > 0.0f ? -C / K : 0.0f;
 
                     Vector2 P = impulse * normal;
 
@@ -705,7 +705,7 @@ namespace VelcroPhysics.Dynamics.Solver
         // Sequential position solver for position constraints.
         public bool SolveTOIPositionConstraints(int toiIndexA, int toiIndexB)
         {
-            float minSeparation = 0.0f;
+            GGame.Math.Fix64 minSeparation = 0.0f;
 
             for (int i = 0; i < _count; ++i)
             {
@@ -717,16 +717,16 @@ namespace VelcroPhysics.Dynamics.Solver
                 Vector2 localCenterB = pc.LocalCenterB;
                 int pointCount = pc.PointCount;
 
-                float mA = 0.0f;
-                float iA = 0.0f;
+                GGame.Math.Fix64 mA = 0.0f;
+                GGame.Math.Fix64 iA = 0.0f;
                 if (indexA == toiIndexA || indexA == toiIndexB)
                 {
                     mA = pc.InvMassA;
                     iA = pc.InvIA;
                 }
 
-                float mB = 0.0f;
-                float iB = 0.0f;
+                GGame.Math.Fix64 mB = 0.0f;
+                GGame.Math.Fix64 iB = 0.0f;
                 if (indexB == toiIndexA || indexB == toiIndexB)
                 {
                     mB = pc.InvMassB;
@@ -734,10 +734,10 @@ namespace VelcroPhysics.Dynamics.Solver
                 }
 
                 Vector2 cA = _positions[indexA].C;
-                float aA = _positions[indexA].A;
+                GGame.Math.Fix64 aA = _positions[indexA].A;
 
                 Vector2 cB = _positions[indexB].C;
-                float aB = _positions[indexB].A;
+                GGame.Math.Fix64 aB = _positions[indexB].A;
 
                 // Solve normal constraints
                 for (int j = 0; j < pointCount; ++j)
@@ -749,24 +749,24 @@ namespace VelcroPhysics.Dynamics.Solver
                     xfA.p = cA - MathUtils.Mul(xfA.q, localCenterA);
                     xfB.p = cB - MathUtils.Mul(xfB.q, localCenterB);
 
-                    PositionSolverManifold.Initialize(pc, xfA, xfB, j, out Vector2 normal, out Vector2 point, out float separation);
+                    PositionSolverManifold.Initialize(pc, xfA, xfB, j, out Vector2 normal, out Vector2 point, out GGame.Math.Fix64 separation);
 
                     Vector2 rA = point - cA;
                     Vector2 rB = point - cB;
 
                     // Track max constraint error.
-                    minSeparation = Math.Min(minSeparation, separation);
+                    minSeparation = Math.Min((float)minSeparation, (float)separation);
 
                     // Prevent large corrections and allow slop.
-                    float C = MathUtils.Clamp(Settings.Baumgarte * (separation + Settings.LinearSlop), -Settings.MaxLinearCorrection, 0.0f);
+                    GGame.Math.Fix64 C = MathUtils.Clamp(Settings.Baumgarte * (separation + Settings.LinearSlop), -Settings.MaxLinearCorrection, 0.0f);
 
                     // Compute the effective mass.
-                    float rnA = MathUtils.Cross(rA, normal);
-                    float rnB = MathUtils.Cross(rB, normal);
-                    float K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
+                    GGame.Math.Fix64 rnA = MathUtils.Cross(rA, normal);
+                    GGame.Math.Fix64 rnB = MathUtils.Cross(rB, normal);
+                    GGame.Math.Fix64 K = mA + mB + iA * rnA * rnA + iB * rnB * rnB;
 
                     // Compute normal impulse
-                    float impulse = K > 0.0f ? -C / K : 0.0f;
+                    GGame.Math.Fix64 impulse = K > 0.0f ? -C / K : 0.0f;
 
                     Vector2 P = impulse * normal;
 

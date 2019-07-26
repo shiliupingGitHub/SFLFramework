@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GGame.Math;
 
 namespace VelcroPhysics.Tools.Triangulation.Seidel
 {
     internal class MonotoneMountain
     {
         // Almost Pi!
-        private const float PiSlop = 3.1f;
+        private static GGame.Math.Fix64 PiSlop = 3.1f;
 
         private HashSet<Point> _convexPoints;
         private Point _head;
@@ -86,7 +87,7 @@ namespace VelcroPhysics.Tools.Triangulation.Seidel
             Point p = _head.Next;
             while (p.Neq(_tail))
             {
-                float a = Angle(p);
+                GGame.Math.Fix64 a = Angle(p);
 
                 // If the point is almost colinear with it's neighbor, remove it!
                 if (a >= PiSlop || a <= -PiSlop || a == 0.0f)
@@ -145,18 +146,18 @@ namespace VelcroPhysics.Tools.Triangulation.Seidel
             }
         }
 
-        private float Angle(Point p)
+        private GGame.Math.Fix64 Angle(Point p)
         {
             Point a = (p.Next - p);
             Point b = (p.Prev - p);
-            return (float)Math.Atan2(a.Cross(b), a.Dot(b));
+            return (GGame.Math.Fix64)Fix64.Atan2(a.Cross(b), a.Dot(b));
         }
 
         private bool AngleSign()
         {
             Point a = (_head.Next - _head);
             Point b = (_tail - _head);
-            return Math.Atan2(a.Cross(b), a.Dot(b)) >= 0;
+            return Fix64.Atan2(a.Cross(b), a.Dot(b)) >= 0;
         }
 
         // Determines if the inslide angle is convex or reflex

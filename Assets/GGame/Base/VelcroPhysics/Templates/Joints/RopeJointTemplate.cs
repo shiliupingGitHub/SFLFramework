@@ -26,7 +26,7 @@ namespace VelcroPhysics.Templates.Joints
         /// The maximum length of the rope.
         /// <remarks>This must be larger than Settings.LinearSlop or the joint will have no effect.</remarks>
         /// </summary>
-        public float MaxLength { get; set; }
+        public GGame.Math.Fix64 MaxLength { get; set; }
 
         public override void SetDefaults()
         {

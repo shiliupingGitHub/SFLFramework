@@ -1,4 +1,7 @@
-﻿#if !XNA && !WINDOWS_PHONE && !XBOX && !ANDROID && !MONOGAME
+﻿
+
+using GGame.Math;
+#if !XNA && !WINDOWS_PHONE && !XBOX && !ANDROID && !MONOGAME
 
 #region License
 
@@ -52,8 +55,8 @@ namespace Microsoft.Xna.Framework
 
         #region Public Fields
 
-        public float X;
-        public float Y;
+        public GGame.Math.Fix64 X;
+        public GGame.Math.Fix64 Y;
 
         #endregion Public Fields
 
@@ -92,7 +95,7 @@ namespace Microsoft.Xna.Framework
         /// <param name="y">
         /// A <see cref="System.Single"/>
         /// </param>
-        public Vector2(float x, float y)
+        public Vector2(GGame.Math.Fix64 x, GGame.Math.Fix64 y)
         {
             X = x;
             Y = y;
@@ -104,7 +107,7 @@ namespace Microsoft.Xna.Framework
         /// <param name="value">
         /// A <see cref="System.Single"/>
         /// </param>
-        public Vector2(float value)
+        public Vector2(GGame.Math.Fix64 value)
         {
             X = value;
             Y = value;
@@ -116,7 +119,7 @@ namespace Microsoft.Xna.Framework
 
         public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
         {
-            float dot = Dot(vector, normal);
+            GGame.Math.Fix64 dot = Dot(vector, normal);
             result.X = vector.X - ((2f * dot) * normal.X);
             result.Y = vector.Y - ((2f * dot) * normal.Y);
         }
@@ -141,22 +144,22 @@ namespace Microsoft.Xna.Framework
             result.Y = value1.Y + value2.Y;
         }
 
-        public static Vector2 Barycentric(Vector2 value1, Vector2 value2, Vector2 value3, float amount1, float amount2)
+        public static Vector2 Barycentric(Vector2 value1, Vector2 value2, Vector2 value3, GGame.Math.Fix64 amount1, GGame.Math.Fix64 amount2)
         {
             return new Vector2(
                 MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
                 MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2));
         }
 
-        public static void Barycentric(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, float amount1,
-                                       float amount2, out Vector2 result)
+        public static void Barycentric(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, GGame.Math.Fix64 amount1,
+                                       GGame.Math.Fix64 amount2, out Vector2 result)
         {
             result = new Vector2(
                 MathHelper.Barycentric(value1.X, value2.X, value3.X, amount1, amount2),
                 MathHelper.Barycentric(value1.Y, value2.Y, value3.Y, amount1, amount2));
         }
 
-        public static Vector2 CatmullRom(Vector2 value1, Vector2 value2, Vector2 value3, Vector2 value4, float amount)
+        public static Vector2 CatmullRom(Vector2 value1, Vector2 value2, Vector2 value3, Vector2 value4, GGame.Math.Fix64 amount)
         {
             return new Vector2(
                 MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
@@ -164,7 +167,7 @@ namespace Microsoft.Xna.Framework
         }
 
         public static void CatmullRom(ref Vector2 value1, ref Vector2 value2, ref Vector2 value3, ref Vector2 value4,
-                                      float amount, out Vector2 result)
+                                      GGame.Math.Fix64 amount, out Vector2 result)
         {
             result = new Vector2(
                 MathHelper.CatmullRom(value1.X, value2.X, value3.X, value4.X, amount),
@@ -186,7 +189,7 @@ namespace Microsoft.Xna.Framework
         }
 
         /// <summary>
-        /// Returns float precison distanve between two vectors
+        /// Returns GGame.Math.Fix64 precison distanve between two vectors
         /// </summary>
         /// <param name="value1">
         /// A <see cref="Vector2"/>
@@ -197,28 +200,28 @@ namespace Microsoft.Xna.Framework
         /// <returns>
         /// A <see cref="System.Single"/>
         /// </returns>
-        public static float Distance(Vector2 value1, Vector2 value2)
+        public static GGame.Math.Fix64 Distance(Vector2 value1, Vector2 value2)
         {
-            float result;
+            GGame.Math.Fix64 result;
             DistanceSquared(ref value1, ref value2, out result);
-            return (float)Math.Sqrt(result);
+            return GGame.Math.Fix64.Sqrt(result);
         }
 
 
-        public static void Distance(ref Vector2 value1, ref Vector2 value2, out float result)
+        public static void Distance(ref Vector2 value1, ref Vector2 value2, out GGame.Math.Fix64 result)
         {
             DistanceSquared(ref value1, ref value2, out result);
-            result = (float)Math.Sqrt(result);
+            result = GGame.Math.Fix64.Sqrt(result);
         }
 
-        public static float DistanceSquared(Vector2 value1, Vector2 value2)
+        public static GGame.Math.Fix64 DistanceSquared(Vector2 value1, Vector2 value2)
         {
-            float result;
+            GGame.Math.Fix64 result;
             DistanceSquared(ref value1, ref value2, out result);
             return result;
         }
 
-        public static void DistanceSquared(ref Vector2 value1, ref Vector2 value2, out float result)
+        public static void DistanceSquared(ref Vector2 value1, ref Vector2 value2, out GGame.Math.Fix64 result)
         {
             result = (value1.X - value2.X) * (value1.X - value2.X) + (value1.Y - value2.Y) * (value1.Y - value2.Y);
         }
@@ -248,27 +251,27 @@ namespace Microsoft.Xna.Framework
             result.Y = value1.Y / value2.Y;
         }
 
-        public static Vector2 Divide(Vector2 value1, float divider)
+        public static Vector2 Divide(Vector2 value1, GGame.Math.Fix64 divider)
         {
-            float factor = 1 / divider;
+            GGame.Math.Fix64 factor = 1 / divider;
             value1.X *= factor;
             value1.Y *= factor;
             return value1;
         }
 
-        public static void Divide(ref Vector2 value1, float divider, out Vector2 result)
+        public static void Divide(ref Vector2 value1, GGame.Math.Fix64 divider, out Vector2 result)
         {
-            float factor = 1 / divider;
+            GGame.Math.Fix64 factor = 1 / divider;
             result.X = value1.X * factor;
             result.Y = value1.Y * factor;
         }
 
-        public static float Dot(Vector2 value1, Vector2 value2)
+        public static GGame.Math.Fix64 Dot(Vector2 value1, Vector2 value2)
         {
             return value1.X * value2.X + value1.Y * value2.Y;
         }
 
-        public static void Dot(ref Vector2 value1, ref Vector2 value2, out float result)
+        public static void Dot(ref Vector2 value1, ref Vector2 value2, out GGame.Math.Fix64 result)
         {
             result = value1.X * value2.X + value1.Y * value2.Y;
         }
@@ -288,7 +291,7 @@ namespace Microsoft.Xna.Framework
             return (int)(X + Y);
         }
 
-        public static Vector2 Hermite(Vector2 value1, Vector2 tangent1, Vector2 value2, Vector2 tangent2, float amount)
+        public static Vector2 Hermite(Vector2 value1, Vector2 tangent1, Vector2 value2, Vector2 tangent2, GGame.Math.Fix64 amount)
         {
             Vector2 result = new Vector2();
             Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out result);
@@ -296,34 +299,34 @@ namespace Microsoft.Xna.Framework
         }
 
         public static void Hermite(ref Vector2 value1, ref Vector2 tangent1, ref Vector2 value2, ref Vector2 tangent2,
-                                   float amount, out Vector2 result)
+                                   GGame.Math.Fix64 amount, out Vector2 result)
         {
             result.X = MathHelper.Hermite(value1.X, tangent1.X, value2.X, tangent2.X, amount);
             result.Y = MathHelper.Hermite(value1.Y, tangent1.Y, value2.Y, tangent2.Y, amount);
         }
 
-        public float Length()
+        public GGame.Math.Fix64 Length()
         {
-            float result;
+            GGame.Math.Fix64 result;
             DistanceSquared(ref this, ref zeroVector, out result);
-            return (float)Math.Sqrt(result);
+            return (GGame.Math.Fix64)Fix64.Sqrt(result);
         }
 
-        public float LengthSquared()
+        public GGame.Math.Fix64 LengthSquared()
         {
-            float result;
+            GGame.Math.Fix64 result;
             DistanceSquared(ref this, ref zeroVector, out result);
             return result;
         }
 
-        public static Vector2 Lerp(Vector2 value1, Vector2 value2, float amount)
+        public static Vector2 Lerp(Vector2 value1, Vector2 value2, GGame.Math.Fix64 amount)
         {
             return new Vector2(
                 MathHelper.Lerp(value1.X, value2.X, amount),
                 MathHelper.Lerp(value1.Y, value2.Y, amount));
         }
 
-        public static void Lerp(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
+        public static void Lerp(ref Vector2 value1, ref Vector2 value2, GGame.Math.Fix64 amount, out Vector2 result)
         {
             result = new Vector2(
                 MathHelper.Lerp(value1.X, value2.X, amount),
@@ -365,14 +368,14 @@ namespace Microsoft.Xna.Framework
             return value1;
         }
 
-        public static Vector2 Multiply(Vector2 value1, float scaleFactor)
+        public static Vector2 Multiply(Vector2 value1, GGame.Math.Fix64 scaleFactor)
         {
             value1.X *= scaleFactor;
             value1.Y *= scaleFactor;
             return value1;
         }
 
-        public static void Multiply(ref Vector2 value1, float scaleFactor, out Vector2 result)
+        public static void Multiply(ref Vector2 value1, GGame.Math.Fix64 scaleFactor, out Vector2 result)
         {
             result.X = value1.X * scaleFactor;
             result.Y = value1.Y * scaleFactor;
@@ -410,21 +413,21 @@ namespace Microsoft.Xna.Framework
 
         public static void Normalize(ref Vector2 value, out Vector2 result)
         {
-            float factor;
+            GGame.Math.Fix64 factor;
             DistanceSquared(ref value, ref zeroVector, out factor);
-            factor = 1f / (float)Math.Sqrt(factor);
+            factor = 1f / (GGame.Math.Fix64)Fix64.Sqrt(factor);
             result.X = value.X * factor;
             result.Y = value.Y * factor;
         }
 
-        public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, float amount)
+        public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, GGame.Math.Fix64 amount)
         {
             return new Vector2(
                 MathHelper.SmoothStep(value1.X, value2.X, amount),
                 MathHelper.SmoothStep(value1.Y, value2.Y, amount));
         }
 
-        public static void SmoothStep(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
+        public static void SmoothStep(ref Vector2 value1, ref Vector2 value2, GGame.Math.Fix64 amount, out Vector2 result)
         {
             result = new Vector2(
                 MathHelper.SmoothStep(value1.X, value2.X, amount),
@@ -549,7 +552,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Vector2 operator *(Vector2 value, float scaleFactor)
+        public static Vector2 operator *(Vector2 value, GGame.Math.Fix64 scaleFactor)
         {
             value.X *= scaleFactor;
             value.Y *= scaleFactor;
@@ -557,7 +560,7 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Vector2 operator *(float scaleFactor, Vector2 value)
+        public static Vector2 operator *(GGame.Math.Fix64 scaleFactor, Vector2 value)
         {
             value.X *= scaleFactor;
             value.Y *= scaleFactor;
@@ -573,9 +576,9 @@ namespace Microsoft.Xna.Framework
         }
 
 
-        public static Vector2 operator /(Vector2 value1, float divider)
+        public static Vector2 operator /(Vector2 value1, GGame.Math.Fix64 divider)
         {
-            float factor = 1 / divider;
+            GGame.Math.Fix64 factor = 1 / divider;
             value1.X *= factor;
             value1.Y *= factor;
             return value1;

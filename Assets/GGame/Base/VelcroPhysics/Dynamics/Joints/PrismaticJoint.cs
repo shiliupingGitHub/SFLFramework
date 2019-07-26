@@ -22,6 +22,7 @@
 
 using System;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Dynamics.Solver;
 using VelcroPhysics.Shared;
@@ -100,7 +101,7 @@ namespace VelcroPhysics.Dynamics.Joints
     /// </summary>
     public class PrismaticJoint : Joint
     {
-        private float _a1, _a2;
+        private GGame.Math.Fix64 _a1, _a2;
         private Vector2 _axis, _perp;
         private Vector2 _axis1;
         private bool _enableLimit;
@@ -111,21 +112,21 @@ namespace VelcroPhysics.Dynamics.Joints
         private int _indexA;
 
         private int _indexB;
-        private float _invIA;
-        private float _invIB;
-        private float _invMassA;
-        private float _invMassB;
+        private GGame.Math.Fix64 _invIA;
+        private GGame.Math.Fix64 _invIB;
+        private GGame.Math.Fix64 _invMassA;
+        private GGame.Math.Fix64 _invMassB;
         private Mat33 _K;
         private LimitState _limitState;
         private Vector2 _localCenterA;
         private Vector2 _localCenterB;
         private Vector2 _localYAxisA;
-        private float _lowerTranslation;
-        private float _maxMotorForce;
-        private float _motorMass;
-        private float _motorSpeed;
-        private float _s1, _s2;
-        private float _upperTranslation;
+        private GGame.Math.Fix64 _lowerTranslation;
+        private GGame.Math.Fix64 _maxMotorForce;
+        private GGame.Math.Fix64 _motorMass;
+        private GGame.Math.Fix64 _motorSpeed;
+        private GGame.Math.Fix64 _s1, _s2;
+        private GGame.Math.Fix64 _upperTranslation;
 
         internal PrismaticJoint()
         {
@@ -184,7 +185,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Get the current joint translation, usually in meters.
         /// </summary>
         /// <value></value>
-        public float JointTranslation
+        public GGame.Math.Fix64 JointTranslation
         {
             get
             {
@@ -199,7 +200,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Get the current joint translation speed, usually in meters per second.
         /// </summary>
         /// <value></value>
-        public float JointSpeed
+        public GGame.Math.Fix64 JointSpeed
         {
             get
             {
@@ -216,10 +217,10 @@ namespace VelcroPhysics.Dynamics.Joints
 
                 Vector2 v1 = BodyA._linearVelocity;
                 Vector2 v2 = BodyB._linearVelocity;
-                float w1 = BodyA._angularVelocity;
-                float w2 = BodyB._angularVelocity;
+                GGame.Math.Fix64 w1 = BodyA._angularVelocity;
+                GGame.Math.Fix64 w2 = BodyB._angularVelocity;
 
-                float speed = Vector2.Dot(d, MathUtils.Cross(w1, axis)) + Vector2.Dot(axis, v2 + MathUtils.Cross(w2, r2) - v1 - MathUtils.Cross(w1, r1));
+                GGame.Math.Fix64 speed = Vector2.Dot(d, MathUtils.Cross(w1, axis)) + Vector2.Dot(axis, v2 + MathUtils.Cross(w2, r2) - v1 - MathUtils.Cross(w1, r1));
                 return speed;
             }
         }
@@ -248,7 +249,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Get the lower joint limit, usually in meters.
         /// </summary>
         /// <value></value>
-        public float LowerLimit
+        public GGame.Math.Fix64 LowerLimit
         {
             get { return _lowerTranslation; }
             set
@@ -266,7 +267,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Get the upper joint limit, usually in meters.
         /// </summary>
         /// <value></value>
-        public float UpperLimit
+        public GGame.Math.Fix64 UpperLimit
         {
             get { return _upperTranslation; }
             set
@@ -301,7 +302,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Set the motor speed, usually in meters per second.
         /// </summary>
         /// <value>The speed.</value>
-        public float MotorSpeed
+        public GGame.Math.Fix64 MotorSpeed
         {
             set
             {
@@ -318,7 +319,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Set the maximum motor force, usually in N.
         /// </summary>
         /// <value>The force.</value>
-        public float MaxMotorForce
+        public GGame.Math.Fix64 MaxMotorForce
         {
             get { return _maxMotorForce; }
             set
@@ -335,7 +336,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Get the current motor impulse, usually in N.
         /// </summary>
         /// <value></value>
-        public float MotorImpulse { get; set; }
+        public GGame.Math.Fix64 MotorImpulse { get; set; }
 
         /// <summary>
         /// The axis at which the joint moves.
@@ -360,7 +361,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// The reference angle.
         /// </summary>
-        public float ReferenceAngle { get; set; }
+        public GGame.Math.Fix64 ReferenceAngle { get; set; }
 
         private void Initialize(Vector2 localAnchorA, Vector2 localAnchorB, Vector2 axis, bool useWorldCoordinates)
         {
@@ -388,7 +389,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// </summary>
         /// <param name="lower">The lower limit</param>
         /// <param name="upper">The upper limit</param>
-        public void SetLimits(float lower, float upper)
+        public void SetLimits(GGame.Math.Fix64 lower, GGame.Math.Fix64 upper)
         {
             if (upper == _upperTranslation && lower == _lowerTranslation)
                 return;
@@ -403,17 +404,17 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Gets the motor force.
         /// </summary>
         /// <param name="invDt">The inverse delta time</param>
-        public float GetMotorForce(float invDt)
+        public GGame.Math.Fix64 GetMotorForce(GGame.Math.Fix64 invDt)
         {
             return invDt * MotorImpulse;
         }
 
-        public override Vector2 GetReactionForce(float invDt)
+        public override Vector2 GetReactionForce(GGame.Math.Fix64 invDt)
         {
             return invDt * (_impulse.X * _perp + (MotorImpulse + _impulse.Z) * _axis);
         }
 
-        public override float GetReactionTorque(float invDt)
+        public override GGame.Math.Fix64 GetReactionTorque(GGame.Math.Fix64 invDt)
         {
             return invDt * _impulse.Y;
         }
@@ -430,14 +431,14 @@ namespace VelcroPhysics.Dynamics.Joints
             _invIB = BodyB._invI;
 
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
 
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -446,8 +447,8 @@ namespace VelcroPhysics.Dynamics.Joints
             Vector2 rB = MathUtils.Mul(qB, LocalAnchorB - _localCenterB);
             Vector2 d = (cB - cA) + rB - rA;
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIA, iB = _invIB;
+            GGame.Math.Fix64 mA = _invMassA, mB = _invMassB;
+            GGame.Math.Fix64 iA = _invIA, iB = _invIB;
 
             // Compute motor Jacobian and effective mass.
             {
@@ -469,17 +470,17 @@ namespace VelcroPhysics.Dynamics.Joints
                 _s1 = MathUtils.Cross(d + rA, _perp);
                 _s2 = MathUtils.Cross(rB, _perp);
 
-                float k11 = mA + mB + iA * _s1 * _s1 + iB * _s2 * _s2;
-                float k12 = iA * _s1 + iB * _s2;
-                float k13 = iA * _s1 * _a1 + iB * _s2 * _a2;
-                float k22 = iA + iB;
+                GGame.Math.Fix64 k11 = mA + mB + iA * _s1 * _s1 + iB * _s2 * _s2;
+                GGame.Math.Fix64 k12 = iA * _s1 + iB * _s2;
+                GGame.Math.Fix64 k13 = iA * _s1 * _a1 + iB * _s2 * _a2;
+                GGame.Math.Fix64 k22 = iA + iB;
                 if (k22 == 0.0f)
                 {
                     // For bodies with fixed rotation.
                     k22 = 1.0f;
                 }
-                float k23 = iA * _a1 + iB * _a2;
-                float k33 = mA + mB + iA * _a1 * _a1 + iB * _a2 * _a2;
+                GGame.Math.Fix64 k23 = iA * _a1 + iB * _a2;
+                GGame.Math.Fix64 k33 = mA + mB + iA * _a1 * _a1 + iB * _a2 * _a2;
 
                 _K.ex = new Vector3(k11, k12, k13);
                 _K.ey = new Vector3(k12, k22, k23);
@@ -489,8 +490,8 @@ namespace VelcroPhysics.Dynamics.Joints
             // Compute motor and limit terms.
             if (_enableLimit)
             {
-                float jointTranslation = Vector2.Dot(_axis, d);
-                if (Math.Abs(_upperTranslation - _lowerTranslation) < 2.0f * Settings.LinearSlop)
+                GGame.Math.Fix64 jointTranslation = Vector2.Dot(_axis, d);
+                if (Fix64.Abs(_upperTranslation - _lowerTranslation) < 2.0f * Settings.LinearSlop)
                 {
                     _limitState = LimitState.Equal;
                 }
@@ -534,8 +535,8 @@ namespace VelcroPhysics.Dynamics.Joints
                 MotorImpulse *= data.Step.dtRatio;
 
                 Vector2 P = _impulse.X * _perp + (MotorImpulse + _impulse.Z) * _axis;
-                float LA = _impulse.X * _s1 + _impulse.Y + (MotorImpulse + _impulse.Z) * _a1;
-                float LB = _impulse.X * _s2 + _impulse.Y + (MotorImpulse + _impulse.Z) * _a2;
+                GGame.Math.Fix64 LA = _impulse.X * _s1 + _impulse.Y + (MotorImpulse + _impulse.Z) * _a1;
+                GGame.Math.Fix64 LB = _impulse.X * _s2 + _impulse.Y + (MotorImpulse + _impulse.Z) * _a2;
 
                 vA -= mA * P;
                 wA -= iA * LA;
@@ -558,26 +559,26 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override void SolveVelocityConstraints(ref SolverData data)
         {
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIA, iB = _invIB;
+            GGame.Math.Fix64 mA = _invMassA, mB = _invMassB;
+            GGame.Math.Fix64 iA = _invIA, iB = _invIB;
 
             // Solve linear motor constraint.
             if (_enableMotor && _limitState != LimitState.Equal)
             {
-                float Cdot = Vector2.Dot(_axis, vB - vA) + _a2 * wB - _a1 * wA;
-                float impulse = _motorMass * (_motorSpeed - Cdot);
-                float oldImpulse = MotorImpulse;
-                float maxImpulse = data.Step.dt * _maxMotorForce;
+                GGame.Math.Fix64 Cdot = Vector2.Dot(_axis, vB - vA) + _a2 * wB - _a1 * wA;
+                GGame.Math.Fix64 impulse = _motorMass * (_motorSpeed - Cdot);
+                GGame.Math.Fix64 oldImpulse = MotorImpulse;
+                GGame.Math.Fix64 maxImpulse = data.Step.dt * _maxMotorForce;
                 MotorImpulse = MathUtils.Clamp(MotorImpulse + impulse, -maxImpulse, maxImpulse);
                 impulse = MotorImpulse - oldImpulse;
 
                 Vector2 P = impulse * _axis;
-                float LA = impulse * _a1;
-                float LB = impulse * _a2;
+                GGame.Math.Fix64 LA = impulse * _a1;
+                GGame.Math.Fix64 LB = impulse * _a2;
 
                 vA -= mA * P;
                 wA -= iA * LA;
@@ -593,7 +594,7 @@ namespace VelcroPhysics.Dynamics.Joints
             if (_enableLimit && _limitState != LimitState.Inactive)
             {
                 // Solve prismatic and limit constraint in block form.
-                float Cdot2;
+                GGame.Math.Fix64 Cdot2;
                 Cdot2 = Vector2.Dot(_axis, vB - vA) + _a2 * wB - _a1 * wA;
                 Vector3 Cdot = new Vector3(Cdot1.X, Cdot1.Y, Cdot2);
 
@@ -603,11 +604,11 @@ namespace VelcroPhysics.Dynamics.Joints
 
                 if (_limitState == LimitState.AtLower)
                 {
-                    _impulse.Z = Math.Max(_impulse.Z, 0.0f);
+                    _impulse.Z = Math.Max((float)_impulse.Z, 0.0f);
                 }
                 else if (_limitState == LimitState.AtUpper)
                 {
-                    _impulse.Z = Math.Min(_impulse.Z, 0.0f);
+                    _impulse.Z = Math.Min((float)_impulse.Z, 0.0f);
                 }
 
                 // f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
@@ -619,8 +620,8 @@ namespace VelcroPhysics.Dynamics.Joints
                 df = _impulse - f1;
 
                 Vector2 P = df.X * _perp + df.Z * _axis;
-                float LA = df.X * _s1 + df.Y + df.Z * _a1;
-                float LB = df.X * _s2 + df.Y + df.Z * _a2;
+                GGame.Math.Fix64 LA = df.X * _s1 + df.Y + df.Z * _a1;
+                GGame.Math.Fix64 LB = df.X * _s2 + df.Y + df.Z * _a2;
 
                 vA -= mA * P;
                 wA -= iA * LA;
@@ -636,8 +637,8 @@ namespace VelcroPhysics.Dynamics.Joints
                 _impulse.Y += df.Y;
 
                 Vector2 P = df.X * _perp;
-                float LA = df.X * _s1 + df.Y;
-                float LB = df.X * _s2 + df.Y;
+                GGame.Math.Fix64 LA = df.X * _s1 + df.Y;
+                GGame.Math.Fix64 LB = df.X * _s2 + df.Y;
 
                 vA -= mA * P;
                 wA -= iA * LA;
@@ -655,14 +656,14 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override bool SolvePositionConstraints(ref SolverData data)
         {
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIA, iB = _invIB;
+            GGame.Math.Fix64 mA = _invMassA, mB = _invMassB;
+            GGame.Math.Fix64 iA = _invIA, iB = _invIB;
 
             // Compute fresh Jacobians
             Vector2 rA = MathUtils.Mul(qA, LocalAnchorA - _localCenterA);
@@ -670,62 +671,62 @@ namespace VelcroPhysics.Dynamics.Joints
             Vector2 d = cB + rB - cA - rA;
 
             Vector2 axis = MathUtils.Mul(qA, LocalXAxis);
-            float a1 = MathUtils.Cross(d + rA, axis);
-            float a2 = MathUtils.Cross(rB, axis);
+            GGame.Math.Fix64 a1 = MathUtils.Cross(d + rA, axis);
+            GGame.Math.Fix64 a2 = MathUtils.Cross(rB, axis);
             Vector2 perp = MathUtils.Mul(qA, _localYAxisA);
 
-            float s1 = MathUtils.Cross(d + rA, perp);
-            float s2 = MathUtils.Cross(rB, perp);
+            GGame.Math.Fix64 s1 = MathUtils.Cross(d + rA, perp);
+            GGame.Math.Fix64 s2 = MathUtils.Cross(rB, perp);
 
             Vector3 impulse;
             Vector2 C1 = new Vector2();
             C1.X = Vector2.Dot(perp, d);
             C1.Y = aB - aA - ReferenceAngle;
 
-            float linearError = Math.Abs(C1.X);
-            float angularError = Math.Abs(C1.Y);
+            GGame.Math.Fix64 linearError = GGame.Math.Fix64.Abs(C1.X);
+            GGame.Math.Fix64 angularError = GGame.Math.Fix64.Abs(C1.Y);
 
             bool active = false;
-            float C2 = 0.0f;
+            GGame.Math.Fix64 C2 = 0.0f;
             if (_enableLimit)
             {
-                float translation = Vector2.Dot(axis, d);
-                if (Math.Abs(_upperTranslation - _lowerTranslation) < 2.0f * Settings.LinearSlop)
+                GGame.Math.Fix64 translation = Vector2.Dot(axis, d);
+                if (GGame.Math.Fix64.Abs(_upperTranslation - _lowerTranslation) < 2.0f * Settings.LinearSlop)
                 {
                     // Prevent large angular corrections
                     C2 = MathUtils.Clamp(translation, -Settings.MaxLinearCorrection, Settings.MaxLinearCorrection);
-                    linearError = Math.Max(linearError, Math.Abs(translation));
+                    linearError = Math.Max((float)linearError,(float) GGame.Math.Fix64.Abs(translation));
                     active = true;
                 }
                 else if (translation <= _lowerTranslation)
                 {
                     // Prevent large linear corrections and allow some slop.
                     C2 = MathUtils.Clamp(translation - _lowerTranslation + Settings.LinearSlop, -Settings.MaxLinearCorrection, 0.0f);
-                    linearError = Math.Max(linearError, _lowerTranslation - translation);
+                    linearError = Math.Max((float)linearError, (float)(_lowerTranslation - translation));
                     active = true;
                 }
                 else if (translation >= _upperTranslation)
                 {
                     // Prevent large linear corrections and allow some slop.
                     C2 = MathUtils.Clamp(translation - _upperTranslation - Settings.LinearSlop, 0.0f, Settings.MaxLinearCorrection);
-                    linearError = Math.Max(linearError, translation - _upperTranslation);
+                    linearError = Math.Max((float)linearError, (float)(translation - _upperTranslation));
                     active = true;
                 }
             }
 
             if (active)
             {
-                float k11 = mA + mB + iA * s1 * s1 + iB * s2 * s2;
-                float k12 = iA * s1 + iB * s2;
-                float k13 = iA * s1 * a1 + iB * s2 * a2;
-                float k22 = iA + iB;
+                GGame.Math.Fix64 k11 = mA + mB + iA * s1 * s1 + iB * s2 * s2;
+                GGame.Math.Fix64 k12 = iA * s1 + iB * s2;
+                GGame.Math.Fix64 k13 = iA * s1 * a1 + iB * s2 * a2;
+                GGame.Math.Fix64 k22 = iA + iB;
                 if (k22 == 0.0f)
                 {
                     // For fixed rotation
                     k22 = 1.0f;
                 }
-                float k23 = iA * a1 + iB * a2;
-                float k33 = mA + mB + iA * a1 * a1 + iB * a2 * a2;
+                GGame.Math.Fix64 k23 = iA * a1 + iB * a2;
+                GGame.Math.Fix64 k33 = mA + mB + iA * a1 * a1 + iB * a2 * a2;
 
                 Mat33 K = new Mat33();
                 K.ex = new Vector3(k11, k12, k13);
@@ -741,9 +742,9 @@ namespace VelcroPhysics.Dynamics.Joints
             }
             else
             {
-                float k11 = mA + mB + iA * s1 * s1 + iB * s2 * s2;
-                float k12 = iA * s1 + iB * s2;
-                float k22 = iA + iB;
+                GGame.Math.Fix64 k11 = mA + mB + iA * s1 * s1 + iB * s2 * s2;
+                GGame.Math.Fix64 k12 = iA * s1 + iB * s2;
+                GGame.Math.Fix64 k22 = iA + iB;
                 if (k22 == 0.0f)
                 {
                     k22 = 1.0f;
@@ -761,8 +762,8 @@ namespace VelcroPhysics.Dynamics.Joints
             }
 
             Vector2 P = impulse.X * perp + impulse.Z * axis;
-            float LA = impulse.X * s1 + impulse.Y + impulse.Z * a1;
-            float LB = impulse.X * s2 + impulse.Y + impulse.Z * a2;
+            GGame.Math.Fix64 LA = impulse.X * s1 + impulse.Y + impulse.Z * a1;
+            GGame.Math.Fix64 LB = impulse.X * s2 + impulse.Y + impulse.Z * a2;
 
             cA -= mA * P;
             aA -= iA * LA;

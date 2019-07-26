@@ -63,7 +63,7 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay
                 Vertices v = new Vertices();
                 foreach (TriangulationPoint p in triangle.Points)
                 {
-                    v.Add(new Vector2((float)p.X, (float)p.Y));
+                    v.Add(new Vector2((GGame.Math.Fix64)p.X, (GGame.Math.Fix64)p.Y));
                 }
                 results.Add(v);
             }

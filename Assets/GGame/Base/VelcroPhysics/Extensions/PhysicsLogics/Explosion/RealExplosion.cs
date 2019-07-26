@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Collision.RayCast;
 using VelcroPhysics.Collision.Shapes;
@@ -12,7 +13,7 @@ using VelcroPhysics.Utilities;
 namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
 {
     // Original Code by Steven Lu - see http://www.box2d.org/forum/viewtopic.php?f=3&t=1688
-    // Ported by Nicolás Hormazábal
+    // Ported by Nicolï¿½s Hormazï¿½bal
 
     /* Methodology:
      * Force applied at a ray is inversely proportional to the square of distance from source
@@ -38,7 +39,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
         /// <summary>
         /// Two degrees: maximum angle from edges to first ray tested
         /// </summary>
-        private const float MaxEdgeOffset = MathHelper.Pi / 90;
+        private static GGame.Math.Fix64 MaxEdgeOffset = MathHelper.Pi / 90;
 
         private List<ShapeData> _data = new List<ShapeData>();
         private RayDataComparer _rdc;
@@ -47,7 +48,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
         /// Ratio of arc length to angle from edges to first ray tested.
         /// Defaults to 1/40.
         /// </summary>
-        public float EdgeRatio = 1.0f / 40.0f;
+        public GGame.Math.Fix64 EdgeRatio = 1.0f / 40.0f;
 
         /// <summary>
         /// Ignore Explosion if it happens inside a shape.
@@ -59,7 +60,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
         /// Max angle between rays (used when segment is large).
         /// Defaults to 15 degrees
         /// </summary>
-        public float MaxAngle = MathHelper.Pi / 15;
+        public GGame.Math.Fix64 MaxAngle = MathHelper.Pi / 15;
 
         /// <summary>
         /// Maximum number of shapes involved in the explosion.
@@ -90,7 +91,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
         /// distance)
         /// </param>
         /// <returns>A list of bodies and the amount of force that was applied to them.</returns>
-        public Dictionary<Fixture, Vector2> Activate(Vector2 pos, float radius, float maxForce)
+        public Dictionary<Fixture, Vector2> Activate(Vector2 pos, GGame.Math.Fix64 radius, GGame.Math.Fix64 maxForce)
         {
             AABB aabb;
             aabb.LowerBound = pos + new Vector2(-radius, -radius);
@@ -133,7 +134,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
             Dictionary<Fixture, Vector2> exploded = new Dictionary<Fixture, Vector2>(shapeCount + containedShapeCount);
 
             // Per shape max/min angles for now.
-            float[] vals = new float[shapeCount * 2];
+            GGame.Math.Fix64[] vals = new GGame.Math.Fix64[shapeCount * 2];
             int valIndex = 0;
             for (int i = 0; i < shapeCount; ++i)
             {
@@ -159,17 +160,17 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
                 if ((shapes[i].Body.BodyType == BodyType.Dynamic) && ps != null)
                 {
                     Vector2 toCentroid = shapes[i].Body.GetWorldPoint(ps.MassData.Centroid) - pos;
-                    float angleToCentroid = (float)Math.Atan2(toCentroid.Y, toCentroid.X);
-                    float min = float.MaxValue;
-                    float max = float.MinValue;
-                    float minAbsolute = 0.0f;
-                    float maxAbsolute = 0.0f;
+                    GGame.Math.Fix64 angleToCentroid = (GGame.Math.Fix64)Fix64.Atan2(toCentroid.Y, toCentroid.X);
+                    GGame.Math.Fix64 min = GGame.Math.Fix64.MaxValue;
+                    GGame.Math.Fix64 max = GGame.Math.Fix64.MinValue;
+                    GGame.Math.Fix64 minAbsolute = 0.0f;
+                    GGame.Math.Fix64 maxAbsolute = 0.0f;
 
                     for (int j = 0; j < ps.Vertices.Count; ++j)
                     {
                         Vector2 toVertex = (shapes[i].Body.GetWorldPoint(ps.Vertices[j]) - pos);
-                        float newAngle = (float)Math.Atan2(toVertex.Y, toVertex.X);
-                        float diff = (newAngle - angleToCentroid);
+                        GGame.Math.Fix64 newAngle = (GGame.Math.Fix64)Fix64.Atan2(toVertex.Y, toVertex.X);
+                        GGame.Math.Fix64 diff = (newAngle - angleToCentroid);
 
                         diff = (diff - MathHelper.Pi) % (2 * MathHelper.Pi);
 
@@ -180,7 +181,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
 
                         diff -= MathHelper.Pi;
 
-                        if (Math.Abs(diff) > MathHelper.Pi)
+                        if (Fix64.Abs(diff) > MathHelper.Pi)
                             continue; // Something's wrong, point not in shape but exists angle diff > 180
 
                         if (diff > max)
@@ -209,7 +210,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
             for (int i = 0; i < valIndex; ++i)
             {
                 Fixture fixture = null;
-                float midpt;
+                GGame.Math.Fix64 midpt;
 
                 int iplus = (i == valIndex - 1 ? 0 : i + 1);
                 if (vals[i] == vals[iplus])
@@ -228,7 +229,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
                 midpt = midpt / 2;
 
                 Vector2 p1 = pos;
-                Vector2 p2 = radius * new Vector2((float)Math.Cos(midpt), (float)Math.Sin(midpt)) + pos;
+                Vector2 p2 = radius * new Vector2((GGame.Math.Fix64)Fix64.Cos(midpt), (GGame.Math.Fix64)Fix64.Sin(midpt)) + pos;
 
                 // RaycastOne
                 bool hitClosest = false;
@@ -301,26 +302,26 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
                 if (!IsActiveOn(_data[i].Body))
                     continue;
 
-                float arclen = _data[i].Max - _data[i].Min;
+                GGame.Math.Fix64 arclen = _data[i].Max - _data[i].Min;
 
-                float first = MathHelper.Min(MaxEdgeOffset, EdgeRatio * arclen);
-                int insertedRays = (int)Math.Ceiling(((arclen - 2.0f * first) - (MinRays - 1) * MaxAngle) / MaxAngle);
+                GGame.Math.Fix64 first = MathHelper.Min(MaxEdgeOffset, EdgeRatio * arclen);
+                int insertedRays = (int)Fix64.Ceiling(((arclen - 2.0f * first) - (MinRays - 1) * MaxAngle) / MaxAngle);
 
                 if (insertedRays < 0)
                     insertedRays = 0;
 
-                float offset = (arclen - first * 2.0f) / ((float)MinRays + insertedRays - 1);
+                GGame.Math.Fix64 offset = (arclen - first * 2.0f) / ((GGame.Math.Fix64)MinRays + insertedRays - 1);
 
-                //Note: This loop can go into infinite as it operates on floats.
-                //Added FloatEquals with a large epsilon.
-                for (float j = _data[i].Min + first;
-                     j < _data[i].Max || MathUtils.FloatEquals(j, _data[i].Max, 0.0001f);
+                //Note: This loop can go into infinite as it operates on GGame.Math.Fix64s.
+                //Added GGame.Math.Fix64Equals with a large epsilon.
+                for (GGame.Math.Fix64 j = _data[i].Min + first;
+                     j < _data[i].Max || MathUtils.Fix64Equals(j, _data[i].Max, 0.0001f);
                      j += offset)
                 {
                     Vector2 p1 = pos;
-                    Vector2 p2 = pos + radius * new Vector2((float)Math.Cos(j), (float)Math.Sin(j));
+                    Vector2 p2 = pos + radius * new Vector2((GGame.Math.Fix64)Fix64.Cos(j), (GGame.Math.Fix64)Fix64.Sin(j));
                     Vector2 hitpoint = Vector2.Zero;
-                    float minlambda = float.MaxValue;
+                    GGame.Math.Fix64 minlambda = GGame.Math.Fix64.MaxValue;
 
                     List<Fixture> fl = _data[i].Body.FixtureList;
                     for (int x = 0; x < fl.Count; x++)
@@ -343,10 +344,10 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
 
                         // the force that is to be applied for this particular ray.
                         // offset is angular coverage. lambda*length of segment is distance.
-                        float impulse = (arclen / (MinRays + insertedRays)) * maxForce * 180.0f / MathHelper.Pi * (1.0f - Math.Min(1.0f, minlambda));
+                        GGame.Math.Fix64 impulse = (arclen / (MinRays + insertedRays)) * maxForce * 180.0f / MathHelper.Pi * (1.0f - Math.Min(1.0f, (float)minlambda));
 
                         // We Apply the impulse!!!
-                        Vector2 vectImp = Vector2.Dot(impulse * new Vector2((float)Math.Cos(j), (float)Math.Sin(j)), -ro.Normal) * new Vector2((float)Math.Cos(j), (float)Math.Sin(j));
+                        Vector2 vectImp = Vector2.Dot(impulse * new Vector2((GGame.Math.Fix64)Fix64.Cos(j), (GGame.Math.Fix64)Fix64.Sin(j)), -ro.Normal) * new Vector2((GGame.Math.Fix64)Fix64.Cos(j), (GGame.Math.Fix64)Fix64.Sin(j));
                         _data[i].Body.ApplyLinearImpulse(ref vectImp, ref hitpoint);
 
                         // We gather the fixtures for returning them
@@ -369,7 +370,7 @@ namespace VelcroPhysics.Extensions.PhysicsLogics.Explosion
                 if (!IsActiveOn(fix.Body))
                     continue;
 
-                float impulse = MinRays * maxForce * 180.0f / MathHelper.Pi;
+                GGame.Math.Fix64 impulse = MinRays * maxForce * 180.0f / MathHelper.Pi;
                 Vector2 hitPoint;
 
                 CircleShape circShape = fix.Shape as CircleShape;

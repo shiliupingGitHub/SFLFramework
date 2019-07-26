@@ -42,31 +42,31 @@ namespace VelcroPhysics.Templates
         /// <summary>
         /// The world angle of the body in radians.
         /// </summary>
-        public float Angle { get; set; }
+        public GGame.Math.Fix64 Angle { get; set; }
 
         /// <summary>
         /// Angular damping is use to reduce the angular velocity. The damping parameter
         /// can be larger than 1.0f but the damping effect becomes sensitive to the
         /// time step when the damping parameter is large.
         /// </summary>
-        public float AngularDamping { get; set; }
+        public GGame.Math.Fix64 AngularDamping { get; set; }
 
         /// <summary>
         /// The angular velocity of the body.
         /// </summary>
-        public float AngularVelocity { get; set; }
+        public GGame.Math.Fix64 AngularVelocity { get; set; }
 
         /// <summary>
         /// Scale the gravity applied to this body.
         /// </summary>
-        public float GravityScale { get; set; }
+        public GGame.Math.Fix64 GravityScale { get; set; }
 
         /// <summary>
         /// Linear damping is use to reduce the linear velocity. The damping parameter
         /// can be larger than 1.0f but the damping effect becomes sensitive to the
         /// time step when the damping parameter is large.
         /// </summary>
-        public float LinearDamping { get; set; }
+        public GGame.Math.Fix64 LinearDamping { get; set; }
 
         /// <summary>
         /// The linear velocity of the body's origin in world co-ordinates.

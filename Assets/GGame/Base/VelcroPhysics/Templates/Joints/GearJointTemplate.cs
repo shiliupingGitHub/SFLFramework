@@ -19,7 +19,7 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The gear ratio.
         /// </summary>
-        public float Ratio { get; set; }
+        public GGame.Math.Fix64 Ratio { get; set; }
 
         public override void SetDefaults()
         {

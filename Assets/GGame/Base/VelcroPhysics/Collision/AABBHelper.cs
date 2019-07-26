@@ -19,7 +19,7 @@ namespace VelcroPhysics.Collision
             aabb.UpperBound = aabb.UpperBound + r;
         }
 
-        public static void ComputeCircleAABB(ref Vector2 pos, float radius, ref Transform transform, out AABB aabb)
+        public static void ComputeCircleAABB(ref Vector2 pos, GGame.Math.Fix64 radius, ref Transform transform, out AABB aabb)
         {
             Vector2 p = transform.p + MathUtils.Mul(transform.q, pos);
             aabb.LowerBound = new Vector2(p.X - radius, p.Y - radius);

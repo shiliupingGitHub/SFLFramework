@@ -30,11 +30,11 @@ namespace VelcroPhysics.Collision.Narrowphase
         /// <summary>
         /// The non-penetration impulse
         /// </summary>
-        public float NormalImpulse;
+        public GGame.Math.Fix64 NormalImpulse;
 
         /// <summary>
         /// The friction impulse
         /// </summary>
-        public float TangentImpulse;
+        public GGame.Math.Fix64 TangentImpulse;
     }
 }

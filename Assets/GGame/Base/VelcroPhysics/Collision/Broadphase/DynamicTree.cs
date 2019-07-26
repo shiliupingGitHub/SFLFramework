@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Collision.RayCast;
 using VelcroPhysics.Shared;
@@ -92,7 +93,7 @@ namespace VelcroPhysics.Collision.Broadphase
         /// <summary>
         /// Get the ratio of the sum of the node areas to the root area.
         /// </summary>
-        public float AreaRatio
+        public GGame.Math.Fix64 AreaRatio
         {
             get
             {
@@ -102,9 +103,9 @@ namespace VelcroPhysics.Collision.Broadphase
                 }
 
                 TreeNode<T> root = _nodes[_root];
-                float rootArea = root.AABB.Perimeter;
+                GGame.Math.Fix64 rootArea = root.AABB.Perimeter;
 
-                float totalArea = 0.0f;
+                GGame.Math.Fix64 totalArea = 0.0f;
                 for (int i = 0; i < _nodeCapacity; ++i)
                 {
                     TreeNode<T> node = _nodes[i];
@@ -142,7 +143,7 @@ namespace VelcroPhysics.Collision.Broadphase
 
                     int child1 = node.Child1;
                     int child2 = node.Child2;
-                    int balance = Math.Abs(_nodes[child2].Height - _nodes[child1].Height);
+                    int balance = (int)GGame.Math.Fix64.Abs(_nodes[child2].Height - _nodes[child1].Height);
                     maxBalance = Math.Max(maxBalance, balance);
                 }
 
@@ -314,7 +315,7 @@ namespace VelcroPhysics.Collision.Broadphase
         /// </summary>
         /// <param name="callback">A callback class that is called for each proxy that is hit by the ray.</param>
         /// <param name="input">The ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).</param>
-        public void RayCast(Func<RayCastInput, int, float> callback, ref RayCastInput input)
+        public void RayCast(Func<RayCastInput, int, GGame.Math.Fix64> callback, ref RayCastInput input)
         {
             Vector2 p1 = input.Point1;
             Vector2 p2 = input.Point2;
@@ -328,7 +329,7 @@ namespace VelcroPhysics.Collision.Broadphase
             // Separating axis for segment (Gino, p80).
             // |dot(v, p1 - c)| > dot(|v|, h)
 
-            float maxFraction = input.MaxFraction;
+            GGame.Math.Fix64 maxFraction = input.MaxFraction;
 
             // Build a bounding box for the segment.
             AABB segmentAABB = new AABB();
@@ -360,7 +361,7 @@ namespace VelcroPhysics.Collision.Broadphase
                 // |dot(v, p1 - c)| > dot(|v|, h)
                 Vector2 c = node.AABB.Center;
                 Vector2 h = node.AABB.Extents;
-                float separation = Math.Abs(Vector2.Dot(new Vector2(-r.Y, r.X), p1 - c)) - Vector2.Dot(absV, h);
+                GGame.Math.Fix64 separation = Fix64.Abs(Vector2.Dot(new Vector2(-r.Y, r.X), p1 - c)) - Vector2.Dot(absV, h);
                 if (separation > 0.0f)
                 {
                     continue;
@@ -373,7 +374,7 @@ namespace VelcroPhysics.Collision.Broadphase
                     subInput.Point2 = input.Point2;
                     subInput.MaxFraction = maxFraction;
 
-                    float value = callback(subInput, nodeId);
+                    GGame.Math.Fix64 value = callback(subInput, nodeId);
 
                     if (value == 0.0f)
                     {
@@ -464,20 +465,20 @@ namespace VelcroPhysics.Collision.Broadphase
                 int child1 = _nodes[index].Child1;
                 int child2 = _nodes[index].Child2;
 
-                float area = _nodes[index].AABB.Perimeter;
+                GGame.Math.Fix64 area = _nodes[index].AABB.Perimeter;
 
                 AABB combinedAABB = new AABB();
                 combinedAABB.Combine(ref _nodes[index].AABB, ref leafAABB);
-                float combinedArea = combinedAABB.Perimeter;
+                GGame.Math.Fix64 combinedArea = combinedAABB.Perimeter;
 
                 // Cost of creating a new parent for this node and the new leaf
-                float cost = 2.0f * combinedArea;
+                GGame.Math.Fix64 cost = 2.0f * combinedArea;
 
                 // Minimum cost of pushing the leaf further down the tree
-                float inheritanceCost = 2.0f * (combinedArea - area);
+                GGame.Math.Fix64 inheritanceCost = 2.0f * (combinedArea - area);
 
                 // Cost of descending into child1
-                float cost1;
+                GGame.Math.Fix64 cost1;
                 if (_nodes[child1].IsLeaf())
                 {
                     AABB aabb = new AABB();
@@ -488,13 +489,13 @@ namespace VelcroPhysics.Collision.Broadphase
                 {
                     AABB aabb = new AABB();
                     aabb.Combine(ref leafAABB, ref _nodes[child1].AABB);
-                    float oldArea = _nodes[child1].AABB.Perimeter;
-                    float newArea = aabb.Perimeter;
+                    GGame.Math.Fix64 oldArea = _nodes[child1].AABB.Perimeter;
+                    GGame.Math.Fix64 newArea = aabb.Perimeter;
                     cost1 = (newArea - oldArea) + inheritanceCost;
                 }
 
                 // Cost of descending into child2
-                float cost2;
+                GGame.Math.Fix64 cost2;
                 if (_nodes[child2].IsLeaf())
                 {
                     AABB aabb = new AABB();
@@ -505,8 +506,8 @@ namespace VelcroPhysics.Collision.Broadphase
                 {
                     AABB aabb = new AABB();
                     aabb.Combine(ref leafAABB, ref _nodes[child2].AABB);
-                    float oldArea = _nodes[child2].AABB.Perimeter;
-                    float newArea = aabb.Perimeter;
+                    GGame.Math.Fix64 oldArea = _nodes[child2].AABB.Perimeter;
+                    GGame.Math.Fix64 newArea = aabb.Perimeter;
                     cost2 = newArea - oldArea + inheritanceCost;
                 }
 
@@ -948,7 +949,7 @@ namespace VelcroPhysics.Collision.Broadphase
 
             while (count > 1)
             {
-                float minCost = Settings.MaxFloat;
+                GGame.Math.Fix64 minCost = Settings.MaxFloat;
                 int iMin = -1, jMin = -1;
                 for (int i = 0; i < count; ++i)
                 {
@@ -959,7 +960,7 @@ namespace VelcroPhysics.Collision.Broadphase
                         AABB AABBj = _nodes[nodes[j]].AABB;
                         AABB b = new AABB();
                         b.Combine(ref AABBi, ref AABBj);
-                        float cost = b.Perimeter;
+                        GGame.Math.Fix64 cost = b.Perimeter;
                         if (cost < minCost)
                         {
                             iMin = i;

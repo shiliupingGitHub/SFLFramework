@@ -23,6 +23,6 @@ namespace VelcroPhysics.Collision.Narrowphase
         /// </summary>
         public FixedArray3<byte> IndexB;
 
-        public float Metric;
+        public GGame.Math.Fix64 Metric;
     }
 }

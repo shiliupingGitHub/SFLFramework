@@ -13,7 +13,12 @@ namespace VelcroPhysics.Tools.Triangulation.TriangulationBase
 {
     public static class Triangulate
     {
-        public static List<Vertices> ConvexPartition(Vertices vertices, TriangulationAlgorithm algorithm, bool discardAndFixInvalid = true, float tolerance = 0.001f)
+        /*
+         * *?
+         * discardAndFixInvalid  默认值 true
+         * tolerance 默认值 0.001
+         */
+        public static List<Vertices> ConvexPartition(Vertices vertices, TriangulationAlgorithm algorithm, bool discardAndFixInvalid , GGame.Math.Fix64 tolerance )
         {
             if (vertices.Count <= 3)
                 return new List<Vertices> { vertices };

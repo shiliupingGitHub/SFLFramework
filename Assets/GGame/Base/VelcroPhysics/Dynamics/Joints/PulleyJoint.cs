@@ -22,6 +22,7 @@
 
 using System;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Dynamics.Solver;
 using VelcroPhysics.Shared;
@@ -53,19 +54,19 @@ namespace VelcroPhysics.Dynamics.Joints
     public class PulleyJoint : Joint
     {
         // Solver shared
-        private float _impulse;
+        private GGame.Math.Fix64 _impulse;
 
         // Solver temp
         private int _indexA;
 
         private int _indexB;
-        private float _invIA;
-        private float _invIB;
-        private float _invMassA;
-        private float _invMassB;
+        private GGame.Math.Fix64 _invIA;
+        private GGame.Math.Fix64 _invIB;
+        private GGame.Math.Fix64 _invMassA;
+        private GGame.Math.Fix64 _invMassB;
         private Vector2 _localCenterA;
         private Vector2 _localCenterB;
-        private float _mass;
+        private GGame.Math.Fix64 _mass;
         private Vector2 _rA;
         private Vector2 _rB;
         private Vector2 _uA;
@@ -87,7 +88,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <param name="worldAnchorB">The world anchor for the second body.</param>
         /// <param name="ratio">The ratio.</param>
         /// <param name="useWorldCoordinates">Set to true if you are using world coordinates as anchors.</param>
-        public PulleyJoint(Body bodyA, Body bodyB, Vector2 anchorA, Vector2 anchorB, Vector2 worldAnchorA, Vector2 worldAnchorB, float ratio, bool useWorldCoordinates = false)
+        public PulleyJoint(Body bodyA, Body bodyB, Vector2 anchorA, Vector2 anchorB, Vector2 worldAnchorA, Vector2 worldAnchorB, GGame.Math.Fix64 ratio, bool useWorldCoordinates = false)
             : base(bodyA, bodyB)
         {
             JointType = JointType.Pulley;
@@ -150,18 +151,18 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Get the current length of the segment attached to body1.
         /// </summary>
         /// <value></value>
-        public float LengthA { get; set; }
+        public GGame.Math.Fix64 LengthA { get; set; }
 
         /// <summary>
         /// Get the current length of the segment attached to body2.
         /// </summary>
         /// <value></value>
-        public float LengthB { get; set; }
+        public GGame.Math.Fix64 LengthB { get; set; }
 
         /// <summary>
         /// The current length between the anchor point on BodyA and WorldAnchorA
         /// </summary>
-        public float CurrentLengthA
+        public GGame.Math.Fix64 CurrentLengthA
         {
             get
             {
@@ -175,7 +176,7 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// The current length between the anchor point on BodyB and WorldAnchorB
         /// </summary>
-        public float CurrentLengthB
+        public GGame.Math.Fix64 CurrentLengthB
         {
             get
             {
@@ -190,18 +191,18 @@ namespace VelcroPhysics.Dynamics.Joints
         /// Get the pulley ratio.
         /// </summary>
         /// <value></value>
-        public float Ratio { get; set; }
+        public GGame.Math.Fix64 Ratio { get; set; }
 
         //Velcro note: Only used for serialization.
-        internal float Constant { get; set; }
+        internal GGame.Math.Fix64 Constant { get; set; }
 
-        public override Vector2 GetReactionForce(float invDt)
+        public override Vector2 GetReactionForce(GGame.Math.Fix64 invDt)
         {
             Vector2 P = _impulse * _uB;
             return invDt * P;
         }
 
-        public override float GetReactionTorque(float invDt)
+        public override GGame.Math.Fix64 GetReactionTorque(GGame.Math.Fix64 invDt)
         {
             return 0.0f;
         }
@@ -218,14 +219,14 @@ namespace VelcroPhysics.Dynamics.Joints
             _invIB = BodyB._invI;
 
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
 
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -236,8 +237,8 @@ namespace VelcroPhysics.Dynamics.Joints
             _uA = cA + _rA - WorldAnchorA;
             _uB = cB + _rB - WorldAnchorB;
 
-            float lengthA = _uA.Length();
-            float lengthB = _uB.Length();
+            GGame.Math.Fix64 lengthA = _uA.Length();
+            GGame.Math.Fix64 lengthB = _uB.Length();
 
             if (lengthA > 10.0f * Settings.LinearSlop)
             {
@@ -258,11 +259,11 @@ namespace VelcroPhysics.Dynamics.Joints
             }
 
             // Compute effective mass.
-            float ruA = MathUtils.Cross(_rA, _uA);
-            float ruB = MathUtils.Cross(_rB, _uB);
+            GGame.Math.Fix64 ruA = MathUtils.Cross(_rA, _uA);
+            GGame.Math.Fix64 ruB = MathUtils.Cross(_rB, _uB);
 
-            float mA = _invMassA + _invIA * ruA * ruA;
-            float mB = _invMassB + _invIB * ruB * ruB;
+            GGame.Math.Fix64 mA = _invMassA + _invIA * ruA * ruA;
+            GGame.Math.Fix64 mB = _invMassB + _invIB * ruB * ruB;
 
             _mass = mA + Ratio * Ratio * mB;
 
@@ -299,15 +300,15 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override void SolveVelocityConstraints(ref SolverData data)
         {
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             Vector2 vpA = vA + MathUtils.Cross(wA, _rA);
             Vector2 vpB = vB + MathUtils.Cross(wB, _rB);
 
-            float Cdot = -Vector2.Dot(_uA, vpA) - Ratio * Vector2.Dot(_uB, vpB);
-            float impulse = -_mass * Cdot;
+            GGame.Math.Fix64 Cdot = -Vector2.Dot(_uA, vpA) - Ratio * Vector2.Dot(_uB, vpB);
+            GGame.Math.Fix64 impulse = -_mass * Cdot;
             _impulse += impulse;
 
             Vector2 PA = -impulse * _uA;
@@ -326,9 +327,9 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override bool SolvePositionConstraints(ref SolverData data)
         {
             Vector2 cA = data.Positions[_indexA].C;
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 cB = data.Positions[_indexB].C;
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -339,8 +340,8 @@ namespace VelcroPhysics.Dynamics.Joints
             Vector2 uA = cA + rA - WorldAnchorA;
             Vector2 uB = cB + rB - WorldAnchorB;
 
-            float lengthA = uA.Length();
-            float lengthB = uB.Length();
+            GGame.Math.Fix64 lengthA = uA.Length();
+            GGame.Math.Fix64 lengthB = uB.Length();
 
             if (lengthA > 10.0f * Settings.LinearSlop)
             {
@@ -361,23 +362,23 @@ namespace VelcroPhysics.Dynamics.Joints
             }
 
             // Compute effective mass.
-            float ruA = MathUtils.Cross(rA, uA);
-            float ruB = MathUtils.Cross(rB, uB);
+            GGame.Math.Fix64 ruA = MathUtils.Cross(rA, uA);
+            GGame.Math.Fix64 ruB = MathUtils.Cross(rB, uB);
 
-            float mA = _invMassA + _invIA * ruA * ruA;
-            float mB = _invMassB + _invIB * ruB * ruB;
+            GGame.Math.Fix64 mA = _invMassA + _invIA * ruA * ruA;
+            GGame.Math.Fix64 mB = _invMassB + _invIB * ruB * ruB;
 
-            float mass = mA + Ratio * Ratio * mB;
+            GGame.Math.Fix64 mass = mA + Ratio * Ratio * mB;
 
             if (mass > 0.0f)
             {
                 mass = 1.0f / mass;
             }
 
-            float C = Constant - lengthA - Ratio * lengthB;
-            float linearError = Math.Abs(C);
+            GGame.Math.Fix64 C = Constant - lengthA - Ratio * lengthB;
+            GGame.Math.Fix64 linearError = Fix64.Abs(C);
 
-            float impulse = -mass * C;
+            GGame.Math.Fix64 impulse = -mass * C;
 
             Vector2 PA = -impulse * uA;
             Vector2 PB = -Ratio * impulse * uB;

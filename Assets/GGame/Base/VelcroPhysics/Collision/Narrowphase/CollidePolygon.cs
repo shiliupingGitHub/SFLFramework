@@ -22,15 +22,15 @@ namespace VelcroPhysics.Collision.Narrowphase
             // Clip
 
             manifold.PointCount = 0;
-            float totalRadius = polyA.Radius + polyB.Radius;
+            GGame.Math.Fix64 totalRadius = polyA.Radius + polyB.Radius;
 
             int edgeA;
-            float separationA = FindMaxSeparation(out edgeA, polyA, ref xfA, polyB, ref xfB);
+            GGame.Math.Fix64 separationA = FindMaxSeparation(out edgeA, polyA, ref xfA, polyB, ref xfB);
             if (separationA > totalRadius)
                 return;
 
             int edgeB;
-            float separationB = FindMaxSeparation(out edgeB, polyB, ref xfB, polyA, ref xfA);
+            GGame.Math.Fix64 separationB = FindMaxSeparation(out edgeB, polyB, ref xfB, polyA, ref xfA);
             if (separationB > totalRadius)
                 return;
 
@@ -39,7 +39,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             Transform xf1, xf2;
             int edge1; // reference edge
             bool flip;
-            const float k_tol = 0.1f * Settings.LinearSlop;
+             GGame.Math.Fix64 k_tol = 0.1f * Settings.LinearSlop;
 
             if (separationB > separationA + k_tol)
             {
@@ -87,11 +87,11 @@ namespace VelcroPhysics.Collision.Narrowphase
             v12 = MathUtils.Mul(ref xf1, v12);
 
             // Face offset.
-            float frontOffset = Vector2.Dot(normal, v11);
+            GGame.Math.Fix64 frontOffset = Vector2.Dot(normal, v11);
 
             // Side offsets, extended by polytope skin thickness.
-            float sideOffset1 = -Vector2.Dot(tangent, v11) + totalRadius;
-            float sideOffset2 = Vector2.Dot(tangent, v12) + totalRadius;
+            GGame.Math.Fix64 sideOffset1 = -Vector2.Dot(tangent, v11) + totalRadius;
+            GGame.Math.Fix64 sideOffset2 = Vector2.Dot(tangent, v12) + totalRadius;
 
             // Clip incident edge against extruded edge1 side edges.
             FixedArray2<ClipVertex> clipPoints1;
@@ -118,7 +118,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             int pointCount = 0;
             for (int i = 0; i < Settings.MaxManifoldPoints; ++i)
             {
-                float separation = Vector2.Dot(normal, clipPoints2[i].V) - frontOffset;
+                GGame.Math.Fix64 separation = Vector2.Dot(normal, clipPoints2[i].V) - frontOffset;
 
                 if (separation <= totalRadius)
                 {
@@ -148,7 +148,7 @@ namespace VelcroPhysics.Collision.Narrowphase
         /// <summary>
         /// Find the max separation between poly1 and poly2 using edge normals from poly1.
         /// </summary>
-        private static float FindMaxSeparation(out int edgeIndex, PolygonShape poly1, ref Transform xf1, PolygonShape poly2, ref Transform xf2)
+        private static GGame.Math.Fix64 FindMaxSeparation(out int edgeIndex, PolygonShape poly1, ref Transform xf1, PolygonShape poly2, ref Transform xf2)
         {
             int count1 = poly1.Vertices.Count;
             int count2 = poly2.Vertices.Count;
@@ -158,7 +158,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             Transform xf = MathUtils.MulT(xf2, xf1);
 
             int bestIndex = 0;
-            float maxSeparation = -Settings.MaxFloat;
+            GGame.Math.Fix64 maxSeparation = -Settings.MaxFloat;
             for (int i = 0; i < count1; ++i)
             {
                 // Get poly1 normal in frame2.
@@ -166,10 +166,10 @@ namespace VelcroPhysics.Collision.Narrowphase
                 Vector2 v1 = MathUtils.Mul(ref xf, v1s[i]);
 
                 // Find deepest point for normal i.
-                float si = Settings.MaxFloat;
+                GGame.Math.Fix64 si = Settings.MaxFloat;
                 for (int j = 0; j < count2; ++j)
                 {
-                    float sij = Vector2.Dot(n, v2s[j] - v1);
+                    GGame.Math.Fix64 sij = Vector2.Dot(n, v2s[j] - v1);
                     if (sij < si)
                     {
                         si = sij;
@@ -202,10 +202,10 @@ namespace VelcroPhysics.Collision.Narrowphase
 
             // Find the incident edge on poly2.
             int index = 0;
-            float minDot = Settings.MaxFloat;
+            GGame.Math.Fix64 minDot = Settings.MaxFloat;
             for (int i = 0; i < count2; ++i)
             {
-                float dot = Vector2.Dot(normal1, normals2[i]);
+                GGame.Math.Fix64 dot = Vector2.Dot(normal1, normals2[i]);
                 if (dot < minDot)
                 {
                     minDot = dot;

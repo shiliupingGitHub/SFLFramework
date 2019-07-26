@@ -18,10 +18,10 @@ namespace GGame.Math
     public static readonly Fix64 One = new Fix64(ONE);
     public static readonly Fix64 Zero = new Fix64();
     public static readonly Fix64 PI = new Fix64(Pi);
-    public static readonly Fix64 MinValue = -long.MaxValue << FRACTIONAL_PLACES;
-    public static readonly Fix64 MaxValue = long.MaxValue << FRACTIONAL_PLACES;
+    public static readonly Fix64 MinValue = -4096;
+    public static readonly Fix64 MaxValue = 4096;
     public static readonly Fix64 NaN = 0.0f / 0.0f;
-    
+    public static readonly Fix64 Epsilon = 1.401298E-45f;
 
     const long Pi = 12868;
     const long PiTimes2 = 25736;
@@ -56,6 +56,11 @@ namespace GGame.Math
         return d;
     }
 
+    public static bool IsNaN(Fix64 v)
+    {
+        return float.IsNaN((float)v);
+    }
+    
     public static Fix64 Min(Fix64 val1, Fix64 val2)
     {
         if ( val1 < val2)
@@ -85,6 +90,14 @@ namespace GGame.Math
 
     public static Fix64 operator +(Fix64 x, Fix64 y) {
         return new Fix64(x.m_rawValue + y.m_rawValue);
+    }
+    
+    public static Fix64 operator --(Fix64 x) {
+        return x - 1;
+    }
+    
+    public static Fix64 operator ++(Fix64 x) {
+        return x + 1;
     }
 
     public static Fix64 operator +(Fix64 x, int y)

@@ -5,9 +5,9 @@
         // Pointers to next and previous points in Monontone Mountain
         public Point Next, Prev;
 
-        public float X, Y;
+        public GGame.Math.Fix64 X, Y;
 
-        public Point(float x, float y)
+        public Point(GGame.Math.Fix64 x, GGame.Math.Fix64 y)
         {
             X = x;
             Y = y;
@@ -25,22 +25,22 @@
             return new Point(p1.X + p2.X, p1.Y + p2.Y);
         }
 
-        public static Point operator -(Point p1, float f)
+        public static Point operator -(Point p1, GGame.Math.Fix64 f)
         {
             return new Point(p1.X - f, p1.Y - f);
         }
 
-        public static Point operator +(Point p1, float f)
+        public static Point operator +(Point p1, GGame.Math.Fix64 f)
         {
             return new Point(p1.X + f, p1.Y + f);
         }
 
-        public float Cross(Point p)
+        public GGame.Math.Fix64 Cross(Point p)
         {
             return X * p.Y - Y * p.X;
         }
 
-        public float Dot(Point p)
+        public GGame.Math.Fix64 Dot(Point p)
         {
             return X * p.X + Y * p.Y;
         }
@@ -50,12 +50,12 @@
             return p.X != X || p.Y != Y;
         }
 
-        public float Orient2D(Point pb, Point pc)
+        public GGame.Math.Fix64 Orient2D(Point pb, Point pc)
         {
-            float acx = X - pc.X;
-            float bcx = pb.X - pc.X;
-            float acy = Y - pc.Y;
-            float bcy = pb.Y - pc.Y;
+            GGame.Math.Fix64 acx = X - pc.X;
+            GGame.Math.Fix64 bcx = pb.X - pc.X;
+            GGame.Math.Fix64 acy = Y - pc.Y;
+            GGame.Math.Fix64 bcy = pb.Y - pc.Y;
             return acx * bcy - acy * bcx;
         }
     }

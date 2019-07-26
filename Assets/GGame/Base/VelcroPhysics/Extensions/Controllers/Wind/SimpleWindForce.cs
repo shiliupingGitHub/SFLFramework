@@ -19,7 +19,7 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// <summary>
         /// The amount of Direction randomization. Allowed range is 0-1.
         /// </summary>
-        public float Divergence { get; set; }
+        public GGame.Math.Fix64 Divergence { get; set; }
 
         /// <summary>
         /// Ignore the position and apply the force. If off only in the "front" (relative to position and direction)
@@ -27,12 +27,12 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
         /// </summary>
         public bool IgnorePosition { get; set; }
 
-        public override void ApplyForce(float dt, float strength)
+        public override void ApplyForce(GGame.Math.Fix64 dt, GGame.Math.Fix64 strength)
         {
             foreach (Body body in World.BodyList)
             {
                 //TODO: Consider Force Type
-                float decayMultiplier = GetDecayMultiplier(body);
+                GGame.Math.Fix64 decayMultiplier = GetDecayMultiplier(body);
 
                 if (decayMultiplier != 0)
                 {
@@ -53,12 +53,12 @@ namespace VelcroPhysics.Extensions.Controllers.Wind
                     }
 
                     //TODO: Consider Divergence:
-                    //forceVector = Vector2.Transform(forceVector, Matrix.CreateRotationZ((MathHelper.Pi - MathHelper.Pi/2) * (float)Randomize.NextDouble()));
+                    //forceVector = Vector2.Transform(forceVector, Matrix.CreateRotationZ((MathHelper.Pi - MathHelper.Pi/2) * (GGame.Math.Fix64)Randomize.NextGGame.Math.Fix64()));
 
                     // Calculate random Variation
                     if (Variation != 0)
                     {
-                        float strengthVariation = (float)Randomize.NextDouble() * MathHelper.Clamp(Variation, 0, 1);
+                        GGame.Math.Fix64 strengthVariation = (GGame.Math.Fix64)Randomize.Next() * MathHelper.Clamp(Variation, 0, 1);
                         forceVector.Normalize();
                         body.ApplyForce(forceVector * strength * decayMultiplier * strengthVariation);
                     }

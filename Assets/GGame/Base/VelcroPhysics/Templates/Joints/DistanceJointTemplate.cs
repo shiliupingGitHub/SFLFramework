@@ -18,17 +18,17 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// The damping ratio. 0 = no damping, 1 = critical damping.
         /// </summary>
-        public float DampingRatio { get; set; }
+        public GGame.Math.Fix64 DampingRatio { get; set; }
 
         /// <summary>
         /// The mass-spring-damper frequency in Hertz. A value of 0 disables softness.
         /// </summary>
-        public float FrequencyHz { get; set; }
+        public GGame.Math.Fix64 FrequencyHz { get; set; }
 
         /// <summary>
         /// The natural length between the anchor points.
         /// </summary>
-        public float Length { get; set; }
+        public GGame.Math.Fix64 Length { get; set; }
 
         /// <summary>
         /// The local anchor point relative to bodyA's origin.

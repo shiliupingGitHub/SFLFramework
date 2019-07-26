@@ -36,10 +36,10 @@ namespace VelcroPhysics.Tools.PolygonManipulation
         /// Combine a list of triangles into a list of convex polygons.
         /// Note: This only works on triangles.
         /// </summary>
-        /// <param name="triangles">The triangles.</param>
-        /// <param name="maxPolys">The maximun number of polygons to return.</param>
+        /// <param name="triangles">The triangles.  默认 0.001f</param>
+        /// <param name="maxPolys">The maximun number of polygons to return  默认 4096.</param>
         /// <param name="tolerance">The tolerance</param>
-        public static List<Vertices> PolygonizeTriangles(List<Vertices> triangles, int maxPolys = int.MaxValue, float tolerance = 0.001f)
+        public static List<Vertices> PolygonizeTriangles(List<Vertices> triangles, int maxPolys , GGame.Math.Fix64 tolerance)
         {
             if (triangles.Count <= 0)
                 return triangles;

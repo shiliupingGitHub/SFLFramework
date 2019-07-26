@@ -11,6 +11,6 @@ namespace VelcroPhysics.Collision.TOI
         public DistanceProxy ProxyB;
         public Sweep SweepA;
         public Sweep SweepB;
-        public float TMax; // defines sweep interval [0, tMax]
+        public GGame.Math.Fix64 TMax; // defines sweep interval [0, tMax]
     }
 }

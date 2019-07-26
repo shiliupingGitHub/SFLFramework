@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GGame.Math;
 using VelcroPhysics.Dynamics;
 using VelcroPhysics.Extensions.Controllers.ControllerBase;
 
@@ -12,10 +13,10 @@ namespace VelcroPhysics.Extensions.Controllers.Velocity
     public class VelocityLimitController : Controller
     {
         private List<Body> _bodies = new List<Body>();
-        private float _maxAngularSqared;
-        private float _maxAngularVelocity;
-        private float _maxLinearSqared;
-        private float _maxLinearVelocity;
+        private GGame.Math.Fix64 _maxAngularSqared;
+        private GGame.Math.Fix64 _maxAngularVelocity;
+        private GGame.Math.Fix64 _maxLinearSqared;
+        private GGame.Math.Fix64 _maxLinearVelocity;
         public bool LimitAngularVelocity = true;
         public bool LimitLinearVelocity = true;
 
@@ -33,18 +34,18 @@ namespace VelcroPhysics.Extensions.Controllers.Velocity
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VelocityLimitController" /> class.
-        /// Pass in 0 or float.MaxValue to disable the limit.
+        /// Pass in 0 or GGame.Math.Fix64.MaxValue to disable the limit.
         /// maxAngularVelocity = 0 will disable the angular velocity limit.
         /// </summary>
         /// <param name="maxLinearVelocity">The max linear velocity.</param>
         /// <param name="maxAngularVelocity">The max angular velocity.</param>
-        public VelocityLimitController(float maxLinearVelocity, float maxAngularVelocity)
+        public VelocityLimitController(GGame.Math.Fix64 maxLinearVelocity, GGame.Math.Fix64 maxAngularVelocity)
             : base(ControllerType.VelocityLimitController)
         {
-            if (maxLinearVelocity == 0 || maxLinearVelocity == float.MaxValue)
+            if (maxLinearVelocity == 0 || maxLinearVelocity == GGame.Math.Fix64.MaxValue)
                 LimitLinearVelocity = false;
 
-            if (maxAngularVelocity == 0 || maxAngularVelocity == float.MaxValue)
+            if (maxAngularVelocity == 0 || maxAngularVelocity == GGame.Math.Fix64.MaxValue)
                 LimitAngularVelocity = false;
 
             MaxLinearVelocity = maxLinearVelocity;
@@ -55,7 +56,7 @@ namespace VelcroPhysics.Extensions.Controllers.Velocity
         /// Gets or sets the max angular velocity.
         /// </summary>
         /// <value>The max angular velocity.</value>
-        public float MaxAngularVelocity
+        public GGame.Math.Fix64 MaxAngularVelocity
         {
             get { return _maxAngularVelocity; }
             set
@@ -69,7 +70,7 @@ namespace VelcroPhysics.Extensions.Controllers.Velocity
         /// Gets or sets the max linear velocity.
         /// </summary>
         /// <value>The max linear velocity.</value>
-        public float MaxLinearVelocity
+        public GGame.Math.Fix64 MaxLinearVelocity
         {
             get { return _maxLinearVelocity; }
             set
@@ -79,7 +80,7 @@ namespace VelcroPhysics.Extensions.Controllers.Velocity
             }
         }
 
-        public override void Update(float dt)
+        public override void Update(GGame.Math.Fix64 dt)
         {
             foreach (Body body in _bodies)
             {
@@ -90,15 +91,15 @@ namespace VelcroPhysics.Extensions.Controllers.Velocity
                 {
                     //Translation
                     // Check for large velocities.
-                    float translationX = dt * body._linearVelocity.X;
-                    float translationY = dt * body._linearVelocity.Y;
-                    float result = translationX * translationX + translationY * translationY;
+                    GGame.Math.Fix64 translationX = dt * body._linearVelocity.X;
+                    GGame.Math.Fix64 translationY = dt * body._linearVelocity.Y;
+                    GGame.Math.Fix64 result = translationX * translationX + translationY * translationY;
 
                     if (result > dt * _maxLinearSqared)
                     {
-                        float sq = (float)Math.Sqrt(result);
+                        GGame.Math.Fix64 sq = GGame.Math.Fix64.Sqrt(result);
 
-                        float ratio = _maxLinearVelocity / sq;
+                        GGame.Math.Fix64 ratio = _maxLinearVelocity / sq;
                         body._linearVelocity.X *= ratio;
                         body._linearVelocity.Y *= ratio;
                     }
@@ -107,10 +108,10 @@ namespace VelcroPhysics.Extensions.Controllers.Velocity
                 if (LimitAngularVelocity)
                 {
                     //Rotation
-                    float rotation = dt * body._angularVelocity;
+                    GGame.Math.Fix64 rotation = dt * body._angularVelocity;
                     if (rotation * rotation > _maxAngularSqared)
                     {
-                        float ratio = _maxAngularVelocity / Math.Abs(rotation);
+                        GGame.Math.Fix64 ratio = _maxAngularVelocity / Fix64.Abs(rotation);
                         body._angularVelocity *= ratio;
                     }
                 }

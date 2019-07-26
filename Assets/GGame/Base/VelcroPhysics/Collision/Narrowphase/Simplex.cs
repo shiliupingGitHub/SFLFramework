@@ -37,8 +37,8 @@ namespace VelcroPhysics.Collision.Narrowphase
             // old metric then flush the simplex.
             if (Count > 1)
             {
-                float metric1 = cache.Metric;
-                float metric2 = GetMetric();
+                GGame.Math.Fix64 metric1 = cache.Metric;
+                GGame.Math.Fix64 metric2 = GetMetric();
                 if (metric2 < 0.5f * metric1 || 2.0f * metric1 < metric2 || metric2 < Settings.Epsilon)
                 {
                     // Reset the simplex.
@@ -84,7 +84,7 @@ namespace VelcroPhysics.Collision.Narrowphase
                 case 2:
                     {
                         Vector2 e12 = V[1].W - V[0].W;
-                        float sgn = MathUtils.Cross(e12, -V[0].W);
+                        GGame.Math.Fix64 sgn = MathUtils.Cross(e12, -V[0].W);
                         if (sgn > 0.0f)
                         {
                             // Origin is left of e12.
@@ -156,7 +156,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             }
         }
 
-        internal float GetMetric()
+        internal GGame.Math.Fix64 GetMetric()
         {
             switch (Count)
             {
@@ -209,7 +209,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             Vector2 e12 = w2 - w1;
 
             // w1 region
-            float d12_2 = -Vector2.Dot(w1, e12);
+            GGame.Math.Fix64 d12_2 = -Vector2.Dot(w1, e12);
             if (d12_2 <= 0.0f)
             {
                 // a2 <= 0, so we clamp it to 0
@@ -219,7 +219,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             }
 
             // w2 region
-            float d12_1 = Vector2.Dot(w2, e12);
+            GGame.Math.Fix64 d12_1 = Vector2.Dot(w2, e12);
             if (d12_1 <= 0.0f)
             {
                 // a1 <= 0, so we clamp it to 0
@@ -230,7 +230,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             }
 
             // Must be in e12 region.
-            float inv_d12 = 1.0f / (d12_1 + d12_2);
+            GGame.Math.Fix64 inv_d12 = 1.0f / (d12_1 + d12_2);
             V.Value0.A = d12_1 * inv_d12;
             V.Value1.A = d12_2 * inv_d12;
             Count = 2;
@@ -252,37 +252,37 @@ namespace VelcroPhysics.Collision.Narrowphase
             // [w1.e12 w2.e12][a2] = [0]
             // a3 = 0
             Vector2 e12 = w2 - w1;
-            float w1e12 = Vector2.Dot(w1, e12);
-            float w2e12 = Vector2.Dot(w2, e12);
-            float d12_1 = w2e12;
-            float d12_2 = -w1e12;
+            GGame.Math.Fix64 w1e12 = Vector2.Dot(w1, e12);
+            GGame.Math.Fix64 w2e12 = Vector2.Dot(w2, e12);
+            GGame.Math.Fix64 d12_1 = w2e12;
+            GGame.Math.Fix64 d12_2 = -w1e12;
 
             // Edge13
             // [1      1     ][a1] = [1]
             // [w1.e13 w3.e13][a3] = [0]
             // a2 = 0
             Vector2 e13 = w3 - w1;
-            float w1e13 = Vector2.Dot(w1, e13);
-            float w3e13 = Vector2.Dot(w3, e13);
-            float d13_1 = w3e13;
-            float d13_2 = -w1e13;
+            GGame.Math.Fix64 w1e13 = Vector2.Dot(w1, e13);
+            GGame.Math.Fix64 w3e13 = Vector2.Dot(w3, e13);
+            GGame.Math.Fix64 d13_1 = w3e13;
+            GGame.Math.Fix64 d13_2 = -w1e13;
 
             // Edge23
             // [1      1     ][a2] = [1]
             // [w2.e23 w3.e23][a3] = [0]
             // a1 = 0
             Vector2 e23 = w3 - w2;
-            float w2e23 = Vector2.Dot(w2, e23);
-            float w3e23 = Vector2.Dot(w3, e23);
-            float d23_1 = w3e23;
-            float d23_2 = -w2e23;
+            GGame.Math.Fix64 w2e23 = Vector2.Dot(w2, e23);
+            GGame.Math.Fix64 w3e23 = Vector2.Dot(w3, e23);
+            GGame.Math.Fix64 d23_1 = w3e23;
+            GGame.Math.Fix64 d23_2 = -w2e23;
 
             // Triangle123
-            float n123 = MathUtils.Cross(e12, e13);
+            GGame.Math.Fix64 n123 = MathUtils.Cross(e12, e13);
 
-            float d123_1 = n123 * MathUtils.Cross(w2, w3);
-            float d123_2 = n123 * MathUtils.Cross(w3, w1);
-            float d123_3 = n123 * MathUtils.Cross(w1, w2);
+            GGame.Math.Fix64 d123_1 = n123 * MathUtils.Cross(w2, w3);
+            GGame.Math.Fix64 d123_2 = n123 * MathUtils.Cross(w3, w1);
+            GGame.Math.Fix64 d123_3 = n123 * MathUtils.Cross(w1, w2);
 
             // w1 region
             if (d12_2 <= 0.0f && d13_2 <= 0.0f)
@@ -295,7 +295,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             // e12
             if (d12_1 > 0.0f && d12_2 > 0.0f && d123_3 <= 0.0f)
             {
-                float inv_d12 = 1.0f / (d12_1 + d12_2);
+                GGame.Math.Fix64 inv_d12 = 1.0f / (d12_1 + d12_2);
                 V.Value0.A = d12_1 * inv_d12;
                 V.Value1.A = d12_2 * inv_d12;
                 Count = 2;
@@ -305,7 +305,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             // e13
             if (d13_1 > 0.0f && d13_2 > 0.0f && d123_2 <= 0.0f)
             {
-                float inv_d13 = 1.0f / (d13_1 + d13_2);
+                GGame.Math.Fix64 inv_d13 = 1.0f / (d13_1 + d13_2);
                 V.Value0.A = d13_1 * inv_d13;
                 V.Value2.A = d13_2 * inv_d13;
                 Count = 2;
@@ -334,7 +334,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             // e23
             if (d23_1 > 0.0f && d23_2 > 0.0f && d123_1 <= 0.0f)
             {
-                float inv_d23 = 1.0f / (d23_1 + d23_2);
+                GGame.Math.Fix64 inv_d23 = 1.0f / (d23_1 + d23_2);
                 V.Value1.A = d23_1 * inv_d23;
                 V.Value2.A = d23_2 * inv_d23;
                 Count = 2;
@@ -343,7 +343,7 @@ namespace VelcroPhysics.Collision.Narrowphase
             }
 
             // Must be in triangle123
-            float inv_d123 = 1.0f / (d123_1 + d123_2 + d123_3);
+            GGame.Math.Fix64 inv_d123 = 1.0f / (d123_1 + d123_2 + d123_3);
             V.Value0.A = d123_1 * inv_d123;
             V.Value1.A = d123_2 * inv_d123;
             V.Value2.A = d123_3 * inv_d123;

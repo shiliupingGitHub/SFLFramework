@@ -32,6 +32,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GGame.Math;
 using VelcroPhysics.Shared.Optimization;
 using VelcroPhysics.Tools.Triangulation.Delaunay.Delaunay.Sweep;
 
@@ -317,18 +318,18 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay.Delaunay
                 EdgeIsConstrained[i] = true;
         }
 
-        public double Area()
+        public GGame.Math.Fix64 Area()
         {
-            double b = Points[0].X - Points[1].X;
-            double h = Points[2].Y - Points[1].Y;
+            GGame.Math.Fix64 b = Points[0].X - Points[1].X;
+            GGame.Math.Fix64 h = Points[2].Y - Points[1].Y;
 
-            return Math.Abs((b * h * 0.5f));
+            return Fix64.Abs((b * h * 0.5f));
         }
 
         public TriangulationPoint Centroid()
         {
-            double cx = (Points[0].X + Points[1].X + Points[2].X) / 3f;
-            double cy = (Points[0].Y + Points[1].Y + Points[2].Y) / 3f;
+            GGame.Math.Fix64 cx = (Points[0].X + Points[1].X + Points[2].X) / 3f;
+            GGame.Math.Fix64 cy = (Points[0].Y + Points[1].Y + Points[2].Y) / 3f;
             return new TriangulationPoint(cx, cy);
         }
 

@@ -47,7 +47,7 @@ namespace VelcroPhysics.Tools.TextureTools
         /// <param name="lerpCount"></param>
         /// <param name="combine"></param>
         /// <returns></returns>
-        public static List<Vertices> DetectSquares(AABB domain, float cellWidth, float cellHeight, sbyte[,] f,
+        public static List<Vertices> DetectSquares(AABB domain, GGame.Math.Fix64 cellWidth, GGame.Math.Fix64 cellHeight, sbyte[,] f,
                                                    int lerpCount, bool combine)
         {
             CxFastList<GeomPoly> ret = new CxFastList<GeomPoly>();
@@ -92,8 +92,8 @@ namespace VelcroPhysics.Tools.TextureTools
             //generate sub-polys and combine to scan lines
             for (int y = 0; y < yn; y++)
             {
-                float y0 = y * cellHeight + domain.LowerBound.Y;
-                float y1;
+                GGame.Math.Fix64 y0 = y * cellHeight + domain.LowerBound.Y;
+                GGame.Math.Fix64 y1;
                 if (y == yn - 1)
                     y1 = domain.UpperBound.Y;
                 else
@@ -101,8 +101,8 @@ namespace VelcroPhysics.Tools.TextureTools
                 GeomPoly pre = null;
                 for (int x = 0; x < xn; x++)
                 {
-                    float x0 = x * cellWidth + domain.LowerBound.X;
-                    float x1;
+                    GGame.Math.Fix64 x0 = x * cellWidth + domain.LowerBound.X;
+                    GGame.Math.Fix64 x1;
                     if (x == xn - 1)
                         x1 = domain.UpperBound.X;
                     else
@@ -176,8 +176,8 @@ namespace VelcroPhysics.Tools.TextureTools
                         continue;
                     }
 
-                    float ax = x * cellWidth + domain.LowerBound.X;
-                    float ay = y * cellHeight + domain.LowerBound.Y;
+                    GGame.Math.Fix64 ax = x * cellWidth + domain.LowerBound.X;
+                    GGame.Math.Fix64 ay = y * cellHeight + domain.LowerBound.Y;
 
                     CxFastList<Vector2> bp = p.GeomP.Points;
                     CxFastList<Vector2> ap = u.GeomP.Points;
@@ -232,7 +232,7 @@ namespace VelcroPhysics.Tools.TextureTools
                         u.GeomP.Length++;
                     }
 
-                    //u.p.simplify(float.Epsilon,float.Epsilon);
+                    //u.p.simplify(GGame.Math.Fix64.Epsilon,GGame.Math.Fix64.Epsilon);
                     //
                     ax = x + 1;
                     while (ax < xn)
@@ -291,10 +291,10 @@ namespace VelcroPhysics.Tools.TextureTools
             0x6D, 0xB5, 0x55
         };
 
-        private static float Lerp(float x0, float x1, float v0, float v1)
+        private static GGame.Math.Fix64 Lerp(GGame.Math.Fix64 x0, GGame.Math.Fix64 x1, GGame.Math.Fix64 v0, GGame.Math.Fix64 v1)
         {
-            float dv = v0 - v1;
-            float t;
+            GGame.Math.Fix64 dv = v0 - v1;
+            GGame.Math.Fix64 t;
             if (dv * dv < Settings.Epsilon)
                 t = 0.5f;
             else
@@ -306,9 +306,9 @@ namespace VelcroPhysics.Tools.TextureTools
 
         /** Recursive linear interpolation for use in marching squares **/
 
-        private static float Xlerp(float x0, float x1, float y, float v0, float v1, sbyte[,] f, int c)
+        private static GGame.Math.Fix64 Xlerp(GGame.Math.Fix64 x0, GGame.Math.Fix64 x1, GGame.Math.Fix64 y, GGame.Math.Fix64 v0, GGame.Math.Fix64 v1, sbyte[,] f, int c)
         {
-            float xm = Lerp(x0, x1, v0, v1);
+            GGame.Math.Fix64 xm = Lerp(x0, x1, v0, v1);
             if (c == 0)
                 return xm;
 
@@ -322,9 +322,9 @@ namespace VelcroPhysics.Tools.TextureTools
 
         /** Recursive linear interpolation for use in marching squares **/
 
-        private static float Ylerp(float y0, float y1, float x, float v0, float v1, sbyte[,] f, int c)
+        private static GGame.Math.Fix64 Ylerp(GGame.Math.Fix64 y0, GGame.Math.Fix64 y1, GGame.Math.Fix64 x, GGame.Math.Fix64 v0, GGame.Math.Fix64 v1, sbyte[,] f, int c)
         {
-            float ym = Lerp(y0, y1, v0, v1);
+            GGame.Math.Fix64 ym = Lerp(y0, y1, v0, v1);
             if (c == 0)
                 return ym;
 
@@ -338,18 +338,18 @@ namespace VelcroPhysics.Tools.TextureTools
 
         /** Square value for use in marching squares **/
 
-        private static float Square(float x)
+        private static GGame.Math.Fix64 Square(GGame.Math.Fix64 x)
         {
             return x * x;
         }
 
-        private static float VecDsq(Vector2 a, Vector2 b)
+        private static GGame.Math.Fix64 VecDsq(Vector2 a, Vector2 b)
         {
             Vector2 d = a - b;
             return d.X * d.X + d.Y * d.Y;
         }
 
-        private static float VecCross(Vector2 a, Vector2 b)
+        private static GGame.Math.Fix64 VecCross(Vector2 a, Vector2 b)
         {
             return a.X * b.Y - a.Y * b.X;
         }
@@ -364,8 +364,8 @@ namespace VelcroPhysics.Tools.TextureTools
             coordinates of 'ax' 'ay' in the marching squares mesh.
         **/
 
-        private static int MarchSquare(sbyte[,] f, sbyte[,] fs, ref GeomPoly poly, int ax, int ay, float x0, float y0,
-                                       float x1, float y1, int bin)
+        private static int MarchSquare(sbyte[,] f, sbyte[,] fs, ref GeomPoly poly, int ax, int ay, GGame.Math.Fix64 x0, GGame.Math.Fix64 y0,
+                                       GGame.Math.Fix64 x1, GGame.Math.Fix64 y1, int bin)
         {
             //key lookup
             int key = 0;
@@ -420,7 +420,7 @@ namespace VelcroPhysics.Tools.TextureTools
                     }
                 }
 
-                //poly.simplify(float.Epsilon,float.Epsilon);
+                //poly.simplify(GGame.Math.Fix64.Epsilon,GGame.Math.Fix64.Epsilon);
             }
             return key;
         }
@@ -455,7 +455,7 @@ namespace VelcroPhysics.Tools.TextureTools
                         Vector2 v = b - a;
 
                         //vec_new(v); vec_sub(b.p.p, a.p.p, v);
-                        float dot = VecCross(u, v);
+                        GGame.Math.Fix64 dot = VecCross(u, v);
                         if (dot * dot < Settings.Epsilon)
                         {
                             ap.Erase(prea, ai);
@@ -494,7 +494,7 @@ namespace VelcroPhysics.Tools.TextureTools
                     Vector2 vv = a2 - a1;
 
                     //vec_new(v); vec_sub(a2.p, a1.p, v);
-                    float dot1 = VecCross(uu, vv);
+                    GGame.Math.Fix64 dot1 = VecCross(uu, vv);
                     if (dot1 * dot1 < Settings.Epsilon)
                     {
                         ap.Erase(preb, preb.Next());

@@ -7,7 +7,7 @@ namespace VelcroPhysics.Collision.Narrowphase
         /// <summary>
         /// Barycentric coordinate for closest point
         /// </summary>
-        public float A;
+        public GGame.Math.Fix64 A;
 
         /// <summary>
         /// wA index

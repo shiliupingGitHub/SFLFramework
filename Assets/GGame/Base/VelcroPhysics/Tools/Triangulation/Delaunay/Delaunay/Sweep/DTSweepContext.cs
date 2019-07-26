@@ -41,7 +41,7 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay.Delaunay.Sweep
     {
         // Inital triangle factor, seed triangle will extend 30% of 
         // PointSet width to both left and right.
-        private const float ALPHA = 0.3f;
+        private static GGame.Math.Fix64 ALPHA = 0.3f;
 
         private DTSweepPointComparator _comparator = new DTSweepPointComparator();
         public AdvancingFront aFront;
@@ -167,8 +167,8 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay.Delaunay.Sweep
         {
             base.PrepareTriangulation(t);
 
-            double xmax, xmin;
-            double ymax, ymin;
+            GGame.Math.Fix64 xmax, xmin;
+            GGame.Math.Fix64 ymax, ymin;
 
             xmax = xmin = Points[0].X;
             ymax = ymin = Points[0].Y;
@@ -186,8 +186,8 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay.Delaunay.Sweep
                     ymin = p.Y;
             }
 
-            double deltaX = ALPHA * (xmax - xmin);
-            double deltaY = ALPHA * (ymax - ymin);
+            GGame.Math.Fix64 deltaX = ALPHA * (xmax - xmin);
+            GGame.Math.Fix64 deltaY = ALPHA * (ymax - ymin);
             TriangulationPoint p1 = new TriangulationPoint(xmax + deltaX, ymin - deltaY);
             TriangulationPoint p2 = new TriangulationPoint(xmin - deltaX, ymin - deltaY);
 
@@ -220,7 +220,7 @@ namespace VelcroPhysics.Tools.Triangulation.Delaunay.Delaunay.Sweep
             public bool leftHighest;
             public AdvancingFrontNode leftNode;
             public AdvancingFrontNode rightNode;
-            public double width;
+            public GGame.Math.Fix64 width;
         }
 
         #endregion

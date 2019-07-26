@@ -18,7 +18,7 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// Suspension damping ratio, one indicates critical damping
         /// </summary>
-        public float DampingRatio { get; set; }
+        public GGame.Math.Fix64 DampingRatio { get; set; }
 
         /// <summary>
         /// Enable/disable the joint motor.
@@ -28,7 +28,7 @@ namespace VelcroPhysics.Templates.Joints
         /// <summary>
         /// Suspension frequency, zero indicates no suspension
         /// </summary>
-        public float FrequencyHz { get; set; }
+        public GGame.Math.Fix64 FrequencyHz { get; set; }
 
         /// <summary>
         /// The local anchor point relative to bodyA's origin.
@@ -47,12 +47,12 @@ namespace VelcroPhysics.Templates.Joints
 
         /// <summary>
         /// The maximum motor torque, usually in N-m.
-        public float MaxMotorTorque { get; set; }
+        public GGame.Math.Fix64 MaxMotorTorque { get; set; }
 
         /// <summary>
         /// The desired motor speed in radians per second.
         /// </summary>
-        public float MotorSpeed { get; set; }
+        public GGame.Math.Fix64 MotorSpeed { get; set; }
 
         public override void SetDefaults()
         {

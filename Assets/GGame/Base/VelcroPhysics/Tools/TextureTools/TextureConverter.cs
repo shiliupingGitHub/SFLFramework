@@ -26,7 +26,7 @@ namespace VelcroPhysics.Tools.TextureTools
         private int _height;
 
         private bool _holeDetection;
-        private float _hullTolerance;
+        private GGame.Math.Fix64 _hullTolerance;
         private bool _multipartDetection;
         private bool _pixelOffsetOptimization;
 
@@ -38,7 +38,7 @@ namespace VelcroPhysics.Tools.TextureTools
         #region Initialization
 
         private void Initialize(uint[] data, int? width, byte? alphaTolerance,
-                                float? hullTolerance, bool? holeDetection, bool? multipartDetection,
+                                GGame.Math.Fix64? hullTolerance, bool? holeDetection, bool? multipartDetection,
                                 bool? pixelOffsetOptimization, Matrix? transform)
         {
             if (data != null && !width.HasValue)
@@ -147,7 +147,7 @@ namespace VelcroPhysics.Tools.TextureTools
         /// <param name="alphaTolerance">The alpha tolerance.</param>
         /// <param name="multiPartDetection">if set to <c>true</c> it will perform multi part detection.</param>
         /// <returns></returns>
-        public static List<Vertices> DetectVertices(uint[] data, int width, float hullTolerance, byte alphaTolerance, bool multiPartDetection, bool holeDetection)
+        public static List<Vertices> DetectVertices(uint[] data, int width, GGame.Math.Fix64 hullTolerance, byte alphaTolerance, bool multiPartDetection, bool holeDetection)
         {
             TextureConverter tc =
                 new TextureConverter(data, width)
@@ -324,7 +324,7 @@ namespace VelcroPhysics.Tools.TextureTools
             if (polygon.Count < 3)
                 throw new ArgumentException("'polygon.MainPolygon.Count' can't be less then 3.");
 
-            List<float> xCoords;
+            List<GGame.Math.Fix64> xCoords;
             Vector2? entrance;
 
             int startY;
@@ -500,7 +500,7 @@ namespace VelcroPhysics.Tools.TextureTools
 
             if (!inPolygon)
             {
-                List<float> xCoords = SearchCrossingEdgesHoles(polygon, (int)point.Y);
+                List<GGame.Math.Fix64> xCoords = SearchCrossingEdgesHoles(polygon, (int)point.Y);
 
                 if (xCoords.Count > 0 && xCoords.Count % 2 == 0)
                 {
@@ -519,7 +519,7 @@ namespace VelcroPhysics.Tools.TextureTools
 
         private Vector2? GetTopMostVertex(Vertices vertices)
         {
-            float topMostValue = float.MaxValue;
+            GGame.Math.Fix64 topMostValue = GGame.Math.Fix64.MaxValue;
             Vector2? topMost = null;
 
             for (int i = 0; i < vertices.Count; i++)
@@ -534,9 +534,9 @@ namespace VelcroPhysics.Tools.TextureTools
             return topMost;
         }
 
-        private float GetTopMostCoord(Vertices vertices)
+        private GGame.Math.Fix64 GetTopMostCoord(Vertices vertices)
         {
-            float returnValue = float.MaxValue;
+            GGame.Math.Fix64 returnValue = GGame.Math.Fix64.MaxValue;
 
             for (int i = 0; i < vertices.Count; i++)
             {
@@ -549,9 +549,9 @@ namespace VelcroPhysics.Tools.TextureTools
             return returnValue;
         }
 
-        private float GetBottomMostCoord(Vertices vertices)
+        private GGame.Math.Fix64 GetBottomMostCoord(Vertices vertices)
         {
-            float returnValue = float.MinValue;
+            GGame.Math.Fix64 returnValue = GGame.Math.Fix64.MinValue;
 
             for (int i = 0; i < vertices.Count; i++)
             {
@@ -564,7 +564,7 @@ namespace VelcroPhysics.Tools.TextureTools
             return returnValue;
         }
 
-        private List<float> SearchCrossingEdgesHoles(Vertices polygon, int y)
+        private List<GGame.Math.Fix64> SearchCrossingEdgesHoles(Vertices polygon, int y)
         {
             if (polygon == null)
                 throw new ArgumentNullException(nameof(polygon), "'polygon' can't be null.");
@@ -572,7 +572,7 @@ namespace VelcroPhysics.Tools.TextureTools
             if (polygon.Count < 3)
                 throw new ArgumentException("'polygon.MainPolygon.Count' can't be less then 3.");
 
-            List<float> result = SearchCrossingEdges(polygon, y);
+            List<GGame.Math.Fix64> result = SearchCrossingEdges(polygon, y);
 
             if (polygon.Holes != null)
             {
@@ -592,13 +592,13 @@ namespace VelcroPhysics.Tools.TextureTools
         /// <param name="polygon">Polygon to search in.</param>
         /// <param name="y">Y coordinate to check for edges.</param>
         /// <returns>Descending sorted list of x coordinates of edges that cross the specified y coordinate.</returns>
-        private List<float> SearchCrossingEdges(Vertices polygon, int y)
+        private List<GGame.Math.Fix64> SearchCrossingEdges(Vertices polygon, int y)
         {
             // sick-o-note:
             // Used to search the x coordinates of edges in the polygon for a specific y coordinate.
-            // (Usualy comming from the texture data, that's why it's an int and not a float.)
+            // (Usualy comming from the texture data, that's why it's an int and not a GGame.Math.Fix64.)
 
-            List<float> edges = new List<float>();
+            List<GGame.Math.Fix64> edges = new List<GGame.Math.Fix64>();
 
             // current edge
             Vector2 slope;
@@ -670,12 +670,12 @@ namespace VelcroPhysics.Tools.TextureTools
             int nearestEdgeVertex2Index = 0;
             bool edgeFound = false;
 
-            float shortestDistance = float.MaxValue;
+            GGame.Math.Fix64 shortestDistance = GGame.Math.Fix64.MaxValue;
 
             bool edgeCoordFound = false;
             Vector2 foundEdgeCoord = Vector2.Zero;
 
-            List<float> xCoords = SearchCrossingEdges(polygon, (int)coordInsideThePolygon.Y);
+            List<GGame.Math.Fix64> xCoords = SearchCrossingEdges(polygon, (int)coordInsideThePolygon.Y);
 
             vertex1Index = 0;
             vertex2Index = 0;
@@ -684,7 +684,7 @@ namespace VelcroPhysics.Tools.TextureTools
 
             if (xCoords != null && xCoords.Count > 1 && xCoords.Count % 2 == 0)
             {
-                float distance;
+                GGame.Math.Fix64 distance;
                 for (int i = 0; i < xCoords.Count; i++)
                 {
                     if (xCoords[i] < coordInsideThePolygon.X)
@@ -703,7 +703,7 @@ namespace VelcroPhysics.Tools.TextureTools
 
                 if (edgeCoordFound)
                 {
-                    shortestDistance = float.MaxValue;
+                    shortestDistance = GGame.Math.Fix64.MaxValue;
 
                     int edgeVertex2Index = polygon.Count - 1;
 
@@ -947,7 +947,7 @@ namespace VelcroPhysics.Tools.TextureTools
                     if (foundTransparent)
                     {
                         x = i % _width;
-                        entrance = new Vector2(x, (i - x) / (float)_width);
+                        entrance = new Vector2(x, (i - x) / (GGame.Math.Fix64)_width);
 
                         inPolygon = false;
                         for (int polygonIdx = 0; polygonIdx < detectedPolygons.Count; polygonIdx++)
@@ -1152,7 +1152,7 @@ namespace VelcroPhysics.Tools.TextureTools
         /// <summary>
         /// Default is 1.5f.
         /// </summary>
-        public float HullTolerance
+        public GGame.Math.Fix64 HullTolerance
         {
             get { return _hullTolerance; }
             set
@@ -1181,7 +1181,7 @@ namespace VelcroPhysics.Tools.TextureTools
             Initialize(null, null, null, null, null, null, null, null);
         }
 
-        public TextureConverter(byte? alphaTolerance, float? hullTolerance,
+        public TextureConverter(byte? alphaTolerance, GGame.Math.Fix64? hullTolerance,
                                 bool? holeDetection, bool? multipartDetection, bool? pixelOffsetOptimization, Matrix? transform)
         {
             Initialize(null, null, alphaTolerance, hullTolerance, holeDetection,
@@ -1194,7 +1194,7 @@ namespace VelcroPhysics.Tools.TextureTools
         }
 
         public TextureConverter(uint[] data, int width, byte? alphaTolerance,
-                                float? hullTolerance, bool? holeDetection, bool? multipartDetection,
+                                GGame.Math.Fix64? hullTolerance, bool? holeDetection, bool? multipartDetection,
                                 bool? pixelOffsetOptimization, Matrix? transform)
         {
             Initialize(data, width, alphaTolerance, hullTolerance, holeDetection,

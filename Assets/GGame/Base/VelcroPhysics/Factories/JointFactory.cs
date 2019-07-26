@@ -66,7 +66,7 @@ namespace VelcroPhysics.Factories
 
         #region Gear Joint
 
-        public static GearJoint CreateGearJoint(World world, Body bodyA, Body bodyB, Joint jointA, Joint jointB, float ratio)
+        public static GearJoint CreateGearJoint(World world, Body bodyA, Body bodyB, Joint jointA, Joint jointB, GGame.Math.Fix64 ratio)
         {
             GearJoint gearJoint = new GearJoint(bodyA, bodyB, jointA, jointB, ratio);
             world.AddJoint(gearJoint);
@@ -77,7 +77,7 @@ namespace VelcroPhysics.Factories
 
         #region Pulley Joint
 
-        public static PulleyJoint CreatePulleyJoint(World world, Body bodyA, Body bodyB, Vector2 anchorA, Vector2 anchorB, Vector2 worldAnchorA, Vector2 worldAnchorB, float ratio, bool useWorldCoordinates = false)
+        public static PulleyJoint CreatePulleyJoint(World world, Body bodyA, Body bodyB, Vector2 anchorA, Vector2 anchorB, Vector2 worldAnchorA, Vector2 worldAnchorB, GGame.Math.Fix64 ratio, bool useWorldCoordinates = false)
         {
             PulleyJoint pulleyJoint = new PulleyJoint(bodyA, bodyB, anchorA, anchorB, worldAnchorA, worldAnchorB, ratio, useWorldCoordinates);
             world.AddJoint(pulleyJoint);

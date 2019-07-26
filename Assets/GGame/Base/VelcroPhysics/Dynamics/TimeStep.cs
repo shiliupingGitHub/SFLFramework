@@ -27,16 +27,16 @@ namespace VelcroPhysics.Dynamics
         /// <summary>
         /// Time step (Delta time)
         /// </summary>
-        public float dt;
+        public GGame.Math.Fix64 dt;
 
         /// <summary>
         /// dt * inv_dt0
         /// </summary>
-        public float dtRatio;
+        public GGame.Math.Fix64 dtRatio;
 
         /// <summary>
         /// Inverse time step (0 if dt == 0).
         /// </summary>
-        public float inv_dt;
+        public GGame.Math.Fix64 inv_dt;
     }
 }

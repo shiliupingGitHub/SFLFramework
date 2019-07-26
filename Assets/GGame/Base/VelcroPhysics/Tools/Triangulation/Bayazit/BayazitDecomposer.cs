@@ -45,12 +45,12 @@ namespace VelcroPhysics.Tools.Triangulation.Bayazit
             {
                 if (Reflex(i, vertices))
                 {
-                    float upperDist;
-                    float lowerDist = upperDist = float.MaxValue;
+                    GGame.Math.Fix64 upperDist;
+                    GGame.Math.Fix64 lowerDist = upperDist = GGame.Math.Fix64.MaxValue;
                     for (int j = 0; j < vertices.Count; ++j)
                     {
                         // if line intersects with an edge
-                        float d;
+                        GGame.Math.Fix64 d;
                         Vector2 p;
                         if (Left(At(i - 1, vertices), At(i, vertices), At(j, vertices)) && RightOn(At(i - 1, vertices), At(i, vertices), At(j - 1, vertices)))
                         {
@@ -100,7 +100,7 @@ namespace VelcroPhysics.Tools.Triangulation.Bayazit
                     }
                     else
                     {
-                        double highestScore = 0, bestIndex = lowerIndex;
+                        GGame.Math.Fix64 highestScore = 0, bestIndex = lowerIndex;
                         while (upperIndex < lowerIndex)
                             upperIndex += vertices.Count;
 
@@ -108,7 +108,7 @@ namespace VelcroPhysics.Tools.Triangulation.Bayazit
                         {
                             if (CanSee(i, j, vertices))
                             {
-                                double score = 1 / (SquareDist(At(i, vertices), At(j, vertices)) + 1);
+                                GGame.Math.Fix64 score = 1 / (SquareDist(At(i, vertices), At(j, vertices)) + 1);
                                 if (Reflex(j, vertices))
                                 {
                                     if (RightOn(At(j - 1, vertices), At(j, vertices), At(i, vertices)) && LeftOn(At(j + 1, vertices), At(j, vertices), At(i, vertices)))
@@ -235,10 +235,10 @@ namespace VelcroPhysics.Tools.Triangulation.Bayazit
             return MathUtils.Area(ref a, ref b, ref c) <= 0;
         }
 
-        private static float SquareDist(Vector2 a, Vector2 b)
+        private static GGame.Math.Fix64 SquareDist(Vector2 a, Vector2 b)
         {
-            float dx = b.X - a.X;
-            float dy = b.Y - a.Y;
+            GGame.Math.Fix64 dx = b.X - a.X;
+            GGame.Math.Fix64 dy = b.Y - a.Y;
             return dx * dx + dy * dy;
         }
     }

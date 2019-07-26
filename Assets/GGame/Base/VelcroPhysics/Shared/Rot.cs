@@ -9,25 +9,25 @@ namespace VelcroPhysics.Shared
     public struct Rot
     {
         /// Sine and cosine
-        public float s,
+        public GGame.Math.Fix64 s,
                      c;
 
         /// <summary>
         /// Initialize from an angle in radians
         /// </summary>
         /// <param name="angle">Angle in radians</param>
-        public Rot(float angle)
+        public Rot(GGame.Math.Fix64 angle)
         {
             // TODO_ERIN optimize
-            s = (float)Math.Sin(angle);
-            c = (float)Math.Cos(angle);
+            s = GGame.Math.Fix64.Sin(angle);
+            c = GGame.Math.Fix64.Cos(angle);
         }
 
         /// <summary>
         /// Set using an angle in radians.
         /// </summary>
         /// <param name="angle"></param>
-        public void Set(float angle)
+        public void Set(GGame.Math.Fix64 angle)
         {
             //Velcro: Optimization
             if (angle == 0)
@@ -38,8 +38,8 @@ namespace VelcroPhysics.Shared
             else
             {
                 // TODO_ERIN optimize
-                s = (float)Math.Sin(angle);
-                c = (float)Math.Cos(angle);
+                s = GGame.Math.Fix64.Sin(angle);
+                c = GGame.Math.Fix64.Cos(angle);
             }
         }
 
@@ -55,9 +55,9 @@ namespace VelcroPhysics.Shared
         /// <summary>
         /// Get the angle in radians
         /// </summary>
-        public float GetAngle()
+        public GGame.Math.Fix64 GetAngle()
         {
-            return (float)Math.Atan2(s, c);
+            return GGame.Math.Fix64.Atan2(s, c);
         }
 
         /// <summary>

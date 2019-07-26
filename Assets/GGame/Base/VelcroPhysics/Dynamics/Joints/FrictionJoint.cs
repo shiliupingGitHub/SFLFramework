@@ -45,18 +45,18 @@ namespace VelcroPhysics.Dynamics.Joints
     /// </summary>
     public class FrictionJoint : Joint
     {
-        private float _angularImpulse;
-        private float _angularMass;
+        private GGame.Math.Fix64 _angularImpulse;
+        private GGame.Math.Fix64 _angularMass;
 
         // Solver temp
         private int _indexA;
 
         private int _indexB;
-        private float _invIA;
-        private float _invIB;
-        private float _invMassA;
+        private GGame.Math.Fix64 _invIA;
+        private GGame.Math.Fix64 _invIB;
+        private GGame.Math.Fix64 _invMassA;
 
-        private float _invMassB;
+        private GGame.Math.Fix64 _invMassB;
 
         // Solver shared
         private Vector2 _linearImpulse;
@@ -121,19 +121,19 @@ namespace VelcroPhysics.Dynamics.Joints
         /// <summary>
         /// The maximum friction force in N.
         /// </summary>
-        public float MaxForce { get; set; }
+        public GGame.Math.Fix64 MaxForce { get; set; }
 
         /// <summary>
         /// The maximum friction torque in N-m.
         /// </summary>
-        public float MaxTorque { get; set; }
+        public GGame.Math.Fix64 MaxTorque { get; set; }
 
-        public override Vector2 GetReactionForce(float invDt)
+        public override Vector2 GetReactionForce(GGame.Math.Fix64 invDt)
         {
             return invDt * _linearImpulse;
         }
 
-        public override float GetReactionTorque(float invDt)
+        public override GGame.Math.Fix64 GetReactionTorque(GGame.Math.Fix64 invDt)
         {
             return invDt * _angularImpulse;
         }
@@ -149,13 +149,13 @@ namespace VelcroPhysics.Dynamics.Joints
             _invIA = BodyA._invI;
             _invIB = BodyB._invI;
 
-            float aA = data.Positions[_indexA].A;
+            GGame.Math.Fix64 aA = data.Positions[_indexA].A;
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
 
-            float aB = data.Positions[_indexB].A;
+            GGame.Math.Fix64 aB = data.Positions[_indexB].A;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
             Rot qA = new Rot(aA), qB = new Rot(aB);
 
@@ -172,8 +172,8 @@ namespace VelcroPhysics.Dynamics.Joints
             //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
             //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIA, iB = _invIB;
+            GGame.Math.Fix64 mA = _invMassA, mB = _invMassB;
+            GGame.Math.Fix64 iA = _invIA, iB = _invIB;
 
             Mat22 K = new Mat22();
             K.ex.X = mA + mB + iA * _rA.Y * _rA.Y + iB * _rB.Y * _rB.Y;
@@ -216,22 +216,22 @@ namespace VelcroPhysics.Dynamics.Joints
         internal override void SolveVelocityConstraints(ref SolverData data)
         {
             Vector2 vA = data.Velocities[_indexA].V;
-            float wA = data.Velocities[_indexA].W;
+            GGame.Math.Fix64 wA = data.Velocities[_indexA].W;
             Vector2 vB = data.Velocities[_indexB].V;
-            float wB = data.Velocities[_indexB].W;
+            GGame.Math.Fix64 wB = data.Velocities[_indexB].W;
 
-            float mA = _invMassA, mB = _invMassB;
-            float iA = _invIA, iB = _invIB;
+            GGame.Math.Fix64 mA = _invMassA, mB = _invMassB;
+            GGame.Math.Fix64 iA = _invIA, iB = _invIB;
 
-            float h = data.Step.dt;
+            GGame.Math.Fix64 h = data.Step.dt;
 
             // Solve angular friction
             {
-                float Cdot = wB - wA;
-                float impulse = -_angularMass * Cdot;
+                GGame.Math.Fix64 Cdot = wB - wA;
+                GGame.Math.Fix64 impulse = -_angularMass * Cdot;
 
-                float oldImpulse = _angularImpulse;
-                float maxImpulse = h * MaxTorque;
+                GGame.Math.Fix64 oldImpulse = _angularImpulse;
+                GGame.Math.Fix64 maxImpulse = h * MaxTorque;
                 _angularImpulse = MathUtils.Clamp(_angularImpulse + impulse, -maxImpulse, maxImpulse);
                 impulse = _angularImpulse - oldImpulse;
 
@@ -247,7 +247,7 @@ namespace VelcroPhysics.Dynamics.Joints
                 Vector2 oldImpulse = _linearImpulse;
                 _linearImpulse += impulse;
 
-                float maxImpulse = h * MaxForce;
+                GGame.Math.Fix64 maxImpulse = h * MaxForce;
 
                 if (_linearImpulse.LengthSquared() > maxImpulse * maxImpulse)
                 {

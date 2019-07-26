@@ -22,6 +22,7 @@
 
 using System;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Collision.ContactSystem;
 using VelcroPhysics.Dynamics.Joints;
@@ -34,8 +35,8 @@ namespace VelcroPhysics.Dynamics.Solver
     /// </summary>
     public class Island
     {
-        private const float LinTolSqr = Settings.LinearSleepTolerance * Settings.LinearSleepTolerance;
-        private const float AngTolSqr = Settings.AngularSleepTolerance * Settings.AngularSleepTolerance;
+        private static GGame.Math.Fix64 LinTolSqr = Settings.LinearSleepTolerance * Settings.LinearSleepTolerance;
+        private static GGame.Math.Fix64 AngTolSqr = Settings.AngularSleepTolerance * Settings.AngularSleepTolerance;
         private ContactManager _contactManager;
         private Contact[] _contacts;
         private ContactSolver _contactSolver = new ContactSolver();
@@ -51,7 +52,7 @@ namespace VelcroPhysics.Dynamics.Solver
         public int ContactCount;
         public int JointCapacity;
         public int JointCount;
-        public float JointUpdateTime;
+        public GGame.Math.Fix64 JointUpdateTime;
 
         public void Reset(int bodyCapacity, int contactCapacity, int jointCapacity, ContactManager contactManager)
         {
@@ -91,7 +92,7 @@ namespace VelcroPhysics.Dynamics.Solver
 
         public void Solve(ref TimeStep step, ref Vector2 gravity)
         {
-            float h = step.dt;
+            GGame.Math.Fix64 h = step.dt;
 
             // Integrate velocities and apply damping. Initialize the body state.
             for (int i = 0; i < BodyCount; ++i)
@@ -99,9 +100,9 @@ namespace VelcroPhysics.Dynamics.Solver
                 Body b = Bodies[i];
 
                 Vector2 c = b._sweep.C;
-                float a = b._sweep.A;
+                GGame.Math.Fix64 a = b._sweep.A;
                 Vector2 v = b._linearVelocity;
-                float w = b._angularVelocity;
+                GGame.Math.Fix64 w = b._angularVelocity;
 
                 // Store positions for continuous collision.
                 b._sweep.C0 = b._sweep.C;
@@ -192,22 +193,22 @@ namespace VelcroPhysics.Dynamics.Solver
             for (int i = 0; i < BodyCount; ++i)
             {
                 Vector2 c = Positions[i].C;
-                float a = Positions[i].A;
+                GGame.Math.Fix64 a = Positions[i].A;
                 Vector2 v = Velocities[i].V;
-                float w = Velocities[i].W;
+                GGame.Math.Fix64 w = Velocities[i].W;
 
                 // Check for large velocities
                 Vector2 translation = h * v;
                 if (Vector2.Dot(translation, translation) > Settings.MaxTranslationSquared)
                 {
-                    float ratio = Settings.MaxTranslation / translation.Length();
+                    GGame.Math.Fix64 ratio = Settings.MaxTranslation / translation.Length();
                     v *= ratio;
                 }
 
-                float rotation = h * w;
+                GGame.Math.Fix64 rotation = h * w;
                 if (rotation * rotation > Settings.MaxRotationSquared)
                 {
-                    float ratio = Settings.MaxRotation / Math.Abs(rotation);
+                    GGame.Math.Fix64 ratio = Settings.MaxRotation / Fix64.Abs(rotation);
                     w *= ratio;
                 }
 
@@ -275,7 +276,7 @@ namespace VelcroPhysics.Dynamics.Solver
 
             if (Settings.AllowSleep)
             {
-                float minSleepTime = Settings.MaxFloat;
+                GGame.Math.Fix64 minSleepTime = Settings.MaxFloat;
 
                 for (int i = 0; i < BodyCount; ++i)
                 {
@@ -292,7 +293,7 @@ namespace VelcroPhysics.Dynamics.Solver
                     else
                     {
                         b.SleepTime += h;
-                        minSleepTime = Math.Min(minSleepTime, b.SleepTime);
+                        minSleepTime = Math.Min((float)minSleepTime, (float)b.SleepTime);
                     }
                 }
 
@@ -353,28 +354,28 @@ namespace VelcroPhysics.Dynamics.Solver
             // Don't store the TOI contact forces for warm starting
             // because they can be quite large.
 
-            float h = subStep.dt;
+            GGame.Math.Fix64 h = subStep.dt;
 
             // Integrate positions.
             for (int i = 0; i < BodyCount; ++i)
             {
                 Vector2 c = Positions[i].C;
-                float a = Positions[i].A;
+                GGame.Math.Fix64 a = Positions[i].A;
                 Vector2 v = Velocities[i].V;
-                float w = Velocities[i].W;
+                GGame.Math.Fix64 w = Velocities[i].W;
 
                 // Check for large velocities
                 Vector2 translation = h * v;
                 if (Vector2.Dot(translation, translation) > Settings.MaxTranslationSquared)
                 {
-                    float ratio = Settings.MaxTranslation / translation.Length();
+                    GGame.Math.Fix64 ratio = Settings.MaxTranslation / translation.Length();
                     v *= ratio;
                 }
 
-                float rotation = h * w;
+                GGame.Math.Fix64 rotation = h * w;
                 if (rotation * rotation > Settings.MaxRotationSquared)
                 {
-                    float ratio = Settings.MaxRotation / Math.Abs(rotation);
+                    GGame.Math.Fix64 ratio = Settings.MaxRotation / Fix64.Abs(rotation);
                     w *= ratio;
                 }
 

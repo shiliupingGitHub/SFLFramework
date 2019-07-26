@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GGame.Math;
 using Microsoft.Xna.Framework;
 using VelcroPhysics.Shared;
 using VelcroPhysics.Utilities;
@@ -44,8 +45,8 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
         /// Each resulting polygon will have no more than Settings.MaxPolygonVertices vertices.
         /// </summary>
         /// <param name="vertices">The vertices.</param>
-        /// <param name="tolerance">The tolerance.</param>
-        public static List<Vertices> ConvexPartition(Vertices vertices, float tolerance = 0.001f)
+        /// <param name="tolerance">The tolerance. 默认值 0.001</param>
+        public static List<Vertices> ConvexPartition(Vertices vertices, GGame.Math.Fix64 tolerance )
         {
             Debug.Assert(vertices.Count > 3);
             Debug.Assert(!vertices.IsCounterClockWise());
@@ -69,7 +70,7 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
         /// <remarks>
         /// Only works on simple polygons.
         /// </remarks>
-        private static List<Vertices> TriangulatePolygon(Vertices vertices, float tolerance)
+        private static List<Vertices> TriangulatePolygon(Vertices vertices, GGame.Math.Fix64 tolerance)
         {
             //Velcro note: Check is needed as invalid triangles can be returned in recursive calls.
             if (vertices.Count < 3)
@@ -102,8 +103,8 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
 
             Vertices[] buffer = new Vertices[vertices.Count - 2];
             int bufferSize = 0;
-            float[] xrem = new float[vertices.Count];
-            float[] yrem = new float[vertices.Count];
+            GGame.Math.Fix64[] xrem = new GGame.Math.Fix64[vertices.Count];
+            GGame.Math.Fix64[] yrem = new GGame.Math.Fix64[vertices.Count];
             for (int i = 0; i < vertices.Count; ++i)
             {
                 xrem[i] = vertices[i].X;
@@ -116,7 +117,7 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
             {
                 // Find an ear
                 int earIndex = -1;
-                float earMaxMinCross = -10.0f;
+                GGame.Math.Fix64 earMaxMinCross = -10.0f;
                 for (int i = 0; i < vNum; ++i)
                 {
                     if (IsEar(i, xrem, yrem, vNum))
@@ -130,20 +131,20 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
                         d1.Normalize();
                         d2.Normalize();
                         d3.Normalize();
-                        float cross12;
+                        GGame.Math.Fix64 cross12;
                         MathUtils.Cross(ref d1, ref d2, out cross12);
-                        cross12 = Math.Abs(cross12);
+                        cross12 = Fix64.Abs(cross12);
 
-                        float cross23;
+                        GGame.Math.Fix64 cross23;
                         MathUtils.Cross(ref d2, ref d3, out cross23);
-                        cross23 = Math.Abs(cross23);
+                        cross23 = Fix64.Abs(cross23);
 
-                        float cross31;
+                        GGame.Math.Fix64 cross31;
                         MathUtils.Cross(ref d3, ref d1, out cross31);
-                        cross31 = Math.Abs(cross31);
+                        cross31 = Fix64.Abs(cross31);
 
                         //Find the maximum minimum angle
-                        float minCross = Math.Min(cross12, Math.Min(cross23, cross31));
+                        GGame.Math.Fix64 minCross = Math.Min((float)cross12, Math.Min((float)cross23, (float)cross31));
                         if (minCross > earMaxMinCross)
                         {
                             earIndex = i;
@@ -170,8 +171,8 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
                 // - remove the ear tip from the list
 
                 --vNum;
-                float[] newx = new float[vNum];
-                float[] newy = new float[vNum];
+                GGame.Math.Fix64[] newx = new GGame.Math.Fix64[vNum];
+                GGame.Math.Fix64[] newy = new GGame.Math.Fix64[vNum];
                 int currDest = 0;
                 for (int i = 0; i < vNum; ++i)
                 {
@@ -219,7 +220,7 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
         /// <param name="poutA">The pout A.</param>
         /// <param name="poutB">The pout B.</param>
         /// <param name="tolerance"></param>
-        private static bool ResolvePinchPoint(Vertices pin, out Vertices poutA, out Vertices poutB, float tolerance)
+        private static bool ResolvePinchPoint(Vertices pin, out Vertices poutA, out Vertices poutB, GGame.Math.Fix64 tolerance)
         {
             poutA = new Vertices();
             poutB = new Vertices();
@@ -236,7 +237,7 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
                 {
                     //Don't worry about pinch points where the points
                     //are actually just dupe neighbors
-                    if (Math.Abs(pin[i].X - pin[j].X) < tolerance && Math.Abs(pin[i].Y - pin[j].Y) < tolerance && j != i + 1)
+                    if (Fix64.Abs(pin[i].X - pin[j].X) < tolerance && Fix64.Abs(pin[i].Y - pin[j].Y) < tolerance && j != i + 1)
                     {
                         pinchIndexA = i;
                         pinchIndexB = j;
@@ -297,9 +298,9 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
         /// <returns>
         /// <c>true</c> if the specified i is ear; otherwise, <c>false</c>.
         /// </returns>
-        private static bool IsEar(int i, float[] xv, float[] yv, int xvLength)
+        private static bool IsEar(int i, GGame.Math.Fix64[] xv, GGame.Math.Fix64[] yv, int xvLength)
         {
-            float dx0, dy0, dx1, dy1;
+            GGame.Math.Fix64 dx0, dy0, dx1, dy1;
             if (i >= xvLength || i < 0 || xvLength < 3)
             {
                 return false;
@@ -330,7 +331,7 @@ namespace VelcroPhysics.Tools.Triangulation.Earclip
                 dy1 = yv[i + 1] - yv[i];
             }
 
-            float cross = dx0 * dy1 - dx1 * dy0;
+            GGame.Math.Fix64 cross = dx0 * dy1 - dx1 * dy0;
 
             if (cross > 0)
                 return false;
