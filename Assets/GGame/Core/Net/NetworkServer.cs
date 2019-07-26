@@ -5,9 +5,10 @@ namespace GGame.Core
     public enum ConnectTye
     {
         TCP,
+        UDP,
     }
     
-    public class NetworkServer : IAutoInit
+    public class NetworkServer
     {
         private static NetworkServer _instance;
 
