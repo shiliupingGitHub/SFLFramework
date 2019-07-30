@@ -5,6 +5,11 @@ namespace GGame.Core
     {
         void Init();
     }
+
+    public interface IAutoUpdate
+    {
+        void Update();
+    }
     public abstract class SingleTon<T>  where T:new()
     {
         protected static T _instance;
