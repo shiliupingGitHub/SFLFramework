@@ -1,16 +1,18 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using UnityEngine.AI;
 
 
 public class MapExportWindow : EditorWindow
 {
-    [MenuItem("Window/UIElements/MapExportWindow")]
+    [MenuItem("Tools/MapExportWindow")]
     public static void ShowExample()
     {
         MapExportWindow wnd = GetWindow<MapExportWindow>();
@@ -46,15 +48,11 @@ public class MapExportWindow : EditorWindow
             
             //blockInfo
 
-            var blocksNode = doc.CreateElement("Blocks");
-            rootNode.AppendChild(blocksNode);
+            var NavMeshNode = doc.CreateElement("NavMesh");
+            rootNode.AppendChild(NavMeshNode);
             
             string path = Path.Combine("Assets/GGame/Res/MapConfig", $"map_config_{strId}.xml");
-
-            foreach (var go in gos)
-            {
-                ExportGameObject(go, doc, blocksNode);
-            }
+            
             doc.Save(path);
             
             AssetDatabase.Refresh();
@@ -63,49 +61,5 @@ public class MapExportWindow : EditorWindow
 
     }
 
-    void ExportGameObject(GameObject go, XmlDocument doc, XmlNode blocksNode)
-    {
-        if(!go.activeSelf)
-            return;
-        Collider2D collider = go.GetComponent<Collider2D>();
-
-        if (null != collider)
-        {
-            switch (collider)
-            {
-              
-                    
-                case BoxCollider2D box:
-                {
-                    
-                    var block = doc.CreateElement("Box");
-                    blocksNode.AppendChild(block);
-
-                    var postionAttr = doc.CreateAttribute("postion");
-                    postionAttr.Value = $"{box.bounds.center.x},{box.bounds.center.y}";
-
-                    block.Attributes.Append(postionAttr);
-                    
-                    var widthAttr = doc.CreateAttribute("width");
-                    widthAttr.Value =$"{box.bounds.size.x}";
-
-                    block.Attributes.Append(widthAttr);
-                    
-                    var heightAttr = doc.CreateAttribute("height");
-                    heightAttr.Value =$"{box.bounds.size.y}";
-
-                    block.Attributes.Append(heightAttr);
-
-                }
-                    break;
-            }
-        }
-
-        for (int i = 0; i < go.transform.childCount; i++)
-        {
-            var child = go.transform.GetChild(i).gameObject;
-            
-            ExportGameObject(child, doc, blocksNode);
-        }
-    }
+   
 }

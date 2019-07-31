@@ -1,8 +1,4 @@
 
-using GGame.Math;
-using Microsoft.Xna.Framework;
-using RoyT.AStar;
-using VelcroPhysics.Collision.RayCast;
 
 namespace GGame.Core
 {

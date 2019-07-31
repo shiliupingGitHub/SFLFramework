@@ -8,14 +8,16 @@ using GGame.Math;
 
 public class WorldTest : MonoBehaviour
 {
+    private World _World;
     // Start is called before the first frame update
     public CinemachineVirtualCamera camera;
     public Transform startPos;
     void Start()
     {
-        ProcedureServer.Instance.Enter<BattleTestProcedure, Transform, CinemachineVirtualCamera>(startPos, camera);
-        var d = skill_config.Dic[1];
+       
+        _World = new World(true);
         
+        _World.GetSystem<MapSystem>().LoadMap(1001);
     }
 
  
@@ -23,11 +25,9 @@ public class WorldTest : MonoBehaviour
     void Update()
     {
       
-        var procedure = ProcedureServer.Instance.Get<BattleTestProcedure>();
-        if(null == procedure)
-            return;
+
         
-        var world =procedure.world;
+        var world =_World;
         bool isLeft = true;
         bool isMove = false;
         bool changeCmd = (Input.GetKeyUp(KeyCode.A) ||
@@ -84,6 +84,6 @@ public class WorldTest : MonoBehaviour
 
     private void OnDestroy()
     {
-      
+        _World?.Dispose();
     }
 }
