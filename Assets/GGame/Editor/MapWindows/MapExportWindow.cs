@@ -46,10 +46,6 @@ public class MapExportWindow : EditorWindow
             var rootNode = doc.CreateElement("Map");
             doc.AppendChild(rootNode);
             
-            //blockInfo
-
-            var NavMeshNode = doc.CreateElement("NavMesh");
-            rootNode.AppendChild(NavMeshNode);
             
             string path = Path.Combine("Assets/GGame/Res/MapConfig", $"map_config_{strId}.xml");
             
