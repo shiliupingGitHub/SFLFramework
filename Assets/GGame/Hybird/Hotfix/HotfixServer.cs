@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using GGame.Core;
 
-namespace GGame.Hybird.Hotfix
+namespace GGame.Hybird
 {
     public class HotfixServer : SingleTon<HotfixServer> , IDisposable , IInit
     {

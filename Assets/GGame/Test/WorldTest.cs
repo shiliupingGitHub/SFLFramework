@@ -2,6 +2,7 @@
 using Cinemachine;
 using UnityEngine;
 using GGame.Core;
+using GGame.Hybird;
 
 
 public class WorldTest : MonoBehaviour
@@ -16,6 +17,8 @@ public class WorldTest : MonoBehaviour
         _World = new World(true);
         
         _World.GetSystem<MapSystem>().LoadMap(1001);
+        HotfixServer.Instance.Init();
+        UISever.Instance.Show(0, null);
     }
 
  

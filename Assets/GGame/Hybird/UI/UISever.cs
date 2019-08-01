@@ -15,7 +15,7 @@ namespace GGame.Hybird
         Dictionary<int, Frame> _frames = new Dictionary<int, Frame>();
 
         public Func<int, Frame> OnNewFrame;
-        public void Show(int id)
+        public void Show(int id, System.Object o)
         {
             Frame f = null;
             if (!_frames.TryGetValue(id, out  f))
@@ -32,7 +32,7 @@ namespace GGame.Hybird
                 }
             }
             
-            f?.OnShow();
+            f?.OnShow(o);
         }
 
         public void Hide(int id)

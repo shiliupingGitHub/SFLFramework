@@ -3,7 +3,7 @@ namespace GGame.Hybird
     public  interface Frame
     {
 
-        void OnShow();
+        void OnShow(System.Object o);
 
 
         void OnHide();

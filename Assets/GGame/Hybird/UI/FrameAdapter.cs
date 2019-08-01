@@ -41,12 +41,12 @@ namespace GGame.Hybird
                 this._instance = instance;
             }
 
-            public  void OnShow()
+            public  void OnShow(System.Object o)
             {
                 if(null == _onShowMethod)
-                    _onShowMethod = _instance.Type.GetMethod("OnShow", 0);
+                    _onShowMethod = _instance.Type.GetMethod("OnShow", 1);
 
-                _appdomain.Invoke(_onShowMethod, _instance, null);
+                _appdomain.Invoke(_onShowMethod, _instance, o);
             }
 
             public  void OnHide()
