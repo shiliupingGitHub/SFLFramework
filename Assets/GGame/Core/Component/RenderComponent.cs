@@ -28,7 +28,7 @@ namespace GGame.Core
             
             _gameObject = GResourceServer.Instance.LoadPrefab(modelPath);
 
-            _gameObject.Position = Entity.Pos;
+            //_gameObject.Position = Entity.Pos;
 
         }
 
