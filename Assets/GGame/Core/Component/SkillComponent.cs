@@ -4,14 +4,14 @@ using System.Xml;
 
 namespace GGame.Core
 {
-    public class SkillComponent: Component
+    public class SkillComponent: Component, IXmlAwake
     {
         Dictionary<int, IJob> _jobs = new Dictionary<int, IJob>();
 
         public int CurJobId { get; set; } = 0;
-        public override void Awake(World world, XmlNode node)
+        public  void Awake(World world, XmlNode node)
         {
-            base.Awake(world, node);
+
 
             var childNode = node.FirstChild;
 

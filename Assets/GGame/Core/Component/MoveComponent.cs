@@ -4,7 +4,7 @@ using GGame.Math;
 
 namespace GGame.Core
 {
-    public class MoveComponent : Component
+    public class MoveComponent : Component, IXmlAwake
     {
         public Fix64 CurVSpeed = 0;
 
@@ -34,9 +34,9 @@ namespace GGame.Core
         }
 
         public int CurJumpLandFrame = 0;
-        public override void Awake(World world, XmlNode node)
+        public  void Awake(World world, XmlNode node)
         {
-            base.Awake(world, node);
+
 
             Gravity = Convert.ToSingle(node.Attributes["g"].Value);
             HSpeed = Convert.ToSingle(node.Attributes["hSpeed"].Value);

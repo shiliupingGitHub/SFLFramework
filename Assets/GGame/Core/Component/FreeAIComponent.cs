@@ -2,13 +2,12 @@ using System.Xml;
 
 namespace GGame.Core
 {
-    public class FreeAIComponent: Component
+    public class FreeAIComponent: Component, IXmlAwake
     {
         public FreeMoveAIAgent Agent { get; set; }
-        public override void Awake(World world, XmlNode node)
+        public  void Awake(World world, XmlNode node)
         {
-            base.Awake(world, node);
-
+            
             string btName = node.Attributes["name"].Value;
             Agent = new FreeMoveAIAgent();
             Agent.btload(btName);

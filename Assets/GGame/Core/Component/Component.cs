@@ -5,7 +5,7 @@ namespace GGame.Core
 {
     public abstract class Component : IDisposable
     {
-        protected World _world;
+        public World World;
         public Entity Entity
         {
             set;
@@ -15,7 +15,7 @@ namespace GGame.Core
         public virtual void Dispose()
         {
             var type = GetType();
-            var systems =  _world.GetInterstSystems(type);
+            var systems =  World.GetInterstSystems(type);
 
             if (null != systems)
             {
@@ -25,29 +25,13 @@ namespace GGame.Core
                 }
             }
 
-            _world = null;
+            World = null;
             Entity = null;
             
             ObjectServer.Instance.Recycle(this);
 
         }
-
-        public virtual void Awake(World world, XmlNode node)
-        {
-            this._world = world;
-            var type = GetType();
-            var systems =  world.GetInterstSystems(type);
-
-            if (null != systems)
-            {
-                foreach (var system in systems)
-                {
-                    system.AddInterest(this);
-                }
-            }
-
-
-        }
+        
     }
 
 }

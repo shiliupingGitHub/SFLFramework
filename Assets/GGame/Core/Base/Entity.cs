@@ -53,9 +53,27 @@ namespace GGame.Core
             if (null != type)
             {
                 var component = ObjectServer.Instance.Fetch(type) as Component;
+                var systems =  _world.GetInterstSystems(type);
             
                 component.Entity = this;
-                component.Awake(this._world, node);
+                component.World = _world;
+                
+                
+                if (null != systems)
+                {
+                    foreach (var system in systems)
+                    {
+                        system.AddInterest(component);
+                    }
+                }
+
+                switch (component)
+                {
+                    case IXmlAwake xmlAwake:
+                        xmlAwake.Awake(_world, node);
+                        break;
+                }
+
                 _components[type] = component;
             }
 

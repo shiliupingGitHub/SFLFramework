@@ -11,6 +11,7 @@ public class WorldTest : MonoBehaviour
     // Start is called before the first frame update
     public CinemachineVirtualCamera camera;
     public Transform startPos;
+    private Entity _entity;
     void Start()
     {
        
@@ -19,6 +20,7 @@ public class WorldTest : MonoBehaviour
         _World.GetSystem<MapSystem>().LoadMap(1001);
         HotfixServer.Instance.Init();
         UISever.Instance.Show(0, null);
+        var _entity =  _World.CreateEntityWithPos(10000001, 1001, startPos.position.x, startPos.position.z);
     }
 
  
