@@ -19,7 +19,7 @@ namespace GGame.Core
 		}
 		static void Load()
 		{
-			var text = GResourceServer.Instance.LoadText("skill_config");
+			var text = GResourceServer.Instance.Load<string>("skill_config") as string;
 			var listData = LitJson.JsonMapper.ToObject<List<skill_config>>(text);
 			_dic = new Dictionary<int, skill_config>();
 			foreach (var data in listData)

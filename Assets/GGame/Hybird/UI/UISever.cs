@@ -8,10 +8,6 @@ namespace GGame.Hybird
 {
     public class UISever : SingleTon<UISever>
     {
-        public UISever()
-        {
-            _instance = this;
-        }
         Dictionary<int, Frame> _frames = new Dictionary<int, Frame>();
 
         public Func<int, Frame> OnNewFrame;

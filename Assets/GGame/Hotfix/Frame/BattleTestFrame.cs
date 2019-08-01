@@ -8,7 +8,7 @@ namespace GGame.Hotfix
     [FrameID(0)]
     public class BattleTestFrame : Frame
     {
-        public HybirdGGameObject go;
+        public GameObject go;
         public void OnShow(System.Object o)
         {
             
@@ -21,11 +21,11 @@ namespace GGame.Hotfix
 
         public void OnInit()
         {
-            go =GResourceServer.Instance.LoadPrefab("frame_battle_test") as HybirdGGameObject;
+            go  =GResourceServer.Instance.Load<GameObject>("frame_battle_test") as GameObject;
             
             
             
-            var collector = go.GameObject.GetComponent<ReferenceCollector>();
+            var collector = go.GetComponent<ReferenceCollector>();
 
             Button b = collector.Get<GameObject>("btn_use_skill").GetComponent<Button>();
             
@@ -43,7 +43,8 @@ namespace GGame.Hotfix
 
         public void OnDestroy()
         {
-           go?.Dispose();
+           if(null != go)
+               GameObject.Destroy(go);
         }
     }
 }

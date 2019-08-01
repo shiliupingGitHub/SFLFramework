@@ -14,7 +14,7 @@ namespace GGame.Core
         {
 
             string path = Path.GetFileNameWithoutExtension(filePath);
-            return GResourceServer.Instance.LoadBytes(path);
+            return GResourceServer.Instance.Load<byte[]>(path) as byte[];
             
         }
 

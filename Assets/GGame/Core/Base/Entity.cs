@@ -7,6 +7,7 @@ namespace GGame.Core
 {
     public class Entity : IDisposable
     {
+        public ulong Id { get; set; }
         public FixVector2 Pos { get; set; }
         public Fix64 MoveSpeedX { get; set; }
 

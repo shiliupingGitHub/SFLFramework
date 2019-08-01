@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -16,7 +17,7 @@ namespace GGame.Hybird
 
      HybirdResManifest _manifest = new HybirdResManifest();
 
-    public override string LoadText(string path)
+    public  string LoadText(string path)
     {
 
         LoadBundle(path);
@@ -25,8 +26,32 @@ namespace GGame.Hybird
 
 
     }
-    
-    public override byte[] LoadBytes(string path)
+
+    public override object Load<T>(string path) 
+    {
+        var type = typeof(T);
+
+        if (type == typeof(string))
+        {
+            return  LoadText(path) ;
+        }
+
+        if (type == typeof(GameObject))
+        {
+            return  LoadPrefab(path);
+        }
+
+        if (type == typeof(byte[]))
+        {
+            return  LoadBytes(path);
+
+        }
+
+        return null;
+
+    }
+
+    public  byte[] LoadBytes(string path)
     {
 
         LoadBundle(path);
@@ -35,16 +60,15 @@ namespace GGame.Hybird
 
     }
 
-    public override  Task<GGameObject> LoadPrefabAsync(string path, Action<float> onProgress)
+    public   Task<GameObject> LoadPrefabAsync(string path, Action<float> onProgress)
     {
-        TaskCompletionSource<GGameObject> tcs = new TaskCompletionSource<GGameObject>();
+        TaskCompletionSource<GameObject> tcs = new TaskCompletionSource<GameObject>();
 
         LoadBundleAsync(path, () =>
         {
             var o = _objects[path] as UnityEngine.GameObject;
-            var go =ObjectServer.Instance.Fetch<HybirdGGameObject>();
-
-            go.GameObject = GameObject.Instantiate(o);
+            
+            var go = GameObject.Instantiate(o);
             
             tcs.SetResult(go);
         }, onProgress);
@@ -137,13 +161,12 @@ namespace GGame.Hybird
         onCompliete();
     }
 
-    public override GGameObject LoadPrefab(string path)
+    public  GameObject LoadPrefab(string path)
     {
         LoadBundle(path);
         var o = _objects[path] as UnityEngine.GameObject;
-        var go =ObjectServer.Instance.Fetch<HybirdGGameObject>();
 
-        go.GameObject = GameObject.Instantiate(o);
+        var go = GameObject.Instantiate(o);
         
         return go;
     }

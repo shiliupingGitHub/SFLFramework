@@ -11,7 +11,7 @@ public class WorldTest : MonoBehaviour
     // Start is called before the first frame update
     public CinemachineVirtualCamera camera;
     public Transform startPos;
-    private Entity _entity;
+    private GPlayer player;
     void Start()
     {
        
@@ -20,7 +20,15 @@ public class WorldTest : MonoBehaviour
         _World.GetSystem<MapSystem>().LoadMap(1001);
         HotfixServer.Instance.Init();
         UISever.Instance.Show(0, null);
-        var _entity =  _World.CreateEntityWithPos(10000001, 1001, startPos.position.x, startPos.position.z);
+
+        player = _World.CreatePlayer<GPlayer>(10000001);
+        
+        player.Cards.Add(1001);
+        player.ExploreEntity = _World.CreateEntityWithPos(player.Cards[0], startPos.transform.position.x,
+            startPos.transform.position.z);
+        
+        CameraServer.Instance.SetExPlore(player.ExploreEntity, camera);
+
     }
 
  
@@ -67,7 +75,7 @@ public class WorldTest : MonoBehaviour
             CmdInfo info;
             cmd.isLeft = isLeft;
             cmd.isMove = isMove;
-            info.Uuid = 10000001;
+            info.Uuid = player.Id;
             info.Cmd = cmd;
             world?.AddCachCmde(world.FrameIndex +1, info);
         }
@@ -77,7 +85,7 @@ public class WorldTest : MonoBehaviour
             JumpCmd cmd;
             
             CmdInfo info;
-            info.Uuid = 10000001;
+            info.Uuid = player.Id;
             info.Cmd = cmd;
             world?.AddCachCmde(world.FrameIndex +1, info);
         }

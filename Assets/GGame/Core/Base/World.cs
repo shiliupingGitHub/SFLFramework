@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using GGame.Math;
@@ -14,6 +15,7 @@ namespace GGame.Core
         readonly Dictionary<Type, List<System>> _interestSystems = new Dictionary<Type, List<System>>();
         Dictionary<ulong, Entity> _entities = new Dictionary<ulong, Entity>();
         Dictionary<ulong, List<CmdInfo>> _cmdCache = new Dictionary<ulong, List<CmdInfo>>();
+        Dictionary<ulong, GPlayer> _players = new Dictionary<ulong, GPlayer>();
         List<IJob> _tickJobs = new List<IJob>();
         List<IJob> _CacheAddJob = new List<IJob>();
         List<IJob> _CacheRmoveJob = new List<IJob>();
@@ -70,8 +72,39 @@ namespace GGame.Core
             
             ret.Add(o);
         }
-        
 
+        public void RemoveEntity(ulong id)
+        {
+            if (_entities.TryGetValue(id, out var e))
+            {
+                _entities.Remove(id);
+                e.Dispose();
+            }
+                
+           
+        }
+
+        public T CreatePlayer<T>(ulong uuid) where T: GPlayer, new()
+        {
+            var player = ObjectServer.Instance.Fetch<T>() ;
+            
+            player.Id = uuid;
+            _players[uuid] = player;
+            player.World = this;
+            return player;
+        }
+
+        public void RemovePlayer(ulong uuid)
+        {
+            if (_players.TryGetValue(uuid, out var player))
+            {
+                _players.Remove(uuid);
+                
+                player.Dispose();
+            }
+            
+        }
+        
         public void AddSystem(System system)
         {
             
@@ -96,27 +129,31 @@ namespace GGame.Core
             
         }
 
-        public Entity CreateEntity(ulong uuid, int configId)
+        public Entity CreateEntity(int configId)
         {
             var configPath = $"entity_config_{configId}";
-            var configText = GResourceServer.Instance.LoadText(configPath);
+            var configText = GResourceServer.Instance.Load<string>(configPath) as string;
             var e = ObjectServer.Instance.Fetch<Entity>();
+            var id = GeneratedUUIID;
             
             e.Init(this, configText);
-            _entities[uuid] = e;
+            _entities[id] = e;
+            e.Id = id;
             
             return e;
         }
         
-        public Entity CreateEntityWithPos(ulong uuid, int configId, Fix64 x, Fix64 z)
+        public Entity CreateEntityWithPos(int configId, Fix64 x, Fix64 z)
         {
             var configPath = $"entity_config_{configId}";
-            var configText = GResourceServer.Instance.LoadText(configPath);
+            var configText = GResourceServer.Instance.Load<string>(configPath) as string;
             var e = ObjectServer.Instance.Fetch<Entity>();
+            var id = GeneratedUUIID;
             
             e.Pos = new FixVector2(x, z);
             e.Init(this, configText);
-            _entities[uuid] = e;
+            _entities[id] = e;
+            e.Id = id;
             
             return e;
         }
@@ -158,6 +195,12 @@ namespace GGame.Core
             {
                 system.Value.Dispose();
             }
+
+            foreach (var player in _players)
+            {
+                player.Value.Dispose();
+            }
+            _players.Clear();
             _tickJobs.Clear();
             _interestSystems.Clear();
             _cmdCache.Clear();

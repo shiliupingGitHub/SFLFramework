@@ -24,32 +24,12 @@ namespace GGame.Core
         {
             _instance = this;
         }
+
+        public virtual object Load<T>(string path)
+        {
+            return null;
+        }
+    
         
-        public virtual string LoadText(string path)
-        {
-
-            return null;
-
-        }
-    
-        public virtual byte[] LoadBytes(string path)
-        {
-
-            return null;
-
-        }
-    
-
-        public virtual GGameObject LoadPrefab(string path)
-        {
-           
-            return null;
-        }
-
-        public virtual Task<GGameObject> LoadPrefabAsync(string path, Action<float> onProgress)
-        {
-            return null;
-        }
-
     }
 }

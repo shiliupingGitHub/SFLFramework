@@ -132,7 +132,7 @@ namespace GGame.Editor
             {
                 //加载表格
 
-                sb.AppendLine($"\t\t\tvar text = GResourceServer.Instance.LoadText(\"{className}\");");
+                sb.AppendLine($"\t\t\tvar text = GResourceServer.Instance.Load<string>(\"{className}\") as string;");
                 sb.AppendLine($"\t\t\tvar listData = LitJson.JsonMapper.ToObject<List<{className}>>(text);");
                 sb.AppendLine("\t\t\t_dic = new Dictionary<int, skill_config>();");
                 sb.AppendLine("\t\t\tforeach (var data in listData)");
