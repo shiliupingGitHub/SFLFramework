@@ -49,11 +49,16 @@ namespace GGame.Core
         public void AddComponent(XmlNode node)
         {
             var type = ComponentServer.Instance.GetComponentType(node.Name);
-            var component = ObjectServer.Instance.Fetch(type) as Component;
+
+            if (null != type)
+            {
+                var component = ObjectServer.Instance.Fetch(type) as Component;
             
-            component.Entity = this;
-            component.Awake(this._world, node);
-            _components[type] = component;
+                component.Entity = this;
+                component.Awake(this._world, node);
+                _components[type] = component;
+            }
+
             
 
         }

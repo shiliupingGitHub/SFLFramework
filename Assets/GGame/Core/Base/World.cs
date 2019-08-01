@@ -17,6 +17,9 @@ namespace GGame.Core
         List<IJob> _tickJobs = new List<IJob>();
         List<IJob> _CacheAddJob = new List<IJob>();
         List<IJob> _CacheRmoveJob = new List<IJob>();
+        List<IUpdate> _updates = new List<IUpdate>();
+        List<ITick> _ticks = new List<ITick>();
+        List<ILateUpate> _lateUpates = new List<ILateUpate>();
         public ulong FrameIndex => _frameIndex;
         private ulong incID = 1;
         private bool _isAutoTick = false;
@@ -74,6 +77,22 @@ namespace GGame.Core
             
             system.World = this;
             _systems[system.GetType()] = system;
+
+            if (system is IUpdate)
+            {
+                _updates.Add(system as IUpdate);
+            }
+
+            if (system is ITick)
+            {
+                _ticks.Add(system as ITick);
+            }
+
+            if (system is ILateUpate)
+            {
+                _lateUpates.Add(system as ILateUpate);
+            }
+            
             
         }
 
@@ -146,6 +165,9 @@ namespace GGame.Core
             _frameIndex = 0;
             _CacheAddJob.Clear();
             _CacheRmoveJob.Clear();
+            _ticks.Clear();
+            _updates.Clear();
+            _lateUpates.Clear();
            
             if (_isAutoTick)
             {
@@ -158,9 +180,9 @@ namespace GGame.Core
 
         public void Update()
         {
-            foreach (var system in _systems)
+            foreach (var u in _updates)
             {
-                system.Value.OnUpdate();
+                u.Update();
             }
         }
 
@@ -195,9 +217,14 @@ namespace GGame.Core
                 }
             }
             
-            foreach (var system in _systems)
+            foreach (var t in _ticks)
             {
-                system.Value.OnTick();
+                t.Tick();
+            }
+            
+            foreach (var l in _lateUpates)
+            {
+                l.LateUpdate();
             }
 
             foreach (var job in _CacheRmoveJob)

@@ -10,7 +10,7 @@ namespace GGame.Core
 
     };
     [Interest(typeof(HurtedComponent))]
-    public class HurtedSystem : Core.System
+    public class HurtedSystem : System, ITick
     {
         private List<Hurt> _list = new List<Hurt>();
         public void AddHurt( Hurt hurt)
@@ -18,12 +18,9 @@ namespace GGame.Core
             _list.Add(hurt);
         }
         
-        public override void OnUpdate()
-        {
-            
-        }
 
-        public override void OnTick()
+
+        public  void Tick()
         {
             foreach (var hurt in _list)
             {

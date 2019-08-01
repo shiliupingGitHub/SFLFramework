@@ -3,14 +3,11 @@
 namespace GGame.Core
 {
     [Interest(typeof(MoveComponent))]
-    public class MoveSystem : Core.System
+    public class MoveSystem : System , ITick
     {
-        public override void OnUpdate()
-        {
 
-        }
 
-        public override void OnTick()
+        public  void Tick()
         {
             foreach (MoveComponent moveComponent in _interestComponents)
             {

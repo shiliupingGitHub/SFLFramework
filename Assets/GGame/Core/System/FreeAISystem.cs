@@ -3,14 +3,11 @@
 namespace GGame.Core
 {
     [Interest(typeof(FreeAIComponent))]
-    public class FreeAISystem : System
+    public class FreeAISystem : System , ITick
     {
-        public override void OnUpdate()
-        {
-            
-        }
 
-        public override void OnTick()
+
+        public  void Tick()
         {
             foreach (FreeAIComponent component in _interestComponents)
             {

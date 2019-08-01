@@ -18,9 +18,6 @@ namespace GGame.Core
             _interestComponents.Remove(c);
         }
         
-        public abstract void OnUpdate();
-        public abstract void OnTick();
-
         public virtual void Dispose()
         {
             _interestComponents.Clear();

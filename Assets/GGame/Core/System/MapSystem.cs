@@ -38,14 +38,5 @@ namespace GGame.Core
             Load(doc.FirstChild);
             
         }
-        public override void OnUpdate()
-        {
-            
-        }
-
-        public override void OnTick()
-        {
-            
-        }
     }
 }
