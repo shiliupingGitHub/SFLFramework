@@ -2,6 +2,7 @@
 
 using System;
 using GGame.Math;
+using UnityEngine.AI;
 
 namespace GGame.Core
 {
@@ -10,7 +11,11 @@ namespace GGame.Core
     {
         public void Update()
         {
-            
+            foreach (RenderComponent rc in _interestComponents)
+            {
+                
+               
+            }
         }
     }
 }

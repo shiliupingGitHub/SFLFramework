@@ -19,7 +19,7 @@ public class WorldTest : MonoBehaviour
         
         _World.GetSystem<MapSystem>().LoadMap(1001);
         HotfixServer.Instance.Init();
-        UISever.Instance.Show(0, null);
+        UISever.Instance.Show("frame_battle", null);
 
         player = _World.CreatePlayer<GPlayer>(10000001);
         

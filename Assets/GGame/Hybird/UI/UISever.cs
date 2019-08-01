@@ -8,32 +8,25 @@ namespace GGame.Hybird
 {
     public class UISever : SingleTon<UISever>
     {
-        Dictionary<int, Frame> _frames = new Dictionary<int, Frame>();
+        Dictionary<string, Frame> _frames = new Dictionary<string, Frame>();
 
         public Func<int, Frame> OnNewFrame;
-        public void Show(int id, System.Object o)
+        public void Show(string name, System.Object o)
         {
             Frame f = null;
-            if (!_frames.TryGetValue(id, out  f))
+            if (!_frames.TryGetValue(name, out  f))
             {
-                if (null != OnNewFrame)
-                {
-                    f = OnNewFrame(id);
-
-                    if (null != f)
-                    {
-                        _frames[id] = f;
-                        f.OnInit();
-                    }
-                }
+                f = ObjectServer.Instance.Fetch<Frame>();
+                f.Name = name;
+                f.OnInit();
             }
             
             f?.OnShow(o);
         }
 
-        public void Hide(int id)
+        public void Hide(string name)
         {
-            if (_frames.TryGetValue(id, out var frame))
+            if (_frames.TryGetValue(name, out var frame))
             {
                 frame.OnHide();
             }
