@@ -26,7 +26,7 @@ public class WorldTest : MonoBehaviour
         player.Cards.Add(1001);
         player.ExploreEntity = _World.CreateEntityWithPos(player.Cards[0], startPos.transform.position.x,
             startPos.transform.position.z);
-        
+        player.ExploreEntity.PlayerId = player.Id;
         CameraServer.Instance.SetExPlore(player.ExploreEntity, camera);
 
     }

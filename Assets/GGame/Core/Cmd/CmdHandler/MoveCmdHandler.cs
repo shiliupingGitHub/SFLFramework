@@ -3,29 +3,15 @@ using GGame.Math;
 
 namespace GGame.Core
 {
-    public class MoveCmdHandler : CmdHandler<World, Entity, MoveCmd>
+    public class MoveCmdHandler : CmdHandler<World, GPlayer, MoveCmd>
     {
         
-        protected override void Run(World world, Entity entity, MoveCmd a)
+        protected override void Run(World world, GPlayer player, MoveCmd a)
         {
-            var mc = entity.GetComponent<MoveComponent>();
 
+            int k = 0;
+            int j = k;
 
-            if (a.isMove)
-            {
-                if (!mc.IsJump)
-                {
-                    entity.MoveSpeedX = 1.0f;
-                    entity.Face = a.isLeft ? -1 : 1;
-                }
-                
-            }
-            else
-            {
-                entity.MoveSpeedX = 0f;
-            }
-           
-            
         }
     }
 }

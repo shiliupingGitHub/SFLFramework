@@ -7,14 +7,12 @@ namespace GGame.Core
 {
     public class Entity : IDisposable
     {
+        public ulong PlayerId { get; set; } = 0;
         public ulong Id { get; set; }
         public FixVector2 Pos { get; set; }
-        public Fix64 MoveSpeedX { get; set; }
 
-        public int Face = 1;
-        
         private World _world;
-        public int Camp { get; set; }
+
         private readonly Dictionary<Type, Component> _components = new Dictionary<Type, Component>();
         public void Init(World world, string config)
         {
@@ -97,6 +95,10 @@ namespace GGame.Core
             ObjectServer.Instance.Recycle(this);
 
             _world = null;
+            PlayerId = 0;
+            Id = 0;
+            _world = null;
+            Pos = FixVector2.Zero;
             foreach (var component in _components)
             {
                 component.Value.Dispose();

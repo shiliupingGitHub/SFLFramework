@@ -253,10 +253,11 @@ namespace GGame.Core
                 foreach (var cmdInfo in cacheCmd)
                 {
                     
-                    Entity entity = null;
+                    if (_players.TryGetValue(cmdInfo.Uuid, out var  player))
+                    {
+                        CmdServer.Instance.ExecuteCmd(this, player, cmdInfo.Cmd);
+                    }
                     
-                    _entities.TryGetValue(cmdInfo.Uuid, out entity);
-                    CmdServer.Instance.ExecuteCmd(this, entity, cmdInfo.Cmd);
                 }
             }
             

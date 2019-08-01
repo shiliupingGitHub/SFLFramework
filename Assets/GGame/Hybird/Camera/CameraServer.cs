@@ -8,7 +8,10 @@ namespace GGame.Hybird
 
         public void SetExPlore(Entity entity, CinemachineVirtualCamera virtualCamera)
         {
-            
+            RenderComponent rc = entity.GetComponent<RenderComponent>();
+
+            virtualCamera.Follow = rc.GameObject.transform;
+            virtualCamera.LookAt = rc.GameObject.transform;
         }
         
     }
