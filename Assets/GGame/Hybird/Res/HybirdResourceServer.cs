@@ -21,10 +21,14 @@ namespace GGame.Hybird
     {
 
         LoadBundle(path);
-        var o = _objects[path] as UnityEngine.TextAsset;
-        return o.text;
 
+        if (_objects.TryGetValue(path, out var result))
+        {
+            var o =  result as UnityEngine.TextAsset;
+            return o.text;
+        }
 
+        return null;
     }
 
     public override object Load<T>(string path) 

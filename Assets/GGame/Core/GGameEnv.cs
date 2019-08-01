@@ -108,13 +108,7 @@ namespace GGame.Core
 
         public void Init()
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            foreach (var assembly in assemblies)
-            {
-                if(assembly.FullName.Contains("GGame.Core") || assembly.FullName.Contains("GGame.Hybird"))
-                    AddAssembly(assembly);
-            }
+            AddAssembly(typeof(GGameEnv).Assembly);
             
             AIServer.Instance.Init();
         }

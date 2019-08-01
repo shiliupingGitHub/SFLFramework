@@ -37,15 +37,19 @@ namespace GGame.Hybird
             scriptEnv.Set("self", this);
 
             var lua = GResourceServer.Instance.Load<string>($"lua_{Name}") as string;
+
+            if (null != lua)
+            {
+                luaEnv.DoString(lua, "ui", scriptEnv);
+                _onInit = scriptEnv.Get<Action>("OnInit");
+                _onHide = scriptEnv.Get<Action>("OnHide");
+                _onShow = scriptEnv.Get<Action>("OnShow");
+                _onDisponse = scriptEnv.Get<Action>("OnDisponse");
             
-            luaEnv.DoString(lua, "ui", scriptEnv);
-            _onInit = scriptEnv.Get<Action>("OnInit");
-            _onHide = scriptEnv.Get<Action>("OnHide");
-            _onShow = scriptEnv.Get<Action>("OnShow");
-            _onDisponse = scriptEnv.Get<Action>("OnDisponse");
-            
-            if(null!= _onInit)
-                _onInit();
+                if(null!= _onInit)
+                    _onInit();
+            }
+
 
 
         }

@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using GGame.Core;
 using GGame.Hybird;
+using XLua;
 
 
 namespace GGame.Hybird
 {
+    [LuaCallCSharp]
     public class UISever : SingleTon<UISever>
     {
         Dictionary<string, Frame> _frames = new Dictionary<string, Frame>();
