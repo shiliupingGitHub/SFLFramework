@@ -1,8 +1,13 @@
 
 
+using XLua;
+
 namespace GGame.Core
 {
     [Interest(typeof(MoveComponent))]
+
+    [Hotfix]
+
     public class MoveSystem : System , ITick
     {
 

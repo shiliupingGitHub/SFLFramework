@@ -8,5 +8,5 @@ function OnInit( go )
 end
 
 function OnUseSkill()
-    print("hello world")
+    
 end

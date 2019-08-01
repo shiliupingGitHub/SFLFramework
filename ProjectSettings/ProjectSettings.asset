@@ -543,7 +543,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: BEHAVIAC_NOT_USE_UNITY;BEHAVIAC_RELEASE
+    1: BEHAVIAC_NOT_USE_UNITY;BEHAVIAC_RELEASE;HOTFIX_ENABLE;Client_Logic
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}
