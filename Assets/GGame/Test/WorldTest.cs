@@ -1,10 +1,8 @@
 ﻿
-using System;
 using Cinemachine;
 using UnityEngine;
 using GGame.Core;
-using GGame.Hybird.Procedure;
-using GGame.Math;
+
 
 public class WorldTest : MonoBehaviour
 {

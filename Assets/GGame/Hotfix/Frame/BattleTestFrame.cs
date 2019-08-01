@@ -1,6 +1,5 @@
 ﻿using GGame.Core;
 using GGame.Hybird;
-using GGame.Hybird.Procedure;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,8 +21,7 @@ namespace GGame.Hotfix
 
         public void OnInit()
         {
-
-            var go = (GResourceServer.Instance.LoadPrefab("frame_battle_test") as HybirdGGameObject).GameObject;
+            
             
             var collector = go.GetComponent<ReferenceCollector>();
 
@@ -38,9 +36,6 @@ namespace GGame.Hotfix
                 info.Uuid = 10000001;
                 info.Cmd = cmd;
 
-                var procedure = ProcedureServer.Instance.Get<BattleTestProcedure>();
-                
-                procedure.world.AddCachCmde(procedure.world.FrameIndex+1, info);
             });
         }
 
