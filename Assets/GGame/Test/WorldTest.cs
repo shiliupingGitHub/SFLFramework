@@ -28,7 +28,7 @@ public class WorldTest : MonoBehaviour
             startPos.transform.position.z);
         player.ExploreEntity.PlayerId = player.Id;
         CameraServer.Instance.SetExPlore(player.ExploreEntity, camera);
-
+        
     }
 
  

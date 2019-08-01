@@ -1,3 +1,12 @@
-function OnInit( ... )
-    
+function OnInit( go )
+   local rc = go:GetComponent(typeof(CS.ReferenceCollector))
+   local go_btn_use_skill = rc:GetObject("btn_use_skill")
+   local btn_use_skill = go_btn_use_skill:GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+   btn_use_skill.onClick:AddListener(OnUseSkill)
+
+end
+
+function OnUseSkill()
+    print("hello world")
 end

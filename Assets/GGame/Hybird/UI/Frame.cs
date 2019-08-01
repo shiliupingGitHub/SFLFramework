@@ -1,5 +1,6 @@
 using System;
 using GGame.Core;
+using UnityEngine;
 using XLua;
 
 namespace GGame.Hybird
@@ -9,7 +10,9 @@ namespace GGame.Hybird
     {
         public string Name { get; set; }
         private LuaTable scriptEnv;
-        private Action _onInit,_onHide, _onShow, _onDisponse;
+        private Action<GameObject> _onInit;
+        private Action _onHide, _onShow, _onDisponse;
+        private GameObject _gameObject;
         public void OnShow(System.Object o)
         {
             if(null != _onShow)
@@ -41,13 +44,15 @@ namespace GGame.Hybird
             if (null != lua)
             {
                 luaEnv.DoString(lua, "ui", scriptEnv);
-                _onInit = scriptEnv.Get<Action>("OnInit");
+                _onInit = scriptEnv.Get<Action<GameObject>>("OnInit");
                 _onHide = scriptEnv.Get<Action>("OnHide");
                 _onShow = scriptEnv.Get<Action>("OnShow");
                 _onDisponse = scriptEnv.Get<Action>("OnDisponse");
-            
+
+                _gameObject = GResourceServer.Instance.Load<GameObject>(Name) as GameObject;
+                _gameObject.name = Name;
                 if(null!= _onInit)
-                    _onInit();
+                    _onInit(_gameObject);
             }
 
 
@@ -58,13 +63,20 @@ namespace GGame.Hybird
         public void Dispose()
         {
             ObjectServer.Instance.Recycle(this);
-            _onDisponse();
+            
+            if(null != _onDisponse)
+                _onDisponse();
             
             _onInit = null;
             _onShow = null;
             _onHide = null;
             _onDisponse = null;
             scriptEnv.Dispose();
+            
+            if(null != _gameObject)
+                GameObject.Destroy(_gameObject);
+            
+            
             
         }
     }
