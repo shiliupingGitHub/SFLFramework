@@ -12,7 +12,7 @@ namespace GGame.Core
     {
         public ulong PlayerId { get; set; } = 0;
         public ulong Id { get; set; }
-        public FixVector2 Pos { get; set; }
+        public FixVector3 Pos { get; set; }
 
         private World _world;
 
@@ -34,8 +34,9 @@ namespace GGame.Core
             if (null != entityNode.Attributes?.GetNamedItem("positionX"))
             {
                 Fix64 x = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionX")?.Value);
+                Fix64 y = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionY")?.Value);
                 Fix64 z = Convert.ToSingle( entityNode.Attributes?.GetNamedItem("positionZ")?.Value);
-                Pos = new FixVector2(x,z);
+                Pos = new FixVector3(x,y,z);
             }
             
             this._world = world;
@@ -101,7 +102,7 @@ namespace GGame.Core
             PlayerId = 0;
             Id = 0;
             _world = null;
-            Pos = FixVector2.Zero;
+            Pos = FixVector3.Zero;
             foreach (var component in _components)
             {
                 component.Value.Dispose();
