@@ -2,6 +2,9 @@ using System.Xml;
 
 namespace GGame.Core
 {
+#if Client_Logic
+    [XLua.LuaCallCSharp]
+#endif
     public class FreeAIComponent: Component, IXmlAwake
     {
         public FreeMoveAIAgent Agent { get; set; }

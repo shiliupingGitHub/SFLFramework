@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace GGame.Core
 {
+#if Client_Logic
+    [XLua.LuaCallCSharp]
+#endif
     public class World : IDisposable
     {
         private ulong _frameIndex = 0;
@@ -33,8 +36,9 @@ namespace GGame.Core
             _isAutoTick = autoTick;
             if (autoTick)
             {
-                PlayerLoopServer.Instance.OnUpdate += Update;
-                PlayerLoopServer.Instance.OnTick += Tick;
+                PlayerLoopServer.Instance.AddUpdate(Update);
+               
+                PlayerLoopServer.Instance.AddTick(Tick);
             }
         }
 
@@ -214,8 +218,8 @@ namespace GGame.Core
            
             if (_isAutoTick)
             {
-                PlayerLoopServer.Instance.OnUpdate -= Update;
-                PlayerLoopServer.Instance.OnTick -= Tick;
+                PlayerLoopServer.Instance.RemoveUpdate(Update); 
+                PlayerLoopServer.Instance.RemoveTick(Tick);
             }
             
             

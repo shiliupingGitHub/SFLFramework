@@ -5,6 +5,9 @@ using GGame.Math;
 
 namespace GGame.Core
 {
+#if Client_Logic
+    [XLua.LuaCallCSharp]
+#endif
     public class Entity : IDisposable
     {
         public ulong PlayerId { get; set; } = 0;

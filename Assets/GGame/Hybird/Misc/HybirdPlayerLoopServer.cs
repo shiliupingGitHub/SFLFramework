@@ -20,12 +20,12 @@ namespace GGame.Hybird
             
             looper.LoopAction += delegate
             {
-                OnUpdate?.Invoke();
+                DoUpdate();
             };
             
             looper.TickAction += delegate
             {
-                OnTick?.Invoke();
+               DoTick();
             };
             
             looper.StartTick((float)ConstDefine.StepTime);

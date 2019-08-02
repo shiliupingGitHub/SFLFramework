@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 namespace GGame.Core
 {
+#if Client_Logic
+[XLua.LuaCallCSharp]
+#endif
 	public class skill_config 
 	{
 		public int id; //ID

@@ -4,8 +4,8 @@ namespace GGame.Core
 {
     public class PlayerLoopServer
     {
-        public Action OnUpdate;
-        public Action OnTick;
+        protected event Action OnUpdate;
+        protected event Action OnTick;
         private static PlayerLoopServer _instance;
 
         public static PlayerLoopServer Instance
@@ -25,6 +25,37 @@ namespace GGame.Core
         {
             _instance = this;
         }
+
+        public void AddUpdate(Action a)
+        {
+            OnUpdate += a;
+        }
+
+        public void RemoveUpdate(Action a)
+        {
+            OnUpdate -= a;
+        }
+        
+        public void AddTick(Action a)
+        {
+            OnTick += a;
+        }
+
+        public void RemoveTick(Action a)
+        {
+            OnTick -= a;
+        }
+
+        protected void DoUpdate()
+        {
+            OnUpdate?.Invoke();
+        }
+
+        protected void DoTick()
+        {
+            OnTick?.Invoke();
+        }
+        
         
         
         

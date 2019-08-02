@@ -97,6 +97,10 @@ namespace GGame.Editor
             sb.AppendLine("using System.Collections.Generic;");
             sb.AppendLine("namespace GGame.Core");
             sb.AppendLine("{");
+
+            sb.AppendLine("#if Client_Logic");
+            sb.AppendLine("[XLua.LuaCallCSharp]");
+            sb.AppendLine("#endif");
             sb.AppendLine($"\tpublic class {className} ");
             sb.AppendLine("\t{");
             for (int i = 0; i < count; i++)

@@ -4,6 +4,9 @@ using System.Xml;
 
 namespace GGame.Core
 {
+#if Client_Logic
+    [XLua.LuaCallCSharp]
+#endif
     public class SkillComponent: Component, IXmlAwake
     {
         Dictionary<int, IJob> _jobs = new Dictionary<int, IJob>();

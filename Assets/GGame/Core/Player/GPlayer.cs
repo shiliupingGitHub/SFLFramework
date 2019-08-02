@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace GGame.Core
 {
+#if Client_Logic
+    [XLua.LuaCallCSharp]
+#endif
     public class GPlayer : IDisposable
     {
         public World World { get; set; }

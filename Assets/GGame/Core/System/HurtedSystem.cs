@@ -9,6 +9,9 @@ namespace GGame.Core
         public HurtAction _HurtAction;
 
     };
+#if Client_Logic
+    [XLua.Hotfix]
+#endif
     [Interest(typeof(HurtedComponent))]
     public class HurtedSystem : System, ITick
     {

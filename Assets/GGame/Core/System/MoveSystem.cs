@@ -1,12 +1,11 @@
 
 
-using XLua;
 
 namespace GGame.Core
 {
     [Interest(typeof(MoveComponent))]
 #if Client_Logic
-    [Hotfix]
+    [XLua.Hotfix]
 #endif
     
     public class MoveSystem : System , ITick

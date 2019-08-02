@@ -4,6 +4,9 @@ using GGame.Math;
 
 namespace GGame.Core
 {
+#if Client_Logic
+    [XLua.LuaCallCSharp]
+#endif
     public class MoveComponent : Component, IXmlAwake
     {
         public Fix64 CurVSpeed = 0;
