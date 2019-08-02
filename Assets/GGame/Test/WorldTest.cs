@@ -14,11 +14,13 @@ public class WorldTest : MonoBehaviour
     private GPlayer player;
     void Start()
     {
+        
+        HotfixServer.Instance.Init();
        
         _World = new World(true);
         
         _World.GetSystem<MapSystem>().LoadMap(1001);
-        HotfixServer.Instance.Init();
+        
         UISever.Instance.Show("frame_battle", null);
 
         player = _World.CreatePlayer<GPlayer>(10000001);

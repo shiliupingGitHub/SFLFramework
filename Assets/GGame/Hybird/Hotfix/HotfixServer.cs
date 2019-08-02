@@ -10,12 +10,24 @@ namespace GGame.Hybird
         public LuaEnv LuaEnv = null;
         public void Dispose()
         {
+            
             LuaEnv?.Dispose();
+            LuaEnv = null;
         }
 
         public void Init()
         {
-            LuaEnv = new LuaEnv();
+            if (null == LuaEnv)
+            {
+                var lua_main = GResourceServer.Instance.Load<string>("lua_main") as string;
+                
+                LuaEnv = new LuaEnv();
+                LuaEnv.DoString(lua_main);
+
+
+            }
+
+            
         }
         
     }
